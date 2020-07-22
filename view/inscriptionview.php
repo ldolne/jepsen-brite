@@ -5,6 +5,7 @@
     </head>
     <body>
         <?php
+        $inscription -> execute(array($_POST['username'], $_POST['email']));
         $data = $inscription->fetchAll(\PDO::FETCH_ASSOC);
         print_r($data);
 
@@ -18,7 +19,7 @@
                 <?php
                 
                     if (isset($_POST['username']) && $value == $_POST['username']) {
-                        // echo ("Ce nom d'utilisateur est déjà pris");
+                        echo ("Ce nom d'utilisateur est déjà pris");
                         ?>
                         <br>
                         <?php
@@ -37,7 +38,7 @@
                 <?php
                 
                     if (isset($_POST['email']) && $value == $_POST['email']) {
-                        // echo ("Cette adresse mail est déjà associée à un compte.");
+                        echo ("Cette adresse mail est déjà associée à un compte.");
                         ?>
                         <br>
                         <?php
