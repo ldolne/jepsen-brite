@@ -7,12 +7,11 @@ require_once('Manager.php');
 
 
 /* TODO An event should contain at least :
-    An image
-    A description. It must be rich: it must interprets markdown and shows emojis.
-    The author of an event, and only him, can UPDATE his own event. The update can be made as well on the same page as redirect to an other page (you're free to choose the best process).
-    The author of an event, and only him, can DELETE his own event.
-    There must be a link to the event creation page.
-    Any user can post a comment on the event. It must interprets markdown and shows emojis.
+    - Rich (MD et emojis) pour description et comments
+    - An image : image for event (image en PHP ? Blob ?)
+    - The author of an event, and only him, can UPDATE his own event.
+    - The author of an event, and only him, can DELETE his own event.
+    - Any user can post a comment on the event.
 */
 
 
@@ -34,4 +33,17 @@ class EventManager extends Manager
 
         return $req;
     }
+
+    /*public function updateEvent($eventId)
+    {
+        $db =$this->dbConnect();
+        //$req = $db->prepare('INSERT INTO ');
+    }
+
+    public function deleteEvent($eventId)
+    {
+        $db =$this->dbConnect();
+        $req = $db->prepare('DELETE FROM events WHERE id = ?');
+        $req->execute(array($eventId));
+    }*/
 }

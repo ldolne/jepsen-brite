@@ -3,6 +3,7 @@
 <?php ob_start(); ?>
 <h1>Focus on event:</h1>
 <p><a href="./index_laeti.php">Back to the homepage</a></p>
+<p><a href="./index_laeti.php?action=createEvent">Go to "Event creation page"</a></p>
 
 <div class="event">
     <h3>
