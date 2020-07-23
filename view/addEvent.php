@@ -11,19 +11,13 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/blog/">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/base.css">
-    <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../css/blog.css" rel="stylesheet">
+    <?php require('../require/css.php') ?>
 </head>
 
 <body>
     <div class="container">
-        <?php require( '../require/header.php') ?>
-        <?php require( '../require/nav-bar.php') ?>
+        <?php require('../require/header.php') ?>
+        <?php require('../require/nav-bar.php') ?>
     </div>
 
     </div>
@@ -41,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPlace">
-                           Place's Name
+                            Place's Name
                         </label>
                         <input type="name" class="form-control" id="exampleInputPlace1">
                     </div>
@@ -93,7 +87,7 @@
 
     </main><!-- /.container -->
 
-<?php require('../require/footer.php')?>
+    <?php require('../require/footer.php') ?>
 </body>
 
 </html>

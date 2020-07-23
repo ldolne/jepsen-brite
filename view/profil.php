@@ -12,13 +12,7 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/blog/">
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="../css/base.css">
-    <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../css/blog.css" rel="stylesheet">
+    <?php require('../require/css.php') ?>
 </head>
 
 <body>
@@ -36,7 +30,7 @@
                             <div class="card-title mb-4">
                                 <div class="d-flex justify-content-start">
                                     <div class="image-container">
-                                        <img src="http://placehold.it/150x150" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                                        <img src="http://placehold.it/200x200" id="imgProfile" style="width: 200px; height: 200px" class="img-thumbnail" />
                                     </div>
                                     <div class="ml-auto">
                                         <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
@@ -153,7 +147,7 @@
                                             </div>
                                             <hr />
                                             <div class="row">
-                                                <button>modify your profil</button>
+                                                <button class="btn btn-primary">modify your profil</button>
                                             </div>
 
                                         </div>
