@@ -11,17 +11,21 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/blog/">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
 
-    <?php require('../require/css.php') ?>
+    <!-- Bootstrap core CSS -->
+    <link href="./public/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./public/css/base.css">
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="./public/css/blog.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <?php require('../require/header.php') ?>
+        <?php require('./view/header.php') ?>
 
-        <?php require('../require/nav-bar.php') ?>
+        <?php require('./view/nav-bar.php') ?>
 
         <div class="container">
             <div class="row">
@@ -175,7 +179,7 @@
                                         <label style="font-weight:bold;"> Add comentary</label>
                                     </div>
                                     <textarea class="col-md-8 col-6">
-                          
+
                                     </textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">
@@ -190,4 +194,4 @@
 
 
 
-        <?php require('../require/footer.php') ?>
+        <?php require('./view/footer.php') ?>

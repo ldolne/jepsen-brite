@@ -11,13 +11,17 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/blog/">
 
-    <?php require('../require/css.php') ?>
+    <!-- Bootstrap core CSS -->
+    <link href="public/css/bootstrap.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="public/css/blog.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/css/base.css">
 </head>
 
 <body>
     <div class="container">
-        <?php require('../require/header.php') ?>
-        <?php require('../require/nav-bar.php') ?>
+        <?php require('./view/header.php') ?>
+        <?php require('./view/nav-bar.php') ?>
     </div>
 
     </div>
@@ -27,7 +31,7 @@
 
             <div class="col-md-12">
                 <form role="form">
-                <h2>Add event</h2>
+                    <h2>Add event</h2>
                     <div class="form-group">
                         <label for="exampleInputName">
                             Event's Name
@@ -88,7 +92,7 @@
 
     </main><!-- /.container -->
 
-    <?php require('../require/footer.php') ?>
+    <?php require('./view/footer.php') ?>
 </body>
 
 </html>
