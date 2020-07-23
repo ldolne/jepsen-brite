@@ -1,10 +1,9 @@
-<?php $title = 'List of events'; ?>
+<?php $title = 'Past events'; ?>
 
 <?php ob_start(); ?>
 <h1>Our events:</h1>
-<p><em><a href="./index_laeti.php?action=listPastEvents">See our past events</a></em></p>
-<p><em><a href="./index_laeti.php?action=showEventCreationPage">Create an event:</a></em></p>
-<p>Upcoming events:</p>
+<p><em><a href="./index_laeti.php?action=listUpcomingEvents">See our upcoming events</a></em></p>
+<p>Past events:</p>
 <?php
 while ($data = $events->fetch())
 {

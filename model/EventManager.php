@@ -2,25 +2,35 @@
 
 require_once('Manager.php');
 
-// TODO Homepage
-//  - Système de pages : cf. https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/6964512-tp-un-blog-avec-des-commentaires
-
-
 /* TODO An event should contain at least :
     - Rich (MD et emojis) pour description et comments
-    - An image : image for event (image en PHP ? Blob ?)
+    - Tester format An image : image for event (image en PHP ? Blob ?)
+    - Tester format date
     - The author of an event, and only him, can UPDATE his own event.
     - The author of an event, and only him, can DELETE his own event.
     - Any user can post a comment on the event.
-*/
 
+ TODO Event creation page
+    - This is here a user can CREATE an event
+
+ TODO else
+    - Découpage par page : https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/6964512-tp-un-blog-avec-des-commentaires
+*/
 
 class EventManager extends Manager
 {
-    public function getEvents()
+    public function getUpcomingEvents()
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT id, title, DATE_FORMAT(event_date, \'%d/%m/%Y %H:%i:%s\') AS event_date_formatted FROM events ORDER BY event_date LIMIT 0, 21');
+        $req = $db->query('SELECT id, title, DATE_FORMAT(event_date, \'%d/%m/%Y %H:%i:%s\') AS event_date_formatted FROM events WHERE event_date > current_time ORDER BY event_date LIMIT 0, 21');
+
+        return $req;
+    }
+
+    public function getPastEvents()
+    {
+        $db = $this->dbConnect();
+        $req = $db->query('SELECT id, title, DATE_FORMAT(event_date, \'%d/%m/%Y %H:%i:%s\') AS event_date_formatted FROM events WHERE event_date < current_time ORDER BY event_date DESC LIMIT 0, 21');
 
         return $req;
     }
@@ -34,10 +44,40 @@ class EventManager extends Manager
         return $req;
     }
 
-    /*public function updateEvent($eventId)
+    public function createEvent($title, $authorId, $description, $categoryId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('INSERT INTO events(title, author_id, description, category_id) VALUES (:title, :author_id, :description, :category_id)');
+        $req->execute(array(
+            'title' => $title,
+            'author_id' => $authorId,
+            'description' => $description,
+            'category_id' => $categoryId
+        ));
+        /*$req = $bdd->prepare('INSERT INTO events(title, author_id, event_date, image, description, category_id) VALUES (:title, :author_id, :event_date, :image, :description, :category_id)');
+        $req->execute(array(
+            'title' => $title,
+            'author_id' => $authorId,
+            'event_date' => $eventDate,
+            'image' => $image,
+            'description' => $description,
+            'category_id' => $categoryId
+        ));*/
+    }
+
+    public function updateEvent($eventId, $title, $authorId, $eventDate, $image, $description, $categoryId)
     {
         $db =$this->dbConnect();
-        //$req = $db->prepare('INSERT INTO ');
+        $req = $db->prepare('UPDATE events SET title = :title, author_id = :author_id, event_date = :event_date, image = :image, description = :description, category_id = :category_id WHERE id = :id');
+        $req->execute(array(
+            'title' => $title,
+            'author_id' => $authorId,
+            'event_date' => $eventDate,
+            'image' => $image,
+            'description' => $description,
+            'category_id' => $categoryId,
+            'id' => $eventId
+        ));
     }
 
     public function deleteEvent($eventId)
@@ -45,5 +85,5 @@ class EventManager extends Manager
         $db =$this->dbConnect();
         $req = $db->prepare('DELETE FROM events WHERE id = ?');
         $req->execute(array($eventId));
-    }*/
+    }
 }
