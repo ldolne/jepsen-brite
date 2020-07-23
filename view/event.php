@@ -47,86 +47,91 @@
                             <th>
                                 Type
                             </th>
+                            <th>See more ...</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                0
+                                System of a down on tour
                             </td>
                             <td>
-                                TB - Monthly
+                                Rock wertcher
                             </td>
                             <td>
-                                01/04/2012
+                                05/07/2020
                             </td>
                             <td>
-                                Default
+                              22:00
                             </td>
-                            <td></td>
+                            <td> Concert</td>
+                            <td><a href="#">link page of this event</a></td>
                         </tr>
                         <tr class="table-active">
                             <td>
-                                1
+                            A Conversation about Race in the Boardroom
                             </td>
                             <td>
-                                TB - Monthly
+                            Online Event
                             </td>
                             <td>
-                                01/04/2012
+                                23/07/2020
                             </td>
                             <td>
-                                Approved
+                                21:00
                             </td>
-                            <td></td>
+                            <td>Conference</td>
+                            <td><a href="#">link page of this event</a></td>
 
                         </tr>
                         <tr class="table-success">
                             <td>
-                                2
+                            Everlast: The Live Acoustic
                             </td>
                             <td>
-                                TB - Monthly
+                            Online Event
                             </td>
                             <td>
-                                02/04/2012
+                                26/07/2020
                             </td>
                             <td>
-                                Declined
+                               3:00
                             </td>
-                            <td></td>
+                            <td>Concert</td>
+                            <td><a href="#">link page of this event</a></td>
 
                         </tr>
                         <tr class="table-warning">
                             <td>
-                                3
+                            Social Justice Summit for Educators
                             </td>
                             <td>
-                                TB - Monthly
+                            Online Event
                             </td>
                             <td>
-                                03/04/2012
+                                05/08/2020
                             </td>
                             <td>
-                                Pending
+                                1:00
                             </td>
-                            <td></td>
-
+                            <td>Conference</td>
+                            <td><a href="#">link page of this event</a></td>
                         </tr>
                         <tr class="table-danger">
                             <td>
-                                4
+                            Wallifornia MusicTech
                             </td>
                             <td>
-                                TB - Monthly
+                            Online Event
                             </td>
                             <td>
-                                04/04/2012
+                                07/07/2020
                             </td>
                             <td>
-                                Call in to confirm
+                               Unknow
                             </td>
-                            <td></td>
+                            <td>Hackathon</td>
+                            <td><a href="#">link page of this event</a></td>
 
                         </tr>
                     </tbody>

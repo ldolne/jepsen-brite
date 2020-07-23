@@ -59,7 +59,7 @@
                                                     <label style="font-weight:bold;">Birth Date</label>
                                                 </div>
                                                 <div class="col-md-8 col-6">
-                                                    March 22, 1994.
+                                                    March 22, 1994
                                                 </div>
                                             </div>
                                             <hr />
@@ -70,82 +70,20 @@
                                                     <label style="font-weight:bold;">Pseudo</label>
                                                 </div>
                                                 <div class="col-md-8 col-6">
-                                                    unknown
+                                                Bethber
                                                 </div>
                                             </div>
                                             <hr />
                                             <div class="row">
                                                 <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
+                                                    <label style="font-weight:bold;">Email</label>
                                                 </div>
                                                 <div class="col-md-8 col-6">
-                                                    Something
+                                                ucakyppy-9596@yopmail.com
                                                 </div>
                                             </div>
                                             <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Something
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Something
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Something
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Something
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Something
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Something
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Something</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Something
-                                                </div>
-                                            </div>
-                                            <hr />
+                                     
                                             <div class="row">
                                                 <button class="btn btn-primary">modify your profil</button>
                                             </div>

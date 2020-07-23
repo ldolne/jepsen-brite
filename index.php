@@ -29,31 +29,63 @@
           All the biggest event in your region can be found here</p>
       </div>
     </div>
-    <div class="row mb-2">
-      <div class="col-md-6">
+    <div><h1>Next event</h1></div>
+    <div class="row mb-1">
+      <div class="col-md-12">
         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">Category</strong>
-            <h3 class="mb-0">
-              Last added event</h3>
-            <div class="mb-1 text-muted">Date Event</div>
-            <p class="card-text mb-auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Nam cursus tempus sollicitudin. Nam imperdiet pellentesque malesuada.</p>
+            <strong class="d-inline-block mb-2 text-primary">Name of category</strong>
+            <div class="mb-2 text-muted">Name Event</div>
+            <div class="mb-2 text-muted">Date Event</div>
+            <div class="mb-2 text-muted">Place</div>
             <a href="#" class="stretched-link">Go page of this event</a>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-3">
         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-success">Category</strong>
-            <h3 class="mb-0">Most popular event</h3>
-            <div class="mb-1 text-muted">Date Event</div>
-            <p class="mb-auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Nam cursus tempus sollicitudin. Nam imperdiet pellentesque malesuada.</p>
+            <strong class="d-inline-block mb-2 text-primary">Name of category</strong>
+            <div class="mb-2 text-muted">Name Event</div>
+            <div class="mb-2 text-muted">Date Event</div>
+            <div class="mb-2 text-muted">Place</div>
             <a href="#" class="stretched-link">Go page of this event</a>
           </div>
-
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">Name of category</strong>
+            <div class="mb-2 text-muted">Name Event</div>
+            <div class="mb-2 text-muted">Date Event</div>
+            <div class="mb-2 text-muted">Place</div>
+            <a href="#" class="stretched-link">Go page of this event</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">Name of category</strong>            <div class="mb-2 text-muted">Name Event</div>
+            <div class="mb-2 text-muted">Date Event</div>
+            <div class="mb-2 text-muted">Place</div>
+            <a href="#" class="stretched-link">Go page of this event</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">Name of category</strong>
+            <div class="mb-2 text-muted">Name Event</div>
+            <div class="mb-2 text-muted">Date Event</div>
+            <div class="mb-2 text-muted">Place</div>
+            <a href="#" class="stretched-link">Go page of this event</a>
+          </div>
         </div>
       </div>
     </div>

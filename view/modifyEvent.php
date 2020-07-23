@@ -26,8 +26,9 @@
         <div class="row">
 
             <div class="col-md-12">
+                
                 <form role="form">
-                <h2>Add event</h2>
+                    <h2>Modify event</h2>
                     <div class="form-group">
                         <label for="exampleInputName">
                             Event's Name
