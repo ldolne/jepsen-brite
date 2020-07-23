@@ -9,7 +9,9 @@ function register(){
 
     global $data;
     $request = $bdd-> prepare("SELECT username, email FROM `users` WHERE `username` = ? OR `email`=?");
-    // $requestemail = $bdd -> prepare("SELECT email FROM `users` WHERE `email` = ?");
+    $requestemail = $bdd -> prepare("SELECT email FROM `users` WHERE `email` = ?");
+    $requestusername = $bdd -> prepare("SELECT username FROM `users` WHERE `username` = ?");
+
 
 
     if (isset($_POST['signup'])){
@@ -21,22 +23,34 @@ function register(){
         $request -> execute(array($_POST['username'], $_POST['email']));
         $data = $request -> fetch();
 
-        // $requestemail -> execute(array($_POST['email']));
-        // global $dataemail;
-        // $dataemail = $requestemail -> fetch();
+        $requestusername -> execute(array($_POST['username']));
+        $datausername = $requestusername -> fetch();
 
-        echo ($data['username'] . " " . $data['email']);
+        $requestemail -> execute(array($_POST['email']));
+        $dataemail = $requestemail -> fetch();
+
+        // echo ($data['username'] . " " . $data['email']);
 
 
     }
 
-    if (isset($username, $email, $password, $passwordcheck) && filter_var($email, FILTER_VALIDATE_EMAIL) && $password == $passwordcheck && $password != null && isset($dataname['username'])==false && isset($data['name'])==false && isset($data['email'])==false) {
+    if (isset($username, $email, $password, $passwordcheck) && filter_var($email, FILTER_VALIDATE_EMAIL) && $password == $passwordcheck && $password != null && isset($dataname['username'])==false && isset($datausernam['name'])==false && isset($dataemail['email'])==false && preg_match('#^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W]).{8,}$#', $_POST['password'])==true) {
         echo"c'est ok";
+        $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
+        $bdd->exec("INSERT INTO `users`(`email`, `username`, `password`, `avatar`) VALUES('$email', '$username', '$hashedpassword', '')");
+        
+        $to      = $email;
+        $subject = 'Inscription à Jepsen-brite event ';
+        $message = 'La Team-5 est heureuse de t\'acceuillir sur ce magnifique site';
+        $headers = 'From: webmaster@example.com' . "\r\n" .
+        'Reply-To: webmaster@example.com' . "\r\n" ;
+
+        mail($to, $subject, $message, $headers);
+
 
     }
-
     else {
-        echo " erreur ";
+        // echo " erreur ";
     }
     return $request;
 
