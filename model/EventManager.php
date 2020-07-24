@@ -6,12 +6,15 @@ require_once('Manager.php');
     - Rich (MD et emojis) pour description et comments
     - Tester format An image : image for event (image en PHP ? Blob ?)
     - Tester format date
-    - The author of an event, and only him, can UPDATE his own event.
-    - The author of an event, and only him, can DELETE his own event.
-    - Any user can post a comment on the event.
+    - Creer fct DELETE
+    - Creer fct UPDATE
+    - The author of an event, and only him, can UPDATE his own event. PERM
+    - The author of an event, and only him, can DELETE his own event. PERM
+    - Any user can post a comment on the event. PERM
 
  TODO Event creation page
-    - This is here a user can CREATE an event
+    - Creer fct CreateEvent
+    - This is here a user can CREATE an event PERM
 
  TODO else
     - Découpage par page : https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/6964512-tp-un-blog-avec-des-commentaires
@@ -48,12 +51,15 @@ class EventManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->prepare('INSERT INTO events(title, author_id, description, category_id) VALUES (:title, :author_id, :description, :category_id)');
-        $req->execute(array(
+        $affectedLines = $req->execute(array(
             'title' => $title,
             'author_id' => $authorId,
             'description' => $description,
             'category_id' => $categoryId
         ));
+
+        return $affectedLines;
+
         /*$req = $bdd->prepare('INSERT INTO events(title, author_id, event_date, image, description, category_id) VALUES (:title, :author_id, :event_date, :image, :description, :category_id)');
         $req->execute(array(
             'title' => $title,

@@ -6,6 +6,7 @@
 
 // Chargement des classes
 require_once('./model/EventManager.php');
+require_once('./model/CommentManager.php');
 
 function listUpcomingEvents()
 {
@@ -26,7 +27,10 @@ function listPastEvents()
 function showEvent()
 {
     $eventManager = new EventManager();
+    $commentManager = new CommentManager();
+
     $eventReq = $eventManager->getEvent($_GET['id']);
+    $comments = $commentManager->getComments($_GET['id']);
     $event = $eventReq->fetch();
 
     if (!empty($event))
@@ -39,7 +43,7 @@ function showEvent()
     }
 }
 
-function showEventCreationPage()
+function showEventCreationPage($message = null)
 {
     require('./view/eventCreationView.php');
 }
@@ -47,12 +51,30 @@ function showEventCreationPage()
 function createNewEvent()
 {
     $eventManager = new EventManager();
-    $eventManager->createEvent($_POST['title'], $_POST['author_id'],
+    $affectedLines = $eventManager->createEvent($_POST['title'], $_POST['author_id'],
         $_POST['description'], $_POST['category_id']);
     /*$eventManager->createEvent($_POST['title'], $_POST['author_id'], $_POST['event_date'],
         $_POST['image'], $_POST['description'], $_POST['category_id']);*/
 
-    listUpcomingEvents();
+    if ($affectedLines === false) {
+        throw new Exception('Problem while creating an event. Please try again.');
+    } else {
+        $result = '<p>Event has been successfully created.</p>';
+        showEventCreationPage($result);
+    }
+}
+
+function addComment($eventId, $authorId, $comment)
+{
+    $commentManager = new CommentManager();
+
+    $affectedLines = $commentManager->postComment($eventId, $authorId, $comment);
+
+    if ($affectedLines === false) {
+        throw new Exception('Problem while adding a comment. Please try again.');
+    } else {
+        header('Location: ./index_laeti.php?action=showEvent&id=' . $eventId);
+    }
 }
 
 

@@ -7,7 +7,7 @@
 <p><a href="./index_laeti.php">Back to the homepage</a></p>
 
 <div class="createEvent">
-    <form action="./index_laeti.php?action=createNewEvent" method="POST">
+    <form action="./index_laeti.php?action=createNewEvent" method="POST" enctype="multipart/form-data">
         <label for="title">Title: </label><input type="text" name="title" id="title"><br><br>
         <label for="author">Author: </label><input type="text" name="author_id" id="author"><br><br>
         <label for="date">Date and time: </label><input type="date" name="event_date" id="date"><br><br>
@@ -26,7 +26,8 @@
             <input type="radio" id="cat5" name="category_id" value="5">
             <label for="cat5">Game Jam</label><br>
         </div>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit"><br>
+        <?= $message ?>
     </form>
 </div>
 
