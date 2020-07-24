@@ -6,43 +6,58 @@ function getindexpage()
     require('./view/mainPage.php');
 }
 
-function getinscriptionpage(){
-    $inscription= register();
+function getinscriptionpage()
+{
+    $inscription = register();
     require('./view/signup.php');
 }
 
-function getaddevent(){
+function getaddevent()
+{
     require('./view/addEvent.php');
 }
 
-function getcategory(){
+function getcategory()
+{
     require('./view/category.php');
 }
 
-function getevent(){
+function getevent()
+{
     require('./view/event.php');
 }
 
-function getloging(){
+function getloging()
+{
     require('./view/loging.php');
 }
 
-function getmodifyEvent(){
+function getmodifyEvent()
+{
     require('./view/modifyEvent.php');
 }
 
-function getoneEvent(){
+function getoneEvent()
+{
     require('./view/oneEvent.php');
 }
 
-function getprofil(){
+function getprofil()
+{
     require('./view/profil.php');
 }
 
-function getresultSearch(){
+function getresultSearch()
+{
     require('./view/resultSearch.php');
 }
 
-function getsearch(){
+function getsearch()
+{
     require('./view/search.php');
+}
+function searchAllCategory()
+{
+    $searchAll=searchAllCategory();
+    require('./view/event.php');
 }
