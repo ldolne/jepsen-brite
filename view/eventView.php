@@ -3,15 +3,29 @@
 <?php ob_start(); ?>
 <h1>Focus on event:</h1>
 <p><a href="./index_laeti.php">Back to the homepage</a></p>
+<p><a href="./index_laeti.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>">Delete Event</a></p>
+<p><a href="./index_laeti.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">Modify Event</a></p>
+
+<!--
+<script type="text/javascript">
+    function ConfirmDelete()
+    {
+        if (confirm("Delete Account?"))
+            location.href='linktoaccountdeletion';
+    }
+</script>
+
+
+echo '<input type="button" onclick="ConfirmDelete()" value="DELETE ACCOUNT">';-->
 
 <div class="event">
     <h3>
         <?= htmlspecialchars($event['title']) ?><br>
         by <?= htmlspecialchars($event['username']) ?><br>
-        <em><?= htmlspecialchars($event['event_date_formatted']) ?></em><br>
+        <em><?= htmlspecialchars($event['event_date_formatted']) ?> <?= htmlspecialchars($event['event_hour_formatted']) ?></em><br>
         Category: <?= htmlspecialchars($event['category']) ?>
     </h3>
-    <img src="" alt="">
+    <img src="./public/img/events_img/<?= $event['image'] ?>" alt="Event image" width="150">
 
     <p>
         <?= nl2br(htmlspecialchars($event['description'])) ?>

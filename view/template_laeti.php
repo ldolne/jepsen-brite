@@ -8,5 +8,6 @@
 
 <body>
 <?= $content ?>
+<?= $errorMsg ?>
 </body>
 </html>

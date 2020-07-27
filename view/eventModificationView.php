@@ -7,11 +7,10 @@
 <p><a href="./index_laeti.php">Back to the homepage</a></p>
 
 <div class="createEvent">
-    <form action="./index_laeti.php?action=createNewEvent" method="POST" enctype="multipart/form-data">
+    <form action="./index_laeti.php?action=updateExistingEvent" method="POST" enctype="multipart/form-data">
         <label for="title">Title: </label><input type="text" name="title" id="title"><br><br>
-        <label for="author">Author: </label><input type="text" name="author_id" id="author" value="1"><br><br> <!-- value="// $_SESSION['id'] ?>" -->
-        <label for="date">Date: </label><input type="date" name="event_date" id="date"><br><br>
-        <label for="hour">Time: </label><input type="time" name="event_hour" id="hour"><br><br>
+        <label for="author">Author: </label><input type="text" name="author_id" id="author"><br><br>
+        <label for="date">Date and time: </label><input type="date" name="event_date" id="date"><br><br>
         <label for="image">Image: </label><input type="file" name="image" id="image"><br><br>
         <label for="description">Description: </label><textarea name="description" id="description" rows="5" cols="33">Type in the description of your event.</textarea><br><br>
         <label for="category">Category: </label>
@@ -28,6 +27,7 @@
             <label for="cat5">Game Jam</label><br>
         </div>
         <input type="submit" value="Submit"><br>
+        <?= $message ?>
     </form>
 </div>
 

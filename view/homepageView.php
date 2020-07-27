@@ -12,7 +12,7 @@ while ($data = $events->fetch())
     <div class="events">
         <h3>
             <?= htmlspecialchars($data['title']) ?>
-            <em><?= $data['event_date_formatted'] ?></em>
+            <em><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></em>
         </h3>
         <p>
             <em><a href="./index_laeti.php?action=showEvent&amp;id=<?= $data['id'] ?>">See event</a></em>
