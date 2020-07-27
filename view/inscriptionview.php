@@ -9,3 +9,4 @@
     <input type="password" name="passwordcheck" placeholder="vérification"><br>
     <input type="submit" name="signup" value="Sign up">
 </form>
+<a href="indexchris.php">retour à la page principale</a>

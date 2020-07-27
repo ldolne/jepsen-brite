@@ -1,8 +1,7 @@
-<a href="indexchris.php?action=inscription">Sign up</a>
-<a href="indexchris.php?action=profilesettings">profile</a>
 <?php 
 if (empty($_SESSION['username'])){
     ?>
+    <a href="indexchris.php?action=inscription">Sign up</a>
     <a href="indexchris.php?action=connection">se connecter</a>
     <?php 
 }

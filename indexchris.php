@@ -43,6 +43,10 @@ if (isset($_GET['action'])){
                 modifyprofilepage();
             }
         }
+
+        elseif ($_GET['action'] == 'deleteprofile'){
+            deleteAccount();
+        }
     }
 }
 

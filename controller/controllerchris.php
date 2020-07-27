@@ -68,9 +68,12 @@ function actualInscription() {
         $emailError='this email adress is not a valid one';
     }
 
+    $image = md5(strtolower(trim($email)));
+
+
     if($emailValidation == TRUE && $passwordValidation == TRUE && $usernameValidation == TRUE){
         $inscription = inscriptionPreparation();
-        $inscription -> execute(array($email, $username, $password));
+        $inscription -> execute(array($email, $username, $password, $image));
 
         $message='Inscription done. Welcome';
 
@@ -205,4 +208,21 @@ function profilemodification() {
         $message = '';
         require('./view/modifyprofileview.php');
     }    
+}
+
+function deleteAccount(){
+    $request = dbuserverif();
+    $request -> execute(array($_SESSION['username']));
+    $result = $request -> fetch();
+
+    $deletePrep = deletePreparation();
+    $deletePrep -> execute(array($result['id']));
+    $message = 'Your account was deleted';
+
+    $_SESSION = array();
+    session_destroy();
+    setcookie('id', '');
+    setcookie('username', '');
+    
+    require ('./view/errorview.php');
 }
