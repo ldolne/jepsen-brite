@@ -8,7 +8,7 @@ if (isset($_GET["action"])) {
   } elseif ($_GET["action"] == "category") {
     getcategory();
   } elseif ($_GET["action"] == "event") {
-    getevent();
+    AllCategoryController();
   } elseif ($_GET["action"] == "loging") {
     getloging();
   } elseif ($_GET["action"] == "oneEvent") {
@@ -21,6 +21,10 @@ if (isset($_GET["action"])) {
     getresultSearch();
   } elseif ($_GET["action"] == "search") {
     getSearch();
+  } elseif ($_GET["action"] == "onecategorycontroller") {
+    OneCategoryController();
+  }elseif ($_GET["action"] == "allcategorycontroller") {
+    AllCategoryController();
   }
 } else {
   getindexpage();

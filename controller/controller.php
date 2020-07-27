@@ -8,7 +8,7 @@ function getindexpage()
 
 function getinscriptionpage()
 {
-    $inscription = register();
+    // $inscription = register();
     require('./view/signup.php');
 }
 
@@ -56,8 +56,18 @@ function getsearch()
 {
     require('./view/search.php');
 }
-function searchAllCategory()
+function AllCategoryController()
 {
-    $searchAll=searchAllCategory();
+    $search = AllCategoryModel();
     require('./view/event.php');
+}
+
+function OneCategoryController()
+{
+    $search = OneCategoryModel($_GET['category_id']);
+    if ($search === null) {
+        echo 'Aucun résultat';
+    } else {
+        require('./view/event.php');
+    }
 }

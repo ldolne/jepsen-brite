@@ -6,11 +6,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div>
+                <!-- <div>
                     <button class="btn btn-primary">Participate</button>
                     <button class="btn btn-primary">Maybe</button>
                     <button class="btn btn-primary">Don't partipate</button>
-                </div>
+                </div> -->
                 <div class="card-title mb-4">
                     <div class="d-flex justify-content-start">
                         <div class="image-container">
