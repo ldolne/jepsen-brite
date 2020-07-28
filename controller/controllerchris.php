@@ -202,6 +202,11 @@ function profilemodification() {
         $message = 'Modifications done';
         $updatePrep = updatepreparation();
         $updatePrep -> execute(array($username, $password, $result['id']));
+        
+        $_SESSION["username"]= $username;
+        if (isset($_POST['stayconnected'])){
+            setcookie('username', $username, time() + 30*24*3600, null, null, false, true);
+        }
         require('./view/modifyprofileview.php');
     }
     else{

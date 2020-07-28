@@ -1,5 +1,11 @@
 <?php 
 session_start();
+if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
+&& isset($_COOKIE['id']) && !empty($_COOKIE['id'])){
+    $_SESSION['username']= $_COOKIE['username'];
+    $_SESSION['username']= $_COOKIE['username'];
+
+}
 require('./controller/controllerchris.php');
 
 if (isset($_GET['action'])){
