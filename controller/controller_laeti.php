@@ -10,7 +10,6 @@ require_once('./model/CommentManager.php');
 
 function listUpcomingEvents()
 {
-    $errorMsg = '';
     $eventManager = new EventManager(); // création de l'objet
     $events = $eventManager->getUpcomingEvents(); // appel d'une fonction de cet objet
 
@@ -19,7 +18,6 @@ function listUpcomingEvents()
 
 function listPastEvents()
 {
-    $errorMsg = '';
     $eventManager = new EventManager(); // création de l'objet
     $events = $eventManager->getPastEvents(); // appel d'une fonction de cet objet
 
@@ -28,7 +26,6 @@ function listPastEvents()
 
 function showEvent()
 {
-    $errorMsg = '';
     $eventManager = new EventManager();
     $commentManager = new CommentManager();
 
@@ -48,7 +45,6 @@ function showEvent()
 
 function handleEvent()
 {
-    $errorMsg = '';
     $eventManager = new EventManager();
 
     $eventReq = $eventManager->getEvent($_GET['id']);
@@ -66,13 +62,11 @@ function handleEvent()
 
 function showEventCreationPage($message = null)
 {
-    $errorMsg = '';
     require('./view/eventCreationView.php');
 }
 
 function createNewEvent($imageName)
 {
-    $errorMsg = '';
     $eventManager = new EventManager();
     $affectedLines = $eventManager->createEvent(
         $_POST['title'],
@@ -94,14 +88,12 @@ function createNewEvent($imageName)
 
 function showEventModificationPage($message = null)
 {
-    $errorMsg = '';
     // requête SQL pour récuper données et les afficher.
     require('./view/eventModificationView.php');
 }
 
 function updateExistingEvent($eventId, $imageName)
 {
-    $errorMsg = '';
     $eventManager = new EventManager();
     $affectedLines = $eventManager->updateEvent(
         $_POST['title'],
@@ -124,7 +116,6 @@ function updateExistingEvent($eventId, $imageName)
 
 function deleteExistingEvent()
 {
-    $errorMsg = '';
     $eventManager = new EventManager();
     $affectedLines = $eventManager->deleteEvent($_GET['id']);
 
@@ -140,7 +131,6 @@ function deleteExistingEvent()
 
 function addComment($eventId, $authorId, $comment)
 {
-    $errorMsg = '';
     $commentManager = new CommentManager();
 
     $affectedLines = $commentManager->postComment($eventId, $authorId, $comment);

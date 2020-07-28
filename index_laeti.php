@@ -32,7 +32,7 @@ try // en fonction de l'action qui est donnée, on appelle le bon contrôleur
                 if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
                     showEventModificationPage();
                 } else {
-                    throw new Exception("No permission to modify this event. You're not the author of it.", 0);
+                    throw new Exception("No permission to modify this event. You're not the author of it.", 2);
                 }
             }
             else {
@@ -132,14 +132,18 @@ try // en fonction de l'action qui est donnée, on appelle le bon contrôleur
                 }*/
             } else if ($_GET['action'] == 'deleteExistingEvent') {
                 $event = handleEvent();
-                //if(isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id'])
-                //{
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    deleteExistingEvent($_GET['id']);
-                } else {
-                    throw new Exception('No event ID sent.', 1);
+                if(isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id'])
+                {
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        deleteExistingEvent();
+                    } else {
+                        throw new Exception('No event ID sent.', 1);
+                    }
                 }
-                //}
+                else
+                {
+                    throw new Exception("No permission to delete this event. You're not the author of it.", 2);
+                }
             } else if ($_GET['action'] == 'addComment') {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     if (!empty($_POST['author']) && !empty($_POST['comment'])) {
@@ -157,11 +161,14 @@ try // en fonction de l'action qui est donnée, on appelle le bon contrôleur
         }
     }
 catch(Exception $e) // Si une erreur est détectée à un endroit du code, remonte jusqu'ici...
-{
-    $errorMsg = '<p>' . $e->getMessage() . '</p>'; // Récupère message d'erreur de Exception qui a causé erreur et l'affiche.
+{   $errorMsg = "Error(s): ";
+    $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Récupère message d'erreur de Exception qui a causé erreur et l'affiche.
     $errorCode = $e->getCode();
+    $previousURL = $_SERVER['HTTP_REFERER'];
 
-    switch($errorCode)
+    require('view/errorView.php');
+
+    /*switch($errorCode)
     {
         case 0:
             require('view/errorView.php');
@@ -170,7 +177,9 @@ catch(Exception $e) // Si une erreur est détectée à un endroit du code, remon
             require('view/homepageView.php');
             break;
         case 2:
-            require('view/eventView.php');
+            //require('view/eventView.php');
+            header('Location: ./index_laeti.php?action=showEvent&id=' . $_GET['id']);
+            require('view/errorView.php');
             break;
         case 3:
             require('view/eventCreationView.php');
@@ -178,5 +187,5 @@ catch(Exception $e) // Si une erreur est détectée à un endroit du code, remon
         case 4:
             require('view/archiveView.php');
             break;
-    }
+    }*/
 }

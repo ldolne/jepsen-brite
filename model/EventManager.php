@@ -7,13 +7,13 @@ require_once('Manager.php');
     - Creer fct UPDATE
 
  TODO Permissions
+    - Validateurs JS pour suppression event et user
     - The author of an event, and only him, can UPDATE his own event. PERM
     - The author of an event, and only him, can DELETE his own event. PERM
     - Any user can post a comment on the event. PERM
     - This is here a user can CREATE an event PERM
 
  TODO else
-    - PASSAGE SUR HEROKU
     - Découpage par page : https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/6964512-tp-un-blog-avec-des-commentaires
     - Affichage pertinent des erreurs avec template
 */
