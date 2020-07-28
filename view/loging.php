@@ -7,31 +7,31 @@
     <div class="row">
 
       <div class="col-md-12">
-        <form role="form">
+        <h2><?= $message ?></h2>
+      
+        <form role="form" method="post" action="index.php?action=connection">
           <div class="form-group">
 
             <label for="exampleInputEmail1">
-              Email address
+              User name
             </label>
-            <input type="email" class="form-control" id="exampleInputEmail1">
+            <input type="text" name="username" class="form-control" id="exampleInputEmail1">
           </div>
           <div class="form-group">
 
             <label for="exampleInputPassword1">
               Password
             </label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <input type="password" name="password" class="form-control" id="exampleInputPassword1">
           </div>
 
           <div class="checkbox">
 
             <label>
-              <input type="checkbox"> Check me out
+              <input type="checkbox" name="stayconnected"> Stay connected
             </label>
           </div>
-          <button type="submit" class="btn btn-primary">
-            Submit
-          </button>
+          <input type="submit" value ="connection">
         </form>
       </div>
     </div><!-- /.row -->

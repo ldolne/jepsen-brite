@@ -7,4 +7,4 @@
     <input type="passwordcheck" name="passwordcheck" placeholder="password"><br>
     <input type="submit" name="modify" value="Modify">
 </form>
-<a href="indexchris.php">retour à la page principale</a>
+<a href="index.php">retour à la page principale</a>

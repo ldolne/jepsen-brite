@@ -1,2 +1,2 @@
 
-<a href="indexchris.php">retour à la page principale</a>
+<a href="index.php">retour à la page principale</a>

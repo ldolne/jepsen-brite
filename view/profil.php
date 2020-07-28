@@ -9,7 +9,7 @@
                 <div class="card-title mb-4">
                     <div class="d-flex justify-content-start">
                         <div class="image-container">
-                            <img src="http://placehold.it/200x200" id="imgProfile" style="width: 200px; height: 200px" class="img-thumbnail" />
+                            <img src="https://www.gravatar.com/avatar/<?= $result['avatar'] ?>" id="imgProfile" style="width: 200px; height: 200px" class="img-thumbnail" />
                         </div>
                         <div class="ml-auto">
                             <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
@@ -23,17 +23,17 @@
                             <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
                                         <label style="font-weight:bold;">Full Name</label>
                                     </div>
                                     <div class="col-md-8 col-6">
                                         Jane/John Doe
                                     </div>
-                                </div>
-                                <hr />
+                                </div> 
+                                <hr />-->
 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
                                         <label style="font-weight:bold;">Birth Date</label>
                                     </div>
@@ -41,30 +41,31 @@
                                         March 22, 1994
                                     </div>
                                 </div>
-                                <hr />
+                                <hr /> -->
 
 
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Pseudo</label>
+                                        <label style="font-weight:bold;">User Name</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        Bethber
+                                    <?= $result['username'] ?>
                                     </div>
                                 </div>
                                 <hr />
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Email</label>
+                                        <label style="font-weight:bold;">E-mail</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        ucakyppy-9596@yopmail.com
+                                    <?= $result['email'] ?> 
                                     </div>
                                 </div>
                                 <hr />
 
                                 <div class="row">
-                                    <button class="btn btn-primary">modify your profil</button>
+                                    <a href="./index.php?action=modifyprofile" class="btn btn-primary">modify your profile</a>
+                                    <a href="./index.php?action=deleteprofile" class="btn btn-primary">delete your profile</a>
                                 </div>
 
                             </div>

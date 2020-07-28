@@ -3,6 +3,8 @@
     <a class="p-2 text-muted" href="index.php">Homepage</a>
     <a class="p-2 text-muted" href="index.php?action=allcategorycontroller">Event</a>
     <a class="p-2 text-muted" href="index.php?action=oneEvent">One Event</a>
-    <a class="p-2 text-muted" href="index.php?action=profil">Profile</a>
+    <?php if (!empty($_SESSION['username'])){?>
+    <a class="p-2 text-muted" href="index.php?action=profile">Profile</a>
+    <?php } ?>
   </nav>
 </div>
