@@ -14,7 +14,7 @@
                 <div class="card-title mb-4">
                     <div class="d-flex justify-content-start">
                         <div class="image-container">
-                            <img src="http://placehold.it/200x200" id="imgProfile" style="width: 200px; height: 200px" class="img-thumbnail" />
+                            <img src="./public/img/events_img/<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
                         </div>
                         <div class="ml-auto">
                             <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
@@ -27,13 +27,12 @@
                         <div class="tab-content ml-1" id="myTabContent">
                             <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
-
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
                                         <label style="font-weight:bold;">Name</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        Fiesta's on the beach
+                                        <?= htmlspecialchars($event['title']) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -43,7 +42,7 @@
                                         <label style="font-weight:bold;">Date</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        22/07/2020
+                                        <?= htmlspecialchars($event['event_date_formatted']) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -54,16 +53,7 @@
                                         <label style="font-weight:bold;">Hour</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        20:00
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Place</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        Liege
+                                        <?= htmlspecialchars($event['event_hour_formatted']) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -72,7 +62,7 @@
                                         <label style="font-weight:bold;">Category</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        Something
+                                        <?= htmlspecialchars($event['category']) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -81,36 +71,38 @@
                                         <label style="font-weight:bold;">Description</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                        Tempora praesentium numquam sunt consequuntur aliquam mollitia
-                                        recusandae fugiat libero alias nam? Voluptas quo aliquid dicta
-                                        cumque exercitationem temporibus fugiat molestiae autem!
+                                        <?= nl2br(htmlspecialchars($event['description'])) ?>
                                     </div>
                                 </div>
                                 <hr />
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Author's event</label>
+                                        <label style="font-weight:bold;">Event's Author</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        mehdoche1988
+                                        <?= htmlspecialchars($event['username']) ?>
                                     </div>
                                 </div>
                                 <hr />
 
                                 <div class="row">
-                                    <button class="btn btn-primary">Modify event</button>
+                                    <?php if(!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'])
+                                        {
+                                            ?>
+                                            <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
+                                                <button class="btn btn-primary">Modify event</button>
+                                            </a>
+                                            <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>">
+                                                <button class="btn btn-danger">Delete event</button>
+                                            </a>
+                                    <?php
+                                        } ?>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
-
         </div>
     </div>
 </div>
@@ -118,53 +110,51 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
+
+<?php
+while ($comment = $comments->fetch())
+{
+    ?>
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;"> Author's comentary</label>
+                        <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
                     </div>
-                    <div class="col-md-8 col-6">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eaque facere recusandae cumque. Consequuntur sed sint earum
-                        numquam illo explicabo quod illum tempora
-                        laborum aut ullam ipsam, magni nulla aspernatur quia.
-                    </div>
-                </div>
-
-            </div>
-            <div class="card-body">
-                <div class="row">
                     <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;"> Author's comentary</label>
+                        <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
                     </div>
                     <div class="col-md-8 col-6">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eaque facere recusandae cumque. Consequuntur sed sint earum
-                        numquam illo explicabo quod illum tempora
-                        laborum aut ullam ipsam, magni nulla aspernatur quia.
+                        <?= nl2br(htmlspecialchars($comment['comment'])) ?>
                     </div>
                 </div>
-
             </div>
-            <form role="form">
+<?php
+}
+?>
+<?php if (!empty($_SESSION['username']))
+{
+    ?>
+            <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3 col-md-2 col-5 ">
-                            <label style="font-weight:bold;"> Add comentary</label>
+                            <label for="comment" style="font-weight:bold;">Add comment</label>
                         </div>
-                        <textarea class="col-md-8 col-6">
-
-                                    </textarea>
+                        <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">
                         Submit
                     </button>
                 </div>
             </form>
+<?php } ?>
         </div>
     </div>
 </div>
 </div>
-
+<?php
+$eventReq->closeCursor();
+$comments->closeCursor();
+?>
 <?php $content = ob_get_clean(); ?>
 <?php require('template.php'); ?>

@@ -28,9 +28,9 @@
                             Hour
                         </th>
                         <th>
-                            Type
+                            Category
                         </th>
-                        <th>See more ...</th>
+                        <th>See more...</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,10 +46,10 @@
                                 <?php echo $data['event_date']; ?>
                             </td>
                             <td>
-                            <?php echo $data['event_date']; ?>
+                            <?php echo $data['event_hour']; ?>
                             </td>
                             <td> <?php echo $data['category']; ?></td>
-                            <td><a href="#">link page of this event</a></td>
+                            <td><a href="#">See this event</a></td>
                         </tr>
                     <?php }
                     $search->closeCursor(); ?>

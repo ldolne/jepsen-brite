@@ -1,11 +1,6 @@
 <?php $title = 'modify event'; ?>
 
 <?php ob_start(); ?>
-
-<body>
-
-    </div>
-
     <main role="main" class="container">
         <div class="row">
 

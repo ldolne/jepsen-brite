@@ -33,4 +33,4 @@
 
 <?php $content = ob_get_clean(); ?>
 
-<?php require('template_laeti.php'); ?>
+<?php require('template.php'); ?>

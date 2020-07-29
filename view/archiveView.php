@@ -1,29 +1,58 @@
 <?php $title = 'Past events'; ?>
 
 <?php ob_start(); ?>
-<h1>Our events:</h1>
-<p><em><a href="./index_laeti.php?action=listUpcomingEvents">See our upcoming events</a></em></p>
-<p>Past events:</p>
-<?php
-while ($data = $events->fetch())
-{
-    ?>
-    <div class="events">
-        <h3>
-            <?= htmlspecialchars($data['title']) ?>
-            <em><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></em>
-        </h3>
-        <p>
-            <em><a href="./index_laeti.php?action=showEvent&amp;id=<?= $data['id'] ?>">See event</a></em>
-        </p>
-    </div>
-    <?php
-}
-$events->closeCursor();
-?>
-<?php $content = ob_get_clean(); ?>
 
-<?php require('template_laeti.php'); ?>
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Event</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Hour
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>See more ...</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+
+                while ($data = $events->fetch()) {
+                    ?>
+                    <tr>
+                        <td>
+                            <?= $data['title'] ?>
+                        </td>
+                        <td>
+                            <?= $data['event_date_formatted'] ?>
+                        </td>
+                        <td>
+                            <?= $data['event_hour_formatted'] ?>
+                        </td>
+                        <td> <?= $data['category'] ?></td>
+                        <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
+                    </tr>
+                <?php }
+                $events->closeCursor(); ?>
+                </tbody>
+            </table>
+        </div>
+        <!-- <a  class="btn btn-info" href="index.php?action=search">Search more...</a> -->
+    </div><!-- /.row -->
+</main><!-- /.container -->
+
+<?php $content = ob_get_clean(); ?>
+<?php require('template.php'); ?>
 
 
 

@@ -24,8 +24,10 @@ class EventManager extends Manager
     public function getUpcomingEvents()
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT id, title, DATE_FORMAT(event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(event_hour, \'%H:%i:%s\') AS event_hour_formatted
-            FROM events 
+        $req = $db->query('SELECT e.id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, c.category
+            FROM events AS e 
+            INNER JOIN categories AS c 
+            ON e.category_id = c.id
             WHERE event_date > current_date OR (event_date = current_date AND event_hour > current_time) 
             ORDER BY event_date, event_hour LIMIT 0, 21');
 
@@ -35,8 +37,10 @@ class EventManager extends Manager
     public function getPastEvents()
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT id, title, DATE_FORMAT(event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(event_hour, \'%H:%i:%s\') AS event_hour_formatted
-            FROM events 
+        $req = $db->query('SELECT e.id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, c.category
+            FROM events AS e
+            INNER JOIN categories AS c 
+            ON e.category_id = c.id
             WHERE event_date < current_date OR (event_date = current_date AND event_hour < current_time)
             ORDER BY event_date DESC, event_hour DESC LIMIT 0, 21');
 
@@ -46,7 +50,7 @@ class EventManager extends Manager
     public function getEvent($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.title, DATE_FORMAT(event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(event_hour, \'%H:%i:%s\') AS event_hour_formatted, e.image, e.description, u.username, c.category 
+        $req = $db->prepare('SELECT e.id, e.title, e.author_id, DATE_FORMAT(event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(event_hour, \'%H:%i\') AS event_hour_formatted, e.image, e.description, u.username, c.category 
             FROM events AS e 
             INNER JOIN users AS u ON e.author_id = u.id 
             INNER JOIN categories AS c 
