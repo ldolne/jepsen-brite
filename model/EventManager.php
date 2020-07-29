@@ -5,6 +5,7 @@ require_once('Manager.php');
 /* TODO An event should contain at least :
     - Rich (MD et emojis) pour description et comments
     - Creer fct UPDATE
+    - addslashes($variable);
 
  TODO Permissions
     - Validateurs JS pour suppression event et user
