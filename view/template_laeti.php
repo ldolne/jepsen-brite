@@ -8,6 +8,10 @@
 
 <body>
 <?= $content ?>
-<?= $errorMsg ?>
+<?php
+if(isset($errorMsg))
+{
+    require('errorView.php');
+} ?>
 </body>
 </html>
