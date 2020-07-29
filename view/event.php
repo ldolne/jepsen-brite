@@ -1,11 +1,11 @@
-<?php $title = 'event'; ?>
+<?php $title = 'events'; ?>
 
 <?php ob_start(); ?>
 
 <main role="main" class="container">
     <div class="row">
         <div class="col-md-12">
-            <h2>Event</h2>
+            <h2>Events by category</h2>
             <div class="search">
                 <a href="./index.php?action=allcategorycontroller"> <button class="btn btn-primary">All</button></a>
                 <a href="./index.php?action=onecategorycontroller&amp;category_id=1"><button class="btn btn-primary">Concert</button></a>
@@ -49,7 +49,7 @@
                             <?php echo $data['event_hour']; ?>
                             </td>
                             <td> <?php echo $data['category']; ?></td>
-                            <td><a href="#">See this event</a></td>
+                            <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
                         </tr>
                     <?php }
                     $search->closeCursor(); ?>

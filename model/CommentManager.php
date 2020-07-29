@@ -22,7 +22,7 @@ class CommentManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->prepare('INSERT INTO comments(event_id, author_id, comment, comment_date) 
-            VALUES(?, ?, ?, NOW())');
+            VALUES(?, ?, ?, (NOW() + INTERVAL 2 HOUR))');
         $affectedLines = $req->execute(array($eventId, $authorId, $comment));
 
         return $affectedLines;

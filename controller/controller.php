@@ -1,11 +1,11 @@
 <?php
 // ALL CONTROLLERS TO WHICH POINTS THE ROUTER
 
-require('./model/model.php');
+//require('./model/model.php');
 
 // Chargement des classes
-//require_once('./model/UserManager.php');
-//require_once('./model/CategoryManager.php');
+require_once('./model/UserManager.php');
+require_once('./model/CategoryManager.php');
 require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
 
@@ -20,12 +20,14 @@ function getInscriptionPage() {
 }
 
 function actualInscription() {
+    $userManager = new UserManager();
+
     $username = htmlspecialchars($_POST['username']);
     $email = htmlspecialchars($_POST['email']);
     $passwordRaw = $_POST['password'];
     $passwordcheck = $_POST['passwordcheck'];
         
-    $request = isNameTaken();
+    $request = $userManager->isNameTaken();
     $request -> execute(array($username));
     $isNameTaken = $request -> fetch();
 
@@ -55,7 +57,7 @@ function actualInscription() {
     }
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL) == true){
-        $request = isEmailTaken();
+        $request = $userManager->isEmailTaken();
         $request -> execute(array($email));
         $isEmailTaken = $request -> fetch();
         
@@ -75,9 +77,8 @@ function actualInscription() {
 
     $image = md5(strtolower(trim($email)));
 
-
     if($emailValidation == TRUE && $passwordValidation == TRUE && $usernameValidation == TRUE){
-        $inscription = inscriptionPreparation();
+        $inscription = $userManager->inscriptionPreparation();
         $inscription -> execute(array($email, $username, $password, $image));
 
         $message='Inscription done. Welcome';
@@ -104,7 +105,9 @@ function getConnectionPage() {
 }
 
 function login() {
-    $request = dbUserVerif();
+    $userManager = new UserManager();
+
+    $request = $userManager->dbUserVerif();
     $username = htmlspecialchars($_POST['username']);
     //$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $request -> execute(array($username));
@@ -135,8 +138,8 @@ function deconnection(){
 }
 
 function getProfilePage(){
-    
-    $request = dbuserverif();
+    $userManager = new UserManager();
+    $request = $userManager->dbUserVerif();
     $request -> execute(array($_SESSION['username']));
     $result = $request -> fetch();
     require('./view/profil.php'); 
@@ -151,14 +154,15 @@ function modifyProfilePage(){
 }
 
 function profileModification() {
-    $request = dbUserVerif();
+    $userManager = new UserManager();
+    $request = $userManager->dbUserVerif();
     $request -> execute(array($_SESSION['username']));
     $result = $request -> fetch();
     
     if (isset($_POST['username']) && !empty($_POST['username'])){
         $username= htmlspecialchars($_POST['username']);
         
-        $request2 = isNameTaken();
+        $request2 = $userManager->isNameTaken();
         $request2 -> execute(array($username));
         $isNameTaken = $request2 -> fetch();
 
@@ -199,7 +203,7 @@ function profileModification() {
 
     if ($passwordValidation == TRUE && $usernameValidation == TRUE){
         $message = 'Modifications done';
-        $updatePrep = updatePreparation();
+        $updatePrep = $userManager->updatePreparation();
         $updatePrep -> execute(array($username, $password, $result['id']));
         
         $_SESSION["username"]= $username;
@@ -215,11 +219,12 @@ function profileModification() {
 }
 
 function deleteAccount(){
-    $request = dbUserVerif();
+    $userManager = new UserManager();
+    $request = $userManager->dbUserVerif();
     $request -> execute(array($_SESSION['username']));
     $result = $request -> fetch();
 
-    $deletePrep = deletePreparation();
+    $deletePrep = $userManager->deletePreparation();
     $deletePrep -> execute(array($result['id']));
     $message = 'Your account was deleted';
 
@@ -227,6 +232,8 @@ function deleteAccount(){
     session_destroy();
     setcookie('id', '');
     setcookie('username', '');
+
+    // DELETE COMMENTS ET EVENTS ASSOCIES A CET USER
     
     // peut être remettre une page intermédiaire
     require('./view/mainPage.php');
@@ -236,15 +243,17 @@ function deleteAccount(){
 
 function AllCategoryController()
 {
-    $search = AllCategoryModel();
+    $categoryManager = new CategoryManager();
+    $search = $categoryManager->AllCategoryModel();
     require('./view/event.php');
 }
 
 function OneCategoryController()
 {
-    $search = OneCategoryModel($_GET['category_id']);
+    $categoryManager = new CategoryManager();
+    $search = $categoryManager->OneCategoryModel($_GET['category_id']);
     if ($search === null) {
-        echo 'Aucun résultat';
+        throw new Exception('No result.');
     } else {
         require('./view/event.php');
     }
@@ -325,20 +334,20 @@ function createNewEvent($imageName)
     }
     else
     {
-        header('Location: ./index.php?action=showEventCreationPage');
+        header('Location: ./index.php');
     }
 }
 
-function showEventModificationPage($message = null)
+function showEventModificationPage($event, $message = null)
 {
-    // requête SQL pour récuper données et les afficher.
     require('./view/modifyEvent.php');
 }
 
-function updateExistingEvent($eventId, $imageName)
+function updateExistingEvent($imageName)
 {
     $eventManager = new EventManager();
     $affectedLines = $eventManager->updateEvent(
+        $_GET['id'],
         $_POST['title'],
         $_SESSION['id'],
         $_POST['event_date'],
@@ -349,11 +358,8 @@ function updateExistingEvent($eventId, $imageName)
 
     if ($affectedLines === false) {
         throw new Exception('Problem while modifying the event. Please try again.');
-        $result = '<p>Event has NOT been successfully modified.</p>';
-        //showEventCreationPage($result);
     } else {
-        $result = '<p>Event has been successfully modified.</p>';
-        header('Location: ./index.php?action=showEvent&id=' . $eventId);
+        header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
     }
 }
 
@@ -363,12 +369,9 @@ function deleteExistingEvent()
     $affectedLines = $eventManager->deleteEvent($_GET['id']);
 
     if ($affectedLines === false) {
-        throw new Exception('Problem while modifying the event. Please try again.');
-        echo '<p>Event has NOT been successfully deleted.</p>';
-        //showEventCreationPage($result);
+        throw new Exception('Problem while deleting the event. Please try again.');
     } else {
-        echo '<p>Event has been successfully deleted.</p>';
-        //showEventCreationPage($result);
+        header('Location: ./index.php');
     }
 }
 
