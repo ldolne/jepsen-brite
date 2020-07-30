@@ -296,7 +296,10 @@ function showEvent($message = NULL)
 
     $eventReq = $eventManager->getEvent($_GET['id']);
     $comments = $commentManager->getComments($_GET['id']);
+    $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
+
     $event = $eventReq->fetch();
+    $userAvatar = $userAvatarReq->fetch();
 
     if (!empty($event))
     {

@@ -7,13 +7,22 @@ class CommentManager extends Manager
     public function getComments($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT c.id, c.comment, DATE_FORMAT(c.comment_date, \'%d/%m/%Y %H:%i:%s\') AS comment_date_formatted, u.username 
+        $req = $db->prepare('SELECT c.id, c.comment, DATE_FORMAT(c.comment_date, \'%d/%m/%Y %H:%i:%s\') AS comment_date_formatted, u.username, u.avatar
             FROM comments AS c 
             INNER JOIN users AS u 
             ON c.author_id = u.id 
             WHERE event_id = ? 
             ORDER BY comment_date');
         $req->execute(array($eventId));
+
+        return $req;
+    }
+
+    public function getCurrentCommentAuthorAvatar($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db-> prepare('SELECT avatar FROM users WHERE id = ?');
+        $req->execute(array($userId));
 
         return $req;
     }
@@ -27,6 +36,16 @@ class CommentManager extends Manager
 
         return $affectedLines;
     }
+
+    /*public function updateOneComment($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM comments WHERE id = ?');
+        $affectedLines = $req->execute(array($eventId));
+
+        return $affectedLines;
+
+    }*/
 
     /*public function deleteOneComment($eventId)
     {

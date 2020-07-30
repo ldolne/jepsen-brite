@@ -113,6 +113,9 @@ while ($comment = $comments->fetch())
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-3 col-md-2 col-5">
+                        <div class="image-container">
+                            <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                        </div>
                         <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
                     </div>
                     <div class="col-sm-3 col-md-2 col-5">
@@ -133,6 +136,9 @@ while ($comment = $comments->fetch())
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3 col-md-2 col-5 ">
+                            <div class="image-container">
+                                <img src="https://www.gravatar.com/avatar/<?= $userAvatar['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                            </div>
                             <label for="comment" style="font-weight:bold;">Add comment</label>
                         </div>
                         <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>
