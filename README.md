@@ -2,7 +2,7 @@
 
 ## membres de la Team-5
 
-* Laëtitioa Dolne - [Github page](https://github.com/ldolne)
+* Laëtitia Dolne - [Github page](https://github.com/ldolne)
 * Mehdi Semlali - [Github page](https://github.com/mehdoche1988)
 * Christophe Pecceu - [Github page](https://github.com/ChrisPecc)
 
