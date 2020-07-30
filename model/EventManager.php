@@ -2,23 +2,6 @@
 
 require_once('Manager.php');
 
-/* TODO An event should contain at least :
-    - Rich (MD et emojis) pour description et comments
-    - Creer fct UPDATE
-    - addslashes($variable);
-
- TODO Permissions
-    - Validateurs JS pour suppression event et user
-    - The author of an event, and only him, can UPDATE his own event. PERM
-    - The author of an event, and only him, can DELETE his own event. PERM
-    - Any user can post a comment on the event. PERM
-    - This is here a user can CREATE an event PERM
-
- TODO else
-    - Découpage par page : https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/6964512-tp-un-blog-avec-des-commentaires
-    - Affichage pertinent des erreurs avec template
-*/
-
 class EventManager extends Manager
 {
     public function getUpcomingEvents()
@@ -50,7 +33,7 @@ class EventManager extends Manager
     public function getEvent($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.title, e.author_id, DATE_FORMAT(event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(event_hour, \'%H:%i\') AS event_hour_formatted, e.image, e.description, u.username, c.category 
+        $req = $db->prepare('SELECT e.id, e.title, e.author_id, e.event_date, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category 
             FROM events AS e 
             INNER JOIN users AS u ON e.author_id = u.id 
             INNER JOIN categories AS c 
