@@ -1,10 +1,11 @@
 <?php $title = 'One event'; ?>
 
 <?php ob_start(); ?>
-<?php
-require('./vendor/erusev/parsedown/Parsedown.php');
-$parsdown = new Parsedown();
-?>
+<?php 
+    require('./vendor/erusev/parsedown/Parsedown.php');
+    $parsdown = new Parsedown();
+    ?>
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -69,7 +70,7 @@ $parsdown = new Parsedown();
                                         <label style="font-weight:bold;">Description</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        <?= nl2br(htmlspecialchars($event['description'])) ?>
+                                        <?= $parsdown->text (nl2br(htmlspecialchars($event['description']))) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -84,16 +85,17 @@ $parsdown = new Parsedown();
                                 <hr />
 
                                 <div class="row">
-                                    <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
-                                    ?>
-                                        <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
-                                            <button class="btn btn-primary">Modify event</button>
-                                        </a>
-                                        <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>">
-                                            <button class="btn btn-danger">Delete event</button>
-                                        </a>
+                                    <?php if(!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'])
+                                        {
+                                            ?>
+                                            <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
+                                                <button class="btn btn-primary">Modify event</button>
+                                            </a>
+                                            <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>">
+                                                <button class="btn btn-danger">Delete event</button>
+                                            </a>
                                     <?php
-                                    } ?>
+                                        } ?>
                                 </div>
                             </div>
                         </div>
@@ -108,41 +110,43 @@ $parsdown = new Parsedown();
     <div class="col-12">
         <div class="card">
 
-            <?php
-            while ($comment = $comments->fetch()) {
-            ?>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-3 col-md-2 col-5">
-                            <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
-                        </div>
-                        <div class="col-sm-3 col-md-2 col-5">
-                            <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
-                        </div>
-                        <div class="col-md-8 col-6">
-                            <?= htmlspecialchars($comment['comment']) ?>
-                        </div>
+<?php
+while ($comment = $comments->fetch())
+{
+    ?>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3 col-md-2 col-5">
+                        <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
+                    </div>
+                    <div class="col-sm-3 col-md-2 col-5">
+                        <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <?= $parsdown->text (nl2br(htmlspecialchars($comment['comment']))) ?>
                     </div>
                 </div>
-            <?php
-            }
-            ?>
-            <?php if (!empty($_SESSION['username'])) {
-            ?>
-                <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3 col-md-2 col-5 ">
-                                <label for="comment" style="font-weight:bold;">Add comment</label>
-                            </div>
-                           <?php  echo $parsdown->text  (' <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>')?>
+            </div>
+<?php
+}
+?>
+<?php if (!empty($_SESSION['username']))
+{
+    ?>
+            <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-2 col-5 ">
+                            <label for="comment" style="font-weight:bold;">Add comment</label>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
+                        <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>
                     </div>
-                </form>
-            <?php } ?>
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </div>
+            </form>
+<?php } ?>
         </div>
     </div>
 </div>

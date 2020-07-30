@@ -1,11 +1,7 @@
 <?php $title = ' add event'; ?>
 
 <?php ob_start(); ?>
-   
-<?php 
-    require('./vendor/erusev/parsedown/Parsedown.php');
-    $parsdown = new Parsedown();
-    ?>
+
 <main role="main" class="container">
     <div class="row">
 
@@ -26,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>
-         <?php echo $parsdown->text  ('<textarea name="description" id="description" rows="5" cols="33" class="form-control"></textarea>')?>
+       <textarea name="description" id="description" rows="5" cols="33" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="category">Category:</label>

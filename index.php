@@ -93,7 +93,6 @@ try {
 
                     $_POST['title'] = htmlspecialchars($_POST['title']);
                     $_POST['description'] = htmlspecialchars($_POST['description']);
-                    $_POST['description'] = nl2br($_POST['description']);
 
                     $imageMaxSize = 2097152;
                     $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
@@ -148,7 +147,6 @@ try {
 
                         $_POST['title'] = htmlspecialchars($_POST['title']);
                         $_POST['description'] = htmlspecialchars($_POST['description']);
-                        $_POST['description'] = nl2br($_POST['description']);
 
                         $imageMaxSize = 2097152;
                         $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
