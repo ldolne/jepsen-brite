@@ -11,6 +11,13 @@
   </div>
   <div>
     <h1>Next event</h1>
+    
+    <?php 
+    require('./vendor/erusev/parsedown/Parsedown.php');
+    $parsdown = new Parsedown();
+    echo $parsdown->text('##Hello World')
+    ?>
+
   </div>
 
   <?php
@@ -32,7 +39,7 @@
         </div>
         <div class="clo-md-2">
           <?php if (!empty($_SESSION['username'])) { ?>
-            <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block"> Create an event:</button></a></em></p>
+            <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block"> Create an event</button></a></em></p>
           <?php } ?>
         </div>
       </div>
