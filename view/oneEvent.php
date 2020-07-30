@@ -91,7 +91,7 @@
                                             <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
                                                 <button class="btn btn-primary">Modify event</button>
                                             </a>
-                                            <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>">
+                                            <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
                                                 <button class="btn btn-danger">Delete event</button>
                                             </a>
                                     <?php

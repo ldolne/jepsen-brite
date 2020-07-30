@@ -144,19 +144,26 @@ function login() {
     //$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $request -> execute(array($username));
     $result = $request -> fetch();
-    $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
-    if ($isPasswordCorrect == false){
-        $message = "Cet utilisateur n'existe pas ou ce n'est pas la bonne combinaison";
-        require('./view/loging.php');
+    if (isset($result['password'])) {
+
+        $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
+        if ($isPasswordCorrect == false){
+            $message = "Cet utilisateur n'existe pas ou ce n'est pas la bonne combinaison";
+            require('./view/loging.php');
+        }
+        else {
+            $_SESSION["id"]= $result['id'];
+            $_SESSION["username"]= $result['username'];
+            if (isset($_POST['stayconnected'])){
+                setcookie('id', $result['id'], time() + 30*24*3600, null, null, false, true);
+                setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
+            }
+            $message= "Connection réussie";
+            require('./view/loging.php');
+        }
     }
     else {
-        $_SESSION["id"]= $result['id'];
-        $_SESSION["username"]= $result['username'];
-        if (isset($_POST['stayconnected'])){
-            setcookie('id', $result['id'], time() + 30*24*3600, null, null, false, true);
-            setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
-        }
-        $message= "Connection réussie";
+        $message = "Cet utilisateur n'existe pas ou ce n'est pas la bonne combinaison";
         require('./view/loging.php');
     }
 }

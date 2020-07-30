@@ -45,7 +45,7 @@
 
                                 <div class="row">
                                     <a href="./index.php?action=modifyprofile" class="btn btn-primary">modify your profile</a>
-                                    <a href="./index.php?action=deleteprofile" class="btn btn-danger">delete your profile</a>
+                                    <a href="./index.php?action=deleteprofile" onclick="if(!confirm('Are you sure you want to delete this account?')) return false;" class="btn btn-danger">delete your profile</a>
                                 </div>
 
                             </div>
