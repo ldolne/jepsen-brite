@@ -22,12 +22,13 @@
     <div class="container">
         <?php require('./view/header.php') ?>
         <?php require('./view/nav-bar.php') ?>
-        <?= $content ?>
         <?php
-        if(isset($errorMsg))
+        if (isset($message))
         {
-            require('errorView.php');
-        } ?>
+            echo $message;
+        }
+        ?>
+        <?= $content ?>
     </div>
     <?php require('./view/footer.php') ?>
 </body>
