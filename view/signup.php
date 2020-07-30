@@ -16,7 +16,7 @@
           <label for="exampleInputEmail1">
             Email address
           </label>
-          <input name="email" type="text" class="form-control" id="exampleInputEmail1">
+          <input name="email" type="text" class="form-control" id="exampleInputEmail1" value="<?php if(isset($_POST['email'])){ echo $_POST['email'];} ?>" >
 
         </div>
         <?= $emailError ?>
@@ -24,7 +24,7 @@
           <label type="pseudo" for="Pseudo">
             Pseudo
           </label>
-          <input name="username" type="pseudo" class="form-control" id="exampleInputPseudo1">
+          <input name="username" type="pseudo" class="form-control" id="exampleInputPseudo1" value="<?php if(isset($_POST['username'])){ echo $_POST['username'];} ?>">
 
         </div>
         <?= $usernameError ?>

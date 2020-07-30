@@ -1,21 +1,20 @@
 <?php
+require('./controller/controller.php');
 
 // ROUTER
 
 session_start();
 if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
 && isset($_COOKIE['id']) && !empty($_COOKIE['id'])){
-    $_SESSION['username']= $_COOKIE['username'];
-    $_SESSION['id']= $_COOKIE['id'];
+    cookieVerification();
+    
 }
 
-require('./controller/controller.php');
 
 try {
     if (isset($_GET['action'])) {
 
         $_GET['action'] = htmlspecialchars($_GET['action']); // On rend inoffensives les balises HTML que le visiteur a pu entrer
-
         // NO RESTRICTED PAGES
 
         if ($_GET['action'] == 'inscription') {

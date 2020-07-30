@@ -4,6 +4,12 @@ require_once('Manager.php');
 
 class UserManager extends Manager
 {
+    public function DoesCookieUserExist() {
+        $bdd = $this-> dbConnect();
+        $request = $bdd-> prepare("SELECT * FROM `users` WHERE `id`= ? && `username` = ?");
+        return $request;
+    }
+
     public function dbUserVerif() {
         $bdd = $this->dbConnect();
         $request = $bdd-> prepare("SELECT * FROM `users` WHERE `username` = ?");

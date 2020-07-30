@@ -23,7 +23,7 @@
                     <label type="pseudo" for="Pseudo">
                        Username
                     </label>
-                    <input name="username" type="pseudo" class="form-control" id="exampleInputPseudo1">
+                    <input name="username" type="pseudo" class="form-control" id="exampleInputPseudo1"value="<?php if(isset($_POST['username'])){ echo $_POST['username'];} ?>">
 
                 </div>
                 <?= $usernameError ?>

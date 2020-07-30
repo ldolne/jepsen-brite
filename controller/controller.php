@@ -9,7 +9,33 @@ require_once('./model/CategoryManager.php');
 require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
 
+// uncomment for Heroku
+// require 'vendor/autoload.php'; 
+
+
+
+
 // USER FUNCTIONS
+function cookieVerification() {
+    $userManager = new UserManager();
+    
+    $request = $userManager-> DoesCookieUserExist();
+    $request -> execute(array($_COOKIE['id'], $_COOKIE['username']));
+    $isTheCookieALie = $request -> fetch();
+    
+    if (isset($isTheCookieALie) && !empty($isTheCookieALie)){
+        $_SESSION['username']= $_COOKIE['username'];
+        $_SESSION['id']= $_COOKIE['id'];
+    }
+    
+    else {
+        $_SESSION['username']= '';
+        $_SESSION['id']= '';
+        setcookie('id', '');
+        setcookie('username', '');
+    }
+    
+}
 
 function getInscriptionPage() {
     $message='Complete all the fields';
@@ -83,13 +109,19 @@ function actualInscription() {
 
         $message='Inscription done. Welcome';
 
-        $to      = $email;
-        $subject = 'Inscription à Jepsen-brite event ';
-        $message = 'La Team-5 est heureuse de t\'acceuillir sur ce magnifique site';
-        $headers = 'From: webmaster@example.com' . "\r\n" .
-        'Reply-To: webmaster@example.com' . "\r\n" ;
+        // uncomment for Heroku
 
-        mail($to, $subject, $message, $headers);
+        // $from = new SendGrid\Email(null, "becodechristest@gmail.com");
+        // $subject = 'Inscription à Jepsen-brite event ';
+        // $to = new SendGrid\Email(null, $email);
+        // $content = new SendGrid\Content("text/plain", 'La Team-5 est heureuse de t\'acceuillir sur ce magnifique site');
+        // $mail = new SendGrid\Mail($from, $subject, $to, $content);
+
+        // $apiKey = getenv('SENDGRID_API_KEY');
+        // $sg = new \SendGrid($apiKey);
+
+        // $response = $sg->client->mail()->send()->post($mail); 
+
         require('./view/signup.php');
 
     }
@@ -134,7 +166,7 @@ function deconnection(){
     session_destroy();
     setcookie('id', '');
     setcookie('username', '');
-    require('./view/deconnectionview.php');
+    header('Location: ./index.php');
 }
 
 function getProfilePage(){
@@ -236,7 +268,7 @@ function deleteAccount(){
     // DELETE COMMENTS ET EVENTS ASSOCIES A CET USER
     
     // peut être remettre une page intermédiaire
-    require('./view/mainPage.php');
+    header('Location: ./index.php');
 }
 
 // CATEGORY FUNCTIONS
