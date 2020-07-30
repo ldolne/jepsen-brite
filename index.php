@@ -48,7 +48,7 @@ try {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 showEvent();
             } else {
-                throw new Exception('No event ID sent.', 1);
+                throw new Exception('No event ID sent.');
             }
         } // RESTRICTED PAGES
 
@@ -76,12 +76,12 @@ try {
                     $event = handleEvent();
 
                     if ($_SESSION['id'] == $event['author_id']) {
-                        showEventModificationPage();
+                        showEventModificationPage($event);
                     } else {
-                        throw new Exception("No permission to modify this event. You're not the author of it.", 2);
+                        throw new Exception("No permission to modify this event. You're not the author of it.");
                     }
                 } else {
-                    throw new Exception('No event ID sent.', 1);
+                    throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == "createNewEvent") {
                 if (isset($_POST['title']) && !empty($_POST['title'])
@@ -93,7 +93,6 @@ try {
 
                     $_POST['title'] = htmlspecialchars($_POST['title']);
                     $_POST['description'] = htmlspecialchars($_POST['description']);
-                    $_POST['description'] = nl2br($_POST['description']);
 
                     $imageMaxSize = 2097152;
                     $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
@@ -105,71 +104,98 @@ try {
                             $randomNumber = 20;
                             $randomString = bin2hex(random_bytes($randomNumber));
 
-                            $imageFileName = $randomString . "." . $uploadExtension;
+                            $imageFileName = $_SESSION['id'] . "_" . $randomString . "." . $uploadExtension;
 
                             $path = "public/img/events_img/" . $imageFileName; // needs to generate randow image name for the event
-                            //$path = "public/img/events_img/" . $_SESSION['id'] . "_" . $randomString . "." . $uploadExtension; // needs to generate randow image name for the event
                             $result = move_uploaded_file($_FILES['image']['tmp_name'], $path);
 
                             if ($result) {
                                 createNewEvent($imageFileName);
                             } else {
-                                throw new Exception('There has been a problem during the upload of your image. Please try again.', 3);
+                                throw new Exception('There has been a problem during the upload of your image. Please try again.');
                             }
                         } else {
-                            throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.', 3);
+                            throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.');
                         }
                     } else {
-                        throw new Exception('The image cannot be larger than 2MB.', 3);
+                        throw new Exception('The image cannot be larger than 2MB.');
                     }
+                } else if (isset($_POST['title']) && !empty($_POST['title'])
+                    && isset($_POST['event_date']) && !empty($_POST['event_date'])
+                    && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
+                    && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
+                    && isset($_POST['description']) && !empty($_POST['description'])
+                    && isset($_POST['category_id']) && !empty($_POST['category_id']))
+                {
+                    $defaultImage = "default.gif";
+                    createNewEvent($defaultImage);
                 } else {
-                    throw new Exception("You have to fill up all fields.", 3);
+                    throw new Exception("You have to fill up all fields.");
                 }
-            } // TODO REPRENDRE UPDATE
+            }
             else if ($_GET['action'] == "updateExistingEvent") {
-                if (isset($_POST['title'])
-                    && isset($_POST['author_id'])
-                    && isset($_FILES['image']) && !empty($_FILES['image']['name'])
-                    && isset($_POST['description']) && isset($_POST['category_id'])) /*
-             * if(isset($_POST['title']) && isset($_POST['author_id']) && isset($_POST['event_date'])
-                && isset($_POST['image']) && isset($_POST['description']) && isset($_POST['category_id']))
-             */ {
-                    // tests supplémentaires sur données envoyées
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    $event = handleEvent();
 
-                    $_POST['title'] = htmlspecialchars($_POST['title']);
-                    $_POST['description'] = htmlspecialchars($_POST['description']);
-                    $_POST['description'] = nl2br($_POST['description']);
+                    if (isset($_POST['title']) && !empty($_POST['title'])
+                        && isset($_POST['event_date']) && !empty($_POST['event_date'])
+                        && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
+                        && isset($_FILES['image']) && !empty($_FILES['image']['name'])
+                        && isset($_POST['description']) && !empty($_POST['description'])
+                        && isset($_POST['category_id']) && !empty($_POST['category_id'])) {
+                        // tests supplémentaires sur données envoyées
 
-                    $imageMaxSize = 2097152;
-                    $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
+                        $_POST['title'] = htmlspecialchars($_POST['title']);
+                        $_POST['description'] = htmlspecialchars($_POST['description']);
 
-                    if ($_FILES['image']['size'] <= $imageMaxSize) {
-                        $uploadExtension = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
+                        $imageMaxSize = 2097152;
+                        $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
 
-                        if (in_array($uploadExtension, $validExtensions)) {
-                            $randomNumber = 20;
-                            $randomString = bin2hex(random_bytes($randomNumber));
+                        if ($_FILES['image']['size'] <= $imageMaxSize) {
+                            $uploadExtension = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
 
-                            $imageFileName = $randomString . "." . $uploadExtension;
+                            if (in_array($uploadExtension, $validExtensions)) {
+                                if($event['image'] === "default.gif")
+                                {
+                                    $randomNumber = 20;
+                                    $randomString = bin2hex(random_bytes($randomNumber));
 
-                            $path = "public/img/events_img/" . $imageFileName; // needs to generate randow image name for the event
-                            //$path = "public/img/events_img/" . $_SESSION['id'] . "_" . $randomString . "." . $uploadExtension; // needs to generate randow image name for the event
-                            $result = move_uploaded_file($_FILES['image']['tmp_name'], $path);
-                            // ATTENTION : move_uploaded_file pas autorisé avec lampp/temp
+                                    $imageFileName = $_SESSION['id'] . "_" . $randomString . "." . $uploadExtension;
+                                }
+                                else {
+                                    $imageFromDb = explode('.', $event['image']);
+                                    $imageFileName = $imageFromDb[0] . "." . $uploadExtension;
+                                }
 
-                            if ($result) {
-                                updateExistingEvent($imageFileName);
+                                $path = "public/img/events_img/" . $imageFileName; // needs to generate randow image name for the event
+                                $result = move_uploaded_file($_FILES['image']['tmp_name'], $path);
+
+                                if ($result) {
+                                    updateExistingEvent($imageFileName);
+                                } else {
+                                    throw new Exception('There has been a problem during the upload of your image. Please try again.');
+                                }
                             } else {
-                                throw new Exception('There has been a problem during the upload of your image. Please try again.', 3);
+                                throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.');
                             }
                         } else {
-                            throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.', 3);
+                            throw new Exception('The image cannot be larger than 2MB.');
                         }
+                    } else if (isset($_POST['title']) && !empty($_POST['title'])
+                            && isset($_POST['event_date']) && !empty($_POST['event_date'])
+                            && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
+                            && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
+                            && isset($_POST['description']) && !empty($_POST['description'])
+                            && isset($_POST['category_id']) && !empty($_POST['category_id']))
+                    {
+                            updateExistingEvent($event['image']);
                     } else {
-                        throw new Exception('The image cannot be larger than 2MB.', 3);
+                        throw new Exception("You have to fill up all fields.");
                     }
-                } else {
-                    throw new Exception("You have to fill up all fields.", 3);
+                }
+                else
+                {
+                    throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingEvent') {
                 $event = handleEvent();
@@ -177,26 +203,26 @@ try {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         deleteExistingEvent();
                     } else {
-                        throw new Exception('No event ID sent.', 1);
+                        throw new Exception('No event ID sent.');
                     }
                 } else {
-                    throw new Exception("No permission to delete this event. You're not the author of it.", 2);
+                    throw new Exception("No permission to delete this event. You're not the author of it.");
                 }
             } else if ($_GET['action'] == 'addComment') {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     if (!empty($_POST['comment'])) {
                         addComment($_GET['id'], $_SESSION['id'], $_POST['comment']);
                     } else {
-                        throw new Exception('No author or comment specified. Please fill up all fields.', 2);
+                        throw new Exception('No author or comment specified. Please fill up all fields.');
                     }
                 } else {
-                    throw new Exception('No event ID sent.', 1);
+                    throw new Exception('No event ID sent.');
                 }
             }
         }
         else
         {
-            throw new Exception('You have to sign in to access this functionality.', 1);
+            throw new Exception('You have to sign in to access this functionality.');
         }
     } else {
         getIndexPage();
@@ -206,7 +232,6 @@ try {
 catch(Exception $e) // Si une erreur est détectée à un endroit du code, remonte jusqu'ici...
 {   $errorMsg = "Error(s): ";
     $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Récupère message d'erreur de Exception qui a causé erreur et l'affiche.
-    $errorCode = $e->getCode();
     $previousURL = $_SERVER['HTTP_REFERER'];
 
     require('view/errorView.php');

@@ -23,26 +23,6 @@
                             <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
 
-                                <!-- <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Full Name</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        Jane/John Doe
-                                    </div>
-                                </div> 
-                                <hr />-->
-
-                                <!-- <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Birth Date</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        March 22, 1994
-                                    </div>
-                                </div>
-                                <hr /> -->
-
 
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
@@ -65,7 +45,7 @@
 
                                 <div class="row">
                                     <a href="./index.php?action=modifyprofile" class="btn btn-primary">modify your profile</a>
-                                    <a href="./index.php?action=deleteprofile" class="btn btn-primary">delete your profile</a>
+                                    <a href="./index.php?action=deleteprofile" class="btn btn-danger">delete your profile</a>
                                 </div>
 
                             </div>

@@ -6,7 +6,7 @@ class CategoryManager extends Manager
 {
     public function AllCategoryModel()
     {
-        $bdd = dbConnect();
+        $bdd = $this->dbConnect();
         $req = $bdd->query("SELECT * FROM `events` 
             INNER JOIN `users` ON events.author_id = users.id 
             INNER JOIN `categories` ON events.category_id = categories.id
@@ -17,7 +17,7 @@ class CategoryManager extends Manager
 
     public function OneCategoryModel($categoryId)
     {
-        $bdd = dbConnect();
+        $bdd = $this->dbConnect();
         $req = $bdd->prepare("SELECT * FROM `events` 
             INNER JOIN `users` ON events.author_id = users.id 
             INNER JOIN `categories` ON events.category_id = categories.id 

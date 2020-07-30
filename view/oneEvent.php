@@ -1,16 +1,15 @@
 <?php $title = 'One event'; ?>
 
 <?php ob_start(); ?>
+<?php 
+    require('./vendor/erusev/parsedown/Parsedown.php');
+    $parsdown = new Parsedown();
+    ?>
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <!-- <div>
-                    <button class="btn btn-primary">Participate</button>
-                    <button class="btn btn-primary">Maybe</button>
-                    <button class="btn btn-primary">Don't partipate</button>
-                </div> -->
                 <div class="card-title mb-4">
                     <div class="d-flex justify-content-start">
                         <div class="image-container">
@@ -71,7 +70,7 @@
                                         <label style="font-weight:bold;">Description</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        <?= nl2br(htmlspecialchars($event['description'])) ?>
+                                        <?= $parsdown->text (nl2br(htmlspecialchars($event['description']))) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -124,7 +123,7 @@ while ($comment = $comments->fetch())
                         <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
                     </div>
                     <div class="col-md-8 col-6">
-                        <?= nl2br(htmlspecialchars($comment['comment'])) ?>
+                        <?= $parsdown->text (nl2br(htmlspecialchars($comment['comment']))) ?>
                     </div>
                 </div>
             </div>
