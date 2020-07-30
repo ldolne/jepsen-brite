@@ -17,7 +17,7 @@ Le but de la première partie est de créer un site en php et sql et puis de le 
 
 ## Délai
 
-Le projet a été entamé le Lundi 20 juillet et la date butoir est le Vendredi 31 juillet juillet. 
+Le projet a été entamé le Lundi 20 juillet et la date butoir est le Vendredi 31 juillet. 
 
 ## Lien vers le repository
 https://github.com/ldolne/jepsen-brite
