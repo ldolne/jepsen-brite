@@ -84,6 +84,19 @@ class EventManager extends Manager
     {
         $db =$this->dbConnect();
         $req = $db->prepare('DELETE FROM events WHERE id = ?');
-        $req->execute(array($eventId));
+        $affectedLines = $req->execute(array($eventId));
+
+        return $affectedLines;
+    }
+
+    public function updateEventAuthorWhenDeletedAccount($userId)
+    {
+        $db =$this->dbConnect();
+        $req = $db->prepare('UPDATE events 
+            SET author_id = 51
+            WHERE author_id = ?');
+        $req->execute(array($userId));
+
+        return $affectedLines;
     }
 }

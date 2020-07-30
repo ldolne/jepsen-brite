@@ -43,10 +43,10 @@
                                 <?php echo $data['title']; ?>
                             </td>
                             <td>
-                                <?php echo $data['event_date']; ?>
+                                <?php echo $data['event_date_formatted']; ?>
                             </td>
                             <td>
-                            <?php echo $data['event_hour']; ?>
+                            <?php echo $data['event_hour_formatted']; ?>
                             </td>
                             <td> <?php echo $data['category']; ?></td>
                             <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>

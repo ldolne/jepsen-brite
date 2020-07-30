@@ -93,7 +93,6 @@ try {
 
                     $_POST['title'] = htmlspecialchars($_POST['title']);
                     $_POST['description'] = htmlspecialchars($_POST['description']);
-                    $_POST['description'] = nl2br($_POST['description']);
 
                     $imageMaxSize = 2097152;
                     $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
@@ -116,10 +115,12 @@ try {
                                 throw new Exception('There has been a problem during the upload of your image. Please try again.');
                             }
                         } else {
-                            throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.');
+                            $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
+                            showEventModificationPage($event, showInfoMessage($message, false));
                         }
                     } else {
-                        throw new Exception('The image cannot be larger than 2MB.');
+                        $message = 'The image cannot be larger than 2MB.';
+                        showEventModificationPage($event, showInfoMessage($message, false));
                     }
                 } else if (isset($_POST['title']) && !empty($_POST['title'])
                     && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -131,7 +132,8 @@ try {
                     $defaultImage = "default.gif";
                     createNewEvent($defaultImage);
                 } else {
-                    throw new Exception("You have to fill up all fields.");
+                    $message = 'You have to fill up all fields.';
+                    showEventCreationPage(showInfoMessage($message, false));
                 }
             }
             else if ($_GET['action'] == "updateExistingEvent") {
@@ -148,7 +150,6 @@ try {
 
                         $_POST['title'] = htmlspecialchars($_POST['title']);
                         $_POST['description'] = htmlspecialchars($_POST['description']);
-                        $_POST['description'] = nl2br($_POST['description']);
 
                         $imageMaxSize = 2097152;
                         $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
@@ -178,10 +179,12 @@ try {
                                     throw new Exception('There has been a problem during the upload of your image. Please try again.');
                                 }
                             } else {
-                                throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.');
+                                $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
+                                showEventModificationPage($event, showInfoMessage($message, false));
                             }
                         } else {
-                            throw new Exception('The image cannot be larger than 2MB.');
+                            $message = 'The image cannot be larger than 2MB.';
+                            showEventModificationPage($event, showInfoMessage($message, false));
                         }
                     } else if (isset($_POST['title']) && !empty($_POST['title'])
                             && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -192,7 +195,8 @@ try {
                     {
                             updateExistingEvent($event['image']);
                     } else {
-                        throw new Exception("You have to fill up all fields.");
+                        $message = 'You have to fill up all fields.';
+                        showEventModificationPage($event, showInfoMessage($message, false));
                     }
                 }
                 else
@@ -215,7 +219,8 @@ try {
                     if (!empty($_POST['comment'])) {
                         addComment($_GET['id'], $_SESSION['id'], $_POST['comment']);
                     } else {
-                        throw new Exception('No author or comment specified. Please fill up all fields.');
+                        $message = 'No comment specified. Please fill up all fields.';
+                        showEvent(showInfoMessage($message, false));
                     }
                 } else {
                     throw new Exception('No event ID sent.');
@@ -224,7 +229,7 @@ try {
         }
         else
         {
-            throw new Exception('You have to sign in to access this functionality.');
+            throw new Exception('The URL given is wrong or you have to sign in to access this functionality.');
         }
     } else {
         getIndexPage();
@@ -234,7 +239,10 @@ try {
 catch(Exception $e) // Si une erreur est détectée à un endroit du code, remonte jusqu'ici...
 {   $errorMsg = "Error(s): ";
     $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Récupère message d'erreur de Exception qui a causé erreur et l'affiche.
-    $previousURL = $_SERVER['HTTP_REFERER'];
+    if(isset($_SERVER['HTTP_REFERER']))
+    {
+        $previousURL = $_SERVER['HTTP_REFERER'];
+    }
 
     require('view/errorView.php');
 }

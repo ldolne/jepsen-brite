@@ -27,4 +27,36 @@ class CommentManager extends Manager
 
         return $affectedLines;
     }
+
+    /*public function deleteOneComment($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM comments WHERE id = ?');
+        $affectedLines = $req->execute(array($eventId));
+
+        return $affectedLines;
+
+    }*/
+
+    public function deleteAllComments($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE 
+            FROM comments 
+            WHERE comments.event_id = ?');
+        $affectedLines = $req->execute(array($eventId));
+
+        return $affectedLines;
+    }
+
+    public function updateCommentAuthorWhenDeletedAccount($userId)
+    {
+        $db =$this->dbConnect();
+        $req = $db->prepare('UPDATE comments 
+            SET author_id = 51
+            WHERE author_id = ?');
+        $req->execute(array($userId));
+
+        return $affectedLines;
+    }
 }
