@@ -119,7 +119,7 @@ $parsdown = new Parsedown();
         </div>
     </div>
 </div>
-</div>
+
 
 <div class="row">
     <div class="col-12">
@@ -169,7 +169,6 @@ while ($comment = $comments->fetch())
             <?php } ?>
         </div>
     </div>
-</div>
 </div>
 <?php
 $eventReq->closeCursor();
