@@ -15,7 +15,7 @@
                     <h2>Modify event</h2>
                     <div class="form-group">
                         <label for="title">Name:</label>
-                        <input id="title" type="text" name="title" id="title" class="form-control" value="<?php
+                        <input id="title" type="text" title="Max 80 characters" name="title" id="title" class="form-control" maxlength="80" value="<?php
                         if(isset($_POST['title'])){
                             echo htmlspecialchars($_POST['title']);
                         } else {

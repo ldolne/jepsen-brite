@@ -27,9 +27,7 @@ $parsdown = new Parsedown();
                 </div>
 
                 <div class="row">
-
                     <div class="col-12">
-
                         <div class="tab-content ml-1" id="myTabContent">
                             <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
@@ -93,24 +91,20 @@ $parsdown = new Parsedown();
 
                                 <div class="row">
                                     <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
-                                    ?> <div class="col-sm-3 col-md-2 col-5">
+                                    ?>
+                                        <div class="col-sm-3 col-md-2 col-5">
                                             <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
                                                 <button class="btn btn-primary">Modify event</button>
-                                            </a> <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
-
-                                            </a></div>
+                                            </a>
+                                        </div>
                                         <div class="col-md-8 col-6">
                                             <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
                                                 <button class="btn btn-danger">Delete event</button>
                                             </a>
-
                                         </div>
-
-
-
-                                </div>
-                            <?php
+                                    <?php
                                     } ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -119,60 +113,88 @@ $parsdown = new Parsedown();
         </div>
     </div>
 </div>
+
+
 
 
 <div class="row">
     <div class="col-12">
         <div class="card">
-<?php
-while ($comment = $comments->fetch())
-{
-    ?>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-3 col-md-2 col-5">
-                        <div class="image-container">
-                            <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+            <?php
+            while ($comment = $comments->fetch()) {
+            ?>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-2 col-5">
+                            <div class="image-container">
+                                <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                            </div>
+                            <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
                         </div>
-                        <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
+                        <div class="col-sm-3 col-md-2 col-5">
+                            <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
+                        </div>
+                        <div class="col-md-8 col-6">
+                            <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
+                        </div>
                     </div>
-                    <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
-                    </div>
-                    <div class="col-md-8 col-6">
-                        <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
+                </div>
+            <?php
+            }
+            ?>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <?php
+                        while ($comment = $comments->fetch()) {
+                        ?>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <div class="image-container">
+                                            <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                                        </div>
+                                        <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
+                                    </div>
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                        <?php if (!empty($_SESSION['username'])) {
+                        ?>
+                            <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5 ">
+                                            <div class="image-container">
+                                                <img src="https://www.gravatar.com/avatar/<?= $userAvatar['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                                            </div>
+                                            <label for="comment" style="font-weight:bold;">Add comment</label>
+                                        </div>
+                                        <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
-<?php
-}
-?>
 
-<?php if (!empty($_SESSION['username'])) {
-?>
-                <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3 col-md-2 col-5 ">
-                                <div class="image-container">
-                                    <img src="https://www.gravatar.com/avatar/<?= $userAvatar['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
-                                </div>
-                                <label for="comment" style="font-weight:bold;">Add comment</label>
-                            </div>
-                            <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            <?php } ?>
-        </div>
-    </div>
-</div>
-<?php
-$eventReq->closeCursor();
-$comments->closeCursor();
-?>
-<?php $content = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+            <?php
+            $eventReq->closeCursor();
+            $comments->closeCursor();
+            ?>
+            <?php $content = ob_get_clean(); ?>
+            <?php require('template.php'); ?>

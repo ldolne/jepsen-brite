@@ -9,7 +9,7 @@
                 <h2>Add event</h2>
                 <div class="form-group">
                     <label for="title">Name:</label>
-                    <input id="title" type="text" name="title" id="title" class="form-control" value="<?php if(isset($_POST['title'])){ echo $_POST['title'];} ?>">
+                    <input id="title" title="Max 80 characters" type="text" maxlength="80" name="title" id="title" class="form-control" value="<?php if(isset($_POST['title'])){ echo $_POST['title'];} ?>">
                 </div>
                 <div class="form-group">
                     <label for="date">Date:</label>
