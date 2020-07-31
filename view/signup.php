@@ -6,9 +6,6 @@
   <div class="row">
 
     <div class="col-md-12">
-      <h2>
-        <?= $message ?>
-      </h2>
 
       <form action="./index.php?action=inscription" method="post">
         <div class="form-group">
