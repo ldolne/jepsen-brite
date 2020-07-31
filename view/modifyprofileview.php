@@ -1,6 +1,5 @@
 <?php $title = 'Modify Profile'; ?>
 <?php ob_start(); ?>
-<?= $message ?>
 <!-- <form action="./indexchris.php?action=modifyprofile" method="post">
     <input type="text" name="username" placeholder="username">
     <?= $usernameError ?><br>

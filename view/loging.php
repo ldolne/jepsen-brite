@@ -1,4 +1,4 @@
-<?php $title = 'loging'; ?>
+<?php $title = 'login'; ?>
 
 <?php ob_start(); ?>
 
@@ -7,7 +7,6 @@
     <div class="row">
 
       <div class="col-md-12">
-        <h2><?= $message ?></h2>
       
         <form role="form" method="post" action="index.php?action=connection">
           <div class="form-group">

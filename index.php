@@ -23,16 +23,21 @@ try {
                 && !empty($_POST['passwordcheck'])
                 && !empty($_POST['email'])) {
                 actualInscription();
-            } else {
+            } 
+            else {
                 getInscriptionPage();
             }
-        } elseif ($_GET['action'] == 'connection') {
+        } 
+        
+        elseif ($_GET['action'] == 'connection') {
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
                 login();
-            } else {
+            } 
+            else {
                 getConnectionPage();
             }
-        } elseif ($_GET['action'] == 'deconnection') {
+        } 
+        elseif ($_GET['action'] == 'deconnection') {
             deconnection();
         } // CATEGORY ACTIONS
 
