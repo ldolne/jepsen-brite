@@ -23,11 +23,6 @@
         <?php require('./view/header.php') ?>
         <?php require('./view/nav-bar.php') ?>
         <?= $content ?>
-        <?php
-        if(isset($errorMsg))
-        {
-            require('errorView.php');
-        } ?>
     </div>
     <?php require('./view/footer.php') ?>
 </body>

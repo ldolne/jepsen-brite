@@ -12,12 +12,7 @@
   <div>
     <h1>Next event</h1>
     
-    <?php 
-    require('./vendor/erusev/parsedown/Parsedown.php');
-    $parsdown = new Parsedown();
-    echo $parsdown->text('##Hello World')
-    ?>
-
+ 
   </div>
 
   <?php
