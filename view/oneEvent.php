@@ -1,4 +1,4 @@
-<?php $title = 'One event'; ?>
+<?php $title = htmlspecialchars($event['title']) ?>
 
 <?php ob_start(); ?>
 <?php
@@ -124,32 +124,39 @@ $parsdown = new Parsedown();
 <div class="row">
     <div class="col-12">
         <div class="card">
-
-            <?php
-            while ($comment = $comments->fetch()) {
-            ?>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-3 col-md-2 col-5">
-                            <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
+<?php
+while ($comment = $comments->fetch())
+{
+    ?>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3 col-md-2 col-5">
+                        <div class="image-container">
+                            <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
                         </div>
-                        <div class="col-sm-3 col-md-2 col-5">
-                            <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
-                        </div>
-                        <div class="col-md-8 col-6">
-                            <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
-                        </div>
+                        <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
+                    </div>
+                    <div class="col-sm-3 col-md-2 col-5">
+                        <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
                     </div>
                 </div>
-            <?php
-            }
-            ?>
-            <?php if (!empty($_SESSION['username'])) {
-            ?>
+            </div>
+<?php
+}
+?>
+
+<?php if (!empty($_SESSION['username'])) {
+?>
                 <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3 col-md-2 col-5 ">
+                                <div class="image-container">
+                                    <img src="https://www.gravatar.com/avatar/<?= $userAvatar['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                                </div>
                                 <label for="comment" style="font-weight:bold;">Add comment</label>
                             </div>
                             <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>

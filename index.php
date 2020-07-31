@@ -10,7 +10,6 @@ if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
     
 }
 
-
 try {
     if (isset($_GET['action'])) {
 
@@ -119,10 +118,12 @@ try {
                                 throw new Exception('There has been a problem during the upload of your image. Please try again.');
                             }
                         } else {
-                            throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.');
+                            $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
+                            showEventModificationPage($event, showInfoMessage($message, false));
                         }
                     } else {
-                        throw new Exception('The image cannot be larger than 2MB.');
+                        $message = 'The image cannot be larger than 2MB.';
+                        showEventModificationPage($event, showInfoMessage($message, false));
                     }
                 } else if (isset($_POST['title']) && !empty($_POST['title'])
                     && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -134,7 +135,8 @@ try {
                     $defaultImage = "default.gif";
                     createNewEvent($defaultImage);
                 } else {
-                    throw new Exception("You have to fill up all fields.");
+                    $message = 'You have to fill up all fields.';
+                    showEventCreationPage(showInfoMessage($message, false));
                 }
             }
             else if ($_GET['action'] == "updateExistingEvent") {
@@ -180,10 +182,12 @@ try {
                                     throw new Exception('There has been a problem during the upload of your image. Please try again.');
                                 }
                             } else {
-                                throw new Exception('No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.');
+                                $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
+                                showEventModificationPage($event, showInfoMessage($message, false));
                             }
                         } else {
-                            throw new Exception('The image cannot be larger than 2MB.');
+                            $message = 'The image cannot be larger than 2MB.';
+                            showEventModificationPage($event, showInfoMessage($message, false));
                         }
                     } else if (isset($_POST['title']) && !empty($_POST['title'])
                             && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -194,7 +198,8 @@ try {
                     {
                             updateExistingEvent($event['image']);
                     } else {
-                        throw new Exception("You have to fill up all fields.");
+                        $message = 'You have to fill up all fields.';
+                        showEventModificationPage($event, showInfoMessage($message, false));
                     }
                 }
                 else
@@ -217,16 +222,28 @@ try {
                     if (!empty($_POST['comment'])) {
                         addComment($_GET['id'], $_SESSION['id'], $_POST['comment']);
                     } else {
-                        throw new Exception('No author or comment specified. Please fill up all fields.');
+                        $message = 'No comment specified. Please fill up all fields.';
+                        showEvent(showInfoMessage($message, false));
                     }
                 } else {
                     throw new Exception('No event ID sent.');
                 }
-            }
+            } /*else if ($_GET['action'] == 'deleteComment') {
+                $comment = handleEvent();
+                if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        deleteExistingEvent();
+                    } else {
+                        throw new Exception('No event ID sent.');
+                    }
+                } else {
+                    throw new Exception("No permission to delete this event. You're not the author of it.");
+                }
+            }*/
         }
         else
         {
-            throw new Exception('You have to sign in to access this functionality.');
+            throw new Exception('The URL given is wrong or you have to sign in to access this functionality.');
         }
     } else {
         getIndexPage();

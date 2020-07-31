@@ -7,7 +7,7 @@ class EventManager extends Manager
     public function getUpcomingEvents()
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT e.id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, c.category
+        $req = $db->query('SELECT e.id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, c.category
             FROM events AS e 
             INNER JOIN categories AS c 
             ON e.category_id = c.id
@@ -84,6 +84,19 @@ class EventManager extends Manager
     {
         $db =$this->dbConnect();
         $req = $db->prepare('DELETE FROM events WHERE id = ?');
-        $req->execute(array($eventId));
+        $affectedLines = $req->execute(array($eventId));
+
+        return $affectedLines;
+    }
+
+    public function updateEventAuthorWhenDeletedAccount($userId)
+    {
+        $db =$this->dbConnect();
+        $req = $db->prepare('UPDATE events 
+            SET author_id = 51
+            WHERE author_id = ?');
+        $req->execute(array($userId));
+
+        return $affectedLines;
     }
 }

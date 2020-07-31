@@ -11,8 +11,6 @@
   </div>
   <div>
     <h1>Next event</h1>
-    
- 
   </div>
 
   <?php
@@ -23,8 +21,10 @@
       <div class="row mb-1">
         <div class="col-md-10">
           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-
             <div class="col p-4 d-flex flex-column position-static">
+                <div class="image-container">
+                    <img src="./public/img/events_img/<?= $data['image'] ?>" id="imgProfile" alt="Event image" class="img-thumbnail" width="150" />
+                </div>
               <strong class="d-inline-block mb-2 text-primary"><?= $data['category'] ?></strong>
               <div class="mb-2 text-muted"><?= htmlspecialchars($data['title']) ?></div>
               <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
@@ -38,20 +38,25 @@
           <?php } ?>
         </div>
       </div>
-      <div class="row mb-4">
-      <?php
-    } else {
-      ?>
-        <div class="col-md-3">
-          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-primary"><?= $data['category'] ?></strong>
-              <div class="mb-2 text-muted"><?= htmlspecialchars($data['title']) ?></div>
-              <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
-              <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go page of this event</a>
+  <div class="row mb-4">
+<?php
+  }
+  else
+  {
+?>
+    <div class="col-md-3">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            <div class="image-container">
+                <img src="./public/img/events_img/<?= $data['image'] ?>" id="imgProfile" alt="Event image" class="img-thumbnail" width="100" />
             </div>
-          </div>
+          <strong class="d-inline-block mb-2 text-primary"><?= $data['category'] ?></strong>
+          <div class="mb-2 text-muted"><?= htmlspecialchars($data['title']) ?></div>
+          <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
+          <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go page of this event</a>
         </div>
+      </div>
+    </div>
     <?php
     }
     $counter++;
@@ -59,6 +64,6 @@
 
   $events->closeCursor();
     ?>
-      </div>
+</div>
       <?php $content = ob_get_clean(); ?>
       <?php require('template.php'); ?>

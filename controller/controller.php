@@ -1,8 +1,6 @@
 <?php
 // ALL CONTROLLERS TO WHICH POINTS THE ROUTER
 
-//require('./model/model.php');
-
 // Chargement des classes
 require_once('./model/UserManager.php');
 require_once('./model/CategoryManager.php');
@@ -14,9 +12,6 @@ require_once('./require/functions.php');
 
 // uncomment for Heroku
 // require 'vendor/autoload.php'; 
-
-
-
 
 // USER FUNCTIONS
 function cookieVerification() {
@@ -267,10 +262,25 @@ function profileModification() {
 
 function deleteAccount(){
     $userManager = new UserManager();
+    $eventManager = new EventManager();
+    $commentManager = new CommentManager();
+
     $request = $userManager->dbUserVerif();
     $request -> execute(array($_SESSION['username']));
     $result = $request -> fetch();
 
+    // Update user's events and comments
+    $eventsAffectedLines = $eventManager->updateEventAuthorWhenDeletedAccount($result['id']);
+    $commentsAffectedLines = $commentManager->updateCommentAuthorWhenDeletedAccount($result['id']);
+
+    if ($eventsAffectedLines === false) {
+        throw new Exception("Problem while deleting the user's events. Please try again.");
+    } else if ($commentsAffectedLines === false)
+    {
+        throw new Exception("Problem while deleting the user's comments. Please try again.");
+    }
+
+    // Delete user
     $deletePrep = $userManager->deletePreparation();
     $deletePrep -> execute(array($result['id']));
     $message = 'Your account was deleted';
@@ -281,9 +291,7 @@ function deleteAccount(){
     setcookie('id', '');
     setcookie('username', '');
 
-    // DELETE COMMENTS ET EVENTS ASSOCIES A CET USER
-    
-    // peut être remettre une page intermédiaire
+    // Renvoi à l'homepage
     header('Location: ./index.php');
 }
 
@@ -324,14 +332,17 @@ function listPastEvents()
     require('./view/archiveView.php');
 }
 
-function showEvent()
+function showEvent($message = NULL)
 {
     $eventManager = new EventManager();
     $commentManager = new CommentManager();
 
     $eventReq = $eventManager->getEvent($_GET['id']);
     $comments = $commentManager->getComments($_GET['id']);
+    $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
+
     $event = $eventReq->fetch();
+    $userAvatar = $userAvatarReq->fetch();
 
     if (!empty($event))
     {
@@ -414,10 +425,15 @@ function updateExistingEvent($imageName)
 function deleteExistingEvent()
 {
     $eventManager = new EventManager();
-    $affectedLines = $eventManager->deleteEvent($_GET['id']);
+    $commentManager = new CommentManager();
+    $EventsAffectedLines = $eventManager->deleteEvent($_GET['id']);
+    $CommentsAffectedLines = $commentManager->deleteAllComments($_GET['id']);
 
-    if ($affectedLines === false) {
+    if ($EventsAffectedLines === false) {
         throw new Exception('Problem while deleting the event. Please try again.');
+    } else if ($CommentsAffectedLines === false)
+    {
+        throw new Exception('Problem while deleting the comments of the event. Please try again.');
     } else {
         header('Location: ./index.php');
     }
@@ -435,3 +451,16 @@ function addComment($eventId, $authorId, $comment)
         header('Location: ./index.php?action=showEvent&id=' . $eventId);
     }
 }
+
+/*function deleteComment($eventId, $commentId)
+{
+    $commentManager = new CommentManager();
+
+    $affectedLines = $commentManager->deleteOneComment($commentId);
+
+    if ($affectedLines === false) {
+        throw new Exception('Problem while adding a comment. Please try again.');
+    } else {
+        header('Location: ./index.php?action=showEvent&id=' . $eventId);
+    }
+}*/
