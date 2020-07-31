@@ -225,7 +225,18 @@ try {
                 } else {
                     throw new Exception('No event ID sent.');
                 }
-            }
+            } /*else if ($_GET['action'] == 'deleteComment') {
+                $event = handleEvent();
+                if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        deleteExistingEvent();
+                    } else {
+                        throw new Exception('No event ID sent.');
+                    }
+                } else {
+                    throw new Exception("No permission to delete this event. You're not the author of it.");
+                }
+            }*/
         }
         else
         {

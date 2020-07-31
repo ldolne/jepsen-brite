@@ -47,14 +47,13 @@ class CommentManager extends Manager
 
     }*/
 
-    /*public function deleteOneComment($eventId)
+    /*public function deleteOneComment($commentId)
     {
         $db = $this->dbConnect();
         $req = $db->prepare('DELETE FROM comments WHERE id = ?');
-        $affectedLines = $req->execute(array($eventId));
+        $affectedLines = $req->execute(array($commentId));
 
         return $affectedLines;
-
     }*/
 
     public function deleteAllComments($eventId)

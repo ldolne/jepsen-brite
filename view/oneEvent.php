@@ -1,4 +1,4 @@
-<?php $title = 'One event'; ?>
+<?php $title = htmlspecialchars($event['title']) ?>
 
 <?php ob_start(); ?>
 

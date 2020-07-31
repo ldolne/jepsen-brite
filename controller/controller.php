@@ -409,11 +409,11 @@ function addComment($eventId, $authorId, $comment)
     }
 }
 
-/*function deleteOneComment($eventId)
+/*function deleteComment($eventId, $commentId)
 {
     $commentManager = new CommentManager();
 
-    $affectedLines = $commentManager->postComment($eventId, $authorId, $comment);
+    $affectedLines = $commentManager->deleteOneComment($commentId);
 
     if ($affectedLines === false) {
         throw new Exception('Problem while adding a comment. Please try again.');
