@@ -100,11 +100,10 @@ $parsdown = new Parsedown();
 
                                             </a></div>
                                         <div class="col-md-8 col-6">
-                                            <button class="btn btn-danger">
-                                                <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
-                                                    Delete event
-                                                </a>
-                                            </button>
+                                            <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
+                                                <button class="btn btn-danger">Delete event</button>
+                                            </a>
+
                                         </div>
 
 
