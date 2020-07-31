@@ -27,9 +27,7 @@ $parsdown = new Parsedown();
                     </div>
 
                     <div class="row">
-
                         <div class="col-12">
-
                             <div class="tab-content ml-1" id="myTabContent">
                                 <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
@@ -93,20 +91,20 @@ $parsdown = new Parsedown();
 
                                     <div class="row">
                                         <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
-                                        ?> <div class="col-sm-3 col-md-2 col-5">
+                                        ?>
+                                        <div class="col-sm-3 col-md-2 col-5">
                                             <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
                                                 <button class="btn btn-primary">Modify event</button>
-                                            </a> <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
-
-                                            </a></div>
+                                            </a>
+                                        </div>
                                         <div class="col-md-8 col-6">
                                             <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
                                                 <button class="btn btn-danger">Delete event</button>
                                             </a>
                                         </div>
-                                    </div>
                                     <?php
                                     } ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
