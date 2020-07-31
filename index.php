@@ -232,7 +232,10 @@ try {
 catch(Exception $e) // Si une erreur est détectée à un endroit du code, remonte jusqu'ici...
 {   $errorMsg = "Error(s): ";
     $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Récupère message d'erreur de Exception qui a causé erreur et l'affiche.
-    $previousURL = $_SERVER['HTTP_REFERER'];
+    if(isset($_SERVER['HTTP_REFERER']))
+    {
+        $previousURL = $_SERVER['HTTP_REFERER'];
+    }
 
     require('view/errorView.php');
 }

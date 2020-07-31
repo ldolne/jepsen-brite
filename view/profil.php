@@ -29,7 +29,7 @@
                                         <label style="font-weight:bold;">User Name</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                    <?= $result['username'] ?>
+                                        <?= $result['username'] ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -38,14 +38,18 @@
                                         <label style="font-weight:bold;">E-mail</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                    <?= $result['email'] ?> 
+                                        <?= $result['email'] ?>
                                     </div>
                                 </div>
                                 <hr />
 
                                 <div class="row">
-                                    <a href="./index.php?action=modifyprofile" class="btn btn-primary">modify your profile</a>
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <a href="./index.php?action=modifyprofile" class="btn btn-primary">modify your profile</a>
+                                    </div>
+                                    <div class="col-sm-3 col-md-2 col-5">
                                     <a href="./index.php?action=deleteprofile" class="btn btn-danger">delete your profile</a>
+                                    </div>
                                 </div>
 
                             </div>
