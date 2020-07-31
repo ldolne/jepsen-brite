@@ -226,7 +226,7 @@ try {
                     throw new Exception('No event ID sent.');
                 }
             } /*else if ($_GET['action'] == 'deleteComment') {
-                $event = handleEvent();
+                $comment = handleEvent();
                 if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         deleteExistingEvent();
