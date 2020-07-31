@@ -37,7 +37,7 @@ function cookieVerification() {
 
 function getInscriptionPage() {
     $message='Complete all the fields';
-    showInfoMessage($message, False);
+    $message = showInfoMessage($message, False);
     $usernameError='';
     $passwordError='';
     $emailError='';
@@ -107,7 +107,7 @@ function actualInscription() {
         $inscription -> execute(array($email, $username, $password, $image));
 
         $message='Inscription done. Welcome';
-        showInfoMessage($message, true);
+        $message = showInfoMessage($message, true);
 
         // uncomment for Heroku
 
@@ -149,7 +149,7 @@ function login() {
         $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
         if ($isPasswordCorrect == false){
             $message = "Cet utilisateur n'existe pas ou ce n'est pas la bonne combinaison";
-            showInfoMessage($message, False);
+            $message = showInfoMessage($message, False);
             require('./view/loging.php');
         }
         else {
@@ -160,7 +160,7 @@ function login() {
                 setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
             }
             $message= "Connection réussie";
-            showInfoMessage($message, True);
+            $message = showInfoMessage($message, true);
             require('./view/loging.php');
         }
     }
@@ -244,7 +244,7 @@ function profileModification() {
 
     if ($passwordValidation == TRUE && $usernameValidation == TRUE){
         $message = 'Modifications done';
-        showInfoMessage($message, True);
+        $message = showInfoMessage($message, True);
         $updatePrep = $userManager->updatePreparation();
         $updatePrep -> execute(array($username, $password, $result['id']));
         
@@ -284,7 +284,7 @@ function deleteAccount(){
     $deletePrep = $userManager->deletePreparation();
     $deletePrep -> execute(array($result['id']));
     $message = 'Your account was deleted';
-    showInfoMessage($message, True);
+    $message = showInfoMessage($message, True);
 
     $_SESSION = array();
     session_destroy();
@@ -339,10 +339,12 @@ function showEvent($message = NULL)
 
     $eventReq = $eventManager->getEvent($_GET['id']);
     $comments = $commentManager->getComments($_GET['id']);
-    $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
-
+    if(isset($_SESSION['id']))
+    {
+        $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
+        $userAvatar = $userAvatarReq->fetch();
+    }
     $event = $eventReq->fetch();
-    $userAvatar = $userAvatarReq->fetch();
 
     if (!empty($event))
     {
