@@ -20,13 +20,13 @@ while ($data = $events->fetch()) {
 ?>
     <div class="row mb-1">
       <div class="col-md-10">
-        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-100 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <div class="image-container">
+          <div class="card-text mb-auto">
               <img src="./public/img/events_img/<?= $data['image'] ?>" id="imgProfile" alt="Event image" class="img-thumbnail" width="150" />
             </div>
-            <strong class="d-inline-block mb-2 text-primary"><?= $data['category'] ?></strong>
-            <div class="mb-2 text-muted"><?= htmlspecialchars($data['title']) ?></div>
+            <div class="mb-2 text-muted"><?= $data['category'] ?></div>
+            <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
             <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
             <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go page of this event</a>
           </div>
@@ -44,8 +44,8 @@ while ($data = $events->fetch()) {
     ?>
       <div class="col-md-3">
         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-relative">
-            <div class="col-md1 d-none d-lg-block">
+          <div class="col p-4 d-flex flex-column position-static">
+            <div class="card-text mb-auto">
               <img src="./public/img/events_img/<?= $data['image'] ?>" id="imgProfile" alt="Event image" class="img-thumbnail" width="100" />
               <div class="mb-2 text-muted"><?= $data['category'] ?></div>
               <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
@@ -65,3 +65,5 @@ $events->closeCursor();
     </div>
     <?php $content = ob_get_clean(); ?>
     <?php require('template.php'); ?>
+
+ 
