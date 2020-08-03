@@ -4,12 +4,12 @@
       <?php 
         if (empty($_SESSION['username'])){
           ?>
-      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=connection">Log in </a>
+      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=connection">Log in</a>
       <?php
         }
         ?>
       <?php if (!empty($_SESSION['username'])){?>
-      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=deconnection">Log out </a>
+      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=deconnection">Log out</a>
       <?php } ?>
     </div>
     <div class="col-4 text-center">

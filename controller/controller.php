@@ -10,10 +10,34 @@ require_once('./model/CommentManager.php');
 // Autres
 require_once('./require/functions.php');
 
+// uncomment for Heroku
+//require 'vendor/autoload.php';
+
 // USER FUNCTIONS
+function cookieVerification() {
+    $userManager = new UserManager();
+    
+    $request = $userManager-> DoesCookieUserExist();
+    $request -> execute(array($_COOKIE['id'], $_COOKIE['username']));
+    $isTheCookieALie = $request -> fetch();
+    
+    if (isset($isTheCookieALie) && !empty($isTheCookieALie)){
+        $_SESSION['username']= $_COOKIE['username'];
+        $_SESSION['id']= $_COOKIE['id'];
+    }
+    
+    else {
+        $_SESSION['username']= '';
+        $_SESSION['id']= '';
+        setcookie('id', '');
+        setcookie('username', '');
+    }
+    
+}
 
 function getInscriptionPage() {
     $message='Complete all the fields';
+    $message = showInfoMessage($message, False);
     $usernameError='';
     $passwordError='';
     $emailError='';
@@ -53,7 +77,7 @@ function actualInscription() {
         }
     }
     else {
-        $passwordError = 'The password are not the same';
+        $passwordError = 'The password fields are not identical';
         $passwordValidation = FALSE;
     }
 
@@ -68,12 +92,12 @@ function actualInscription() {
         }
         else {
             $emailValidation = FALSE;
-            $emailError ='This Email is already taken';
+            $emailError ='This email address is already taken';
         }
     }
     else {
         $emailValidation = FALSE;
-        $emailError='this email adress is not a valid one';
+        $emailError='This email address is not a valid one';
     }
 
     $image = md5(strtolower(trim($email)));
@@ -82,15 +106,22 @@ function actualInscription() {
         $inscription = $userManager->inscriptionPreparation();
         $inscription -> execute(array($email, $username, $password, $image));
 
-        $message='Inscription done. Welcome';
+        $message='Inscription successful. Welcome';
+        $message = showInfoMessage($message, true);
 
-        $to      = $email;
+        // uncomment for Heroku
+
+        /*$from = new SendGrid\Email(null, "becodechristest@gmail.com");
         $subject = 'Inscription à Jepsen-brite event ';
-        $message = 'La Team-5 est heureuse de t\'acceuillir sur ce magnifique site';
-        $headers = 'From: webmaster@example.com' . "\r\n" .
-        'Reply-To: webmaster@example.com' . "\r\n" ;
+        $to = new SendGrid\Email(null, $email);
+        $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
+        $mail = new SendGrid\Mail($from, $subject, $to, $content);
 
-        mail($to, $subject, $message, $headers);
+        $apiKey = getenv('SENDGRID_API_KEY');
+        $sg = new \SendGrid($apiKey);
+
+        $response = $sg->client->mail()->send()->post($mail);*/
+
         require('./view/signup.php');
 
     }
@@ -113,19 +144,28 @@ function login() {
     //$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $request -> execute(array($username));
     $result = $request -> fetch();
-    $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
-    if ($isPasswordCorrect == false){
-        $message = "Cet utilisateur n'existe pas ou ce n'est pas la bonne combinaison";
-        require('./view/loging.php');
+    if (isset($result['password'])) {
+
+        $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
+        if ($isPasswordCorrect == false){
+            $message = "This user doesn't exist or this is not the right password";
+            $message = showInfoMessage($message, False);
+            require('./view/loging.php');
+        }
+        else {
+            $_SESSION["id"]= $result['id'];
+            $_SESSION["username"]= $result['username'];
+            if (isset($_POST['stayconnected'])){
+                setcookie('id', $result['id'], time() + 30*24*3600, null, null, false, true);
+                setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
+            }
+            $message= "Connection successful";
+            $message = showInfoMessage($message, true);
+            require('./view/loging.php');
+        }
     }
     else {
-        $_SESSION["id"]= $result['id'];
-        $_SESSION["username"]= $result['username'];
-        if (isset($_POST['stayconnected'])){
-            setcookie('id', $result['id'], time() + 30*24*3600, null, null, false, true);
-            setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
-        }
-        $message= "Connection réussie";
+        $message = "This user doesn't exist or this is not the right password";
         require('./view/loging.php');
     }
 }
@@ -203,7 +243,8 @@ function profileModification() {
     
 
     if ($passwordValidation == TRUE && $usernameValidation == TRUE){
-        $message = 'Modifications done';
+        $message = 'Modifications successful';
+        $message = showInfoMessage($message, True);
         $updatePrep = $userManager->updatePreparation();
         $updatePrep -> execute(array($username, $password, $result['id']));
         
@@ -243,17 +284,18 @@ function deleteAccount(){
     $deletePrep = $userManager->deletePreparation();
     $deletePrep -> execute(array($result['id']));
     $message = 'Your account was deleted';
+    $message = showInfoMessage($message, True);
 
     $_SESSION = array();
     session_destroy();
     setcookie('id', '');
     setcookie('username', '');
 
+    // Renvoi à l'homepage
     header('Location: ./index.php');
 }
 
 // CATEGORY FUNCTIONS
-
 function AllCategoryController()
 {
     $categoryManager = new CategoryManager();
@@ -275,16 +317,16 @@ function OneCategoryController()
 // EVENT AND COMMENT FUNCTIONS
 
 function getIndexPage(){
-    $eventManager = new EventManager(); // création de l'objet
-    $events = $eventManager->getUpcomingEvents(); // appel d'une fonction de cet objet
+    $eventManager = new EventManager(); // creation of the object
+    $events = $eventManager->getUpcomingEvents(); // call a function of this object
 
     require('./view/mainPage.php');
 }
 
 function listPastEvents()
 {
-    $eventManager = new EventManager(); // création de l'objet
-    $events = $eventManager->getPastEvents(); // appel d'une fonction de cet objet
+    $eventManager = new EventManager(); 
+    $events = $eventManager->getPastEvents(); 
 
     require('./view/archiveView.php');
 }
@@ -296,10 +338,12 @@ function showEvent($message = NULL)
 
     $eventReq = $eventManager->getEvent($_GET['id']);
     $comments = $commentManager->getComments($_GET['id']);
-    $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
-
+    if(isset($_SESSION['id']))
+    {
+        $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
+        $userAvatar = $userAvatarReq->fetch();
+    }
     $event = $eventReq->fetch();
-    $userAvatar = $userAvatarReq->fetch();
 
     if (!empty($event))
     {

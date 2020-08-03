@@ -11,7 +11,7 @@ class EventManager extends Manager
             FROM events AS e 
             INNER JOIN categories AS c 
             ON e.category_id = c.id
-            WHERE event_date > current_date OR (event_date = current_date AND event_hour > current_time) 
+            WHERE event_date > current_date OR (event_date = current_date AND event_hour > (current_time + INTERVAL 2 HOUR)) 
             ORDER BY event_date, event_hour LIMIT 0, 21');
 
         return $req;
@@ -24,7 +24,7 @@ class EventManager extends Manager
             FROM events AS e
             INNER JOIN categories AS c 
             ON e.category_id = c.id
-            WHERE event_date < current_date OR (event_date = current_date AND event_hour < current_time)
+            WHERE event_date < current_date OR (event_date = current_date AND event_hour < (current_time + INTERVAL 2 HOUR))
             ORDER BY event_date DESC, event_hour DESC LIMIT 0, 21');
 
         return $req;

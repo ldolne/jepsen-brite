@@ -1,47 +1,52 @@
 <?php
+require('./controller/controller.php');
 
 // ROUTER
 
 session_start();
 if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
 && isset($_COOKIE['id']) && !empty($_COOKIE['id'])){
-    $_SESSION['username']= $_COOKIE['username'];
-    $_SESSION['id']= $_COOKIE['id'];
+    cookieVerification();
 }
-
-require('./controller/controller.php');
 
 try {
     if (isset($_GET['action'])) {
 
-        $_GET['action'] = htmlspecialchars($_GET['action']); // On rend inoffensives les balises HTML que le visiteur a pu entrer
+        $_GET['action'] = htmlspecialchars($_GET['action']); // Deactivation of HTML tags
 
         // NO RESTRICTED PAGES
-
         if ($_GET['action'] == 'inscription') {
             if (!empty($_POST['username'])
                 && !empty($_POST['password'])
                 && !empty($_POST['passwordcheck'])
                 && !empty($_POST['email'])) {
                 actualInscription();
-            } else {
+            } 
+            else {
                 getInscriptionPage();
             }
-        } elseif ($_GET['action'] == 'connection') {
+        } 
+        
+        elseif ($_GET['action'] == 'connection') {
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
                 login();
-            } else {
+            } 
+            else {
                 getConnectionPage();
             }
-        } elseif ($_GET['action'] == 'deconnection') {
+        } 
+        elseif ($_GET['action'] == 'deconnection') {
             deconnection();
-        } // CATEGORY ACTIONS
+        }
 
+        // CATEGORY ACTIONS
         elseif ($_GET["action"] == "onecategorycontroller") {
             OneCategoryController();
         } elseif ($_GET["action"] == "allcategorycontroller") {
             AllCategoryController();
-        } // EVENT AND COMMENT ACTIONS
+        }
+
+        // EVENT AND COMMENT ACTIONS
         else if ($_GET['action'] == 'listPastEvents') {
             listPastEvents();
         } else if ($_GET['action'] == 'showEvent') {
@@ -50,10 +55,13 @@ try {
             } else {
                 throw new Exception('No event ID sent.');
             }
-        } // RESTRICTED PAGES
+        }
 
+        // RESTRICTED PAGES
         elseif (isset($_SESSION['username']) && !empty($_SESSION['username']) &&
             isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+
+            // USER ACTIONS
             if ($_GET['action'] == 'profile') {
                 getProfilePage();
             } elseif ($_GET['action'] == 'modifyprofile') {
@@ -68,7 +76,6 @@ try {
             }
 
             // EVENT AND COMMENT ACTIONS
-
             else if ($_GET['action'] == "showEventCreationPage") {
                 showEventCreationPage();
             } else if ($_GET['action'] == "showEventModificationPage") {
@@ -146,7 +153,7 @@ try {
                         && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])) {
-                        // tests supplémentaires sur données envoyées
+                        
 
                         $_POST['title'] = htmlspecialchars($_POST['title']);
                         $_POST['description'] = htmlspecialchars($_POST['description']);
@@ -247,9 +254,9 @@ try {
     }
 }
 
-catch(Exception $e) // Si une erreur est détectée à un endroit du code, remonte jusqu'ici...
+catch(Exception $e) // If an error is detected anywhere in the code, it come back up here. 
 {   $errorMsg = "Error(s): ";
-    $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Récupère message d'erreur de Exception qui a causé erreur et l'affiche.
+    $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Get the right thrown exception error message and display it.
     if(isset($_SERVER['HTTP_REFERER']))
     {
         $previousURL = $_SERVER['HTTP_REFERER'];

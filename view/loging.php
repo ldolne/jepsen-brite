@@ -1,19 +1,16 @@
-<?php $title = 'loging'; ?>
+<?php $title = 'Login'; ?>
 
 <?php ob_start(); ?>
-
-
   <main role="main" class="container">
     <div class="row">
 
       <div class="col-md-12">
-        <h2><?= $message ?></h2>
       
         <form role="form" method="post" action="index.php?action=connection">
           <div class="form-group">
 
             <label for="exampleInputEmail1">
-              User name
+              Username
             </label>
             <input type="text" name="username" class="form-control" id="exampleInputEmail1">
           </div>
@@ -31,7 +28,7 @@
               <input type="checkbox" name="stayconnected"> Stay connected
             </label>
           </div>
-          <input type="submit" value ="connection">
+          <input type="submit" value ="Connection">
         </form>
       </div>
     </div><!-- /.row -->
