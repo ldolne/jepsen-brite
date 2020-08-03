@@ -18,7 +18,7 @@ $parsdown = new Parsedown();
                         </div>
                         <div class="d-flex justify-content-start">
                             <div class="image-container">
-                                <img src="./public/img/events_img/<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
+                                <img src="<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
                             </div>
                             <div class="ml-auto">
                                 <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
