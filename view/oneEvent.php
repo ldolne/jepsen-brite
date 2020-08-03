@@ -13,7 +13,7 @@ $parsdown = new Parsedown();
                     <div class="card-title mb-4">
                         <div class="clo-md-2">
                             <?php if (!empty($_SESSION['username'])) { ?>
-                                <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block"> Create an event</button></a></em></p>
+                                <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block">Create an event</button></a></em></p>
                             <?php } ?>
                         </div>
                         <div class="d-flex justify-content-start">
@@ -21,7 +21,7 @@ $parsdown = new Parsedown();
                                 <img src="./public/img/events_img/<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
                             </div>
                             <div class="ml-auto">
-                                <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                                <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
                             </div>
                         </div>
                     </div>

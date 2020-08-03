@@ -1,4 +1,4 @@
-<?php $title = 'sign Up'; ?>
+<?php $title = 'Sign up'; ?>
 
 <?php ob_start(); ?>
 
@@ -37,17 +37,12 @@
         <div class="form-group">
 
           <label for="exampleInputPassword1">
-            Comfirm Password
+            Confirm Password
           </label>
           <input name="passwordcheck" type="password" class="form-control" id="exampleInputPassword1">
 
         </div>
 
-        <!-- <div class="checkbox">
-            <label>
-              <input type="checkbox"> Check me out
-            </label>
-          </div> -->
         <input value="Sign up" name="signup" type="submit" class="btn btn-primary">
       </form>
 
