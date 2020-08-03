@@ -7,15 +7,14 @@ session_start();
 if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
 && isset($_COOKIE['id']) && !empty($_COOKIE['id'])){
     cookieVerification();
-    
 }
 
 try {
     if (isset($_GET['action'])) {
 
         $_GET['action'] = htmlspecialchars($_GET['action']); // Deactivation of HTML tags
-        // NO RESTRICTED PAGES
 
+        // NO RESTRICTED PAGES
         if ($_GET['action'] == 'inscription') {
             if (!empty($_POST['username'])
                 && !empty($_POST['password'])
@@ -38,13 +37,16 @@ try {
         } 
         elseif ($_GET['action'] == 'deconnection') {
             deconnection();
-        } // CATEGORY ACTIONS
+        }
 
+        // CATEGORY ACTIONS
         elseif ($_GET["action"] == "onecategorycontroller") {
             OneCategoryController();
         } elseif ($_GET["action"] == "allcategorycontroller") {
             AllCategoryController();
-        } // EVENT AND COMMENT ACTIONS
+        }
+
+        // EVENT AND COMMENT ACTIONS
         else if ($_GET['action'] == 'listPastEvents') {
             listPastEvents();
         } else if ($_GET['action'] == 'showEvent') {
@@ -53,10 +55,13 @@ try {
             } else {
                 throw new Exception('No event ID sent.');
             }
-        } // RESTRICTED PAGES
+        }
 
+        // RESTRICTED PAGES
         elseif (isset($_SESSION['username']) && !empty($_SESSION['username']) &&
             isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+
+            // USER ACTIONS
             if ($_GET['action'] == 'profile') {
                 getProfilePage();
             } elseif ($_GET['action'] == 'modifyprofile') {
@@ -71,7 +76,6 @@ try {
             }
 
             // EVENT AND COMMENT ACTIONS
-
             else if ($_GET['action'] == "showEventCreationPage") {
                 showEventCreationPage();
             } else if ($_GET['action'] == "showEventModificationPage") {
