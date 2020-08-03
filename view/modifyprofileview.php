@@ -1,13 +1,5 @@
 <?php $title = 'Modify Profile'; ?>
 <?php ob_start(); ?>
-<!-- <form action="./indexchris.php?action=modifyprofile" method="post">
-    <input type="text" name="username" placeholder="username">
-    <?= $usernameError ?><br>
-    <input type="password" name="password" placeholder="password">
-    <?= $passwordError ?><br>
-    <input type="passwordcheck" name="passwordcheck" placeholder="password"><br>
-    <input type="submit" name="modify" value="Modify">
-</form> -->
 
 <main role="main" class="container">
     <div class="row">
@@ -34,7 +26,7 @@
                 <div class="form-group">
 
                     <label for="exampleInputPassword1">
-                        Comfirm Password
+                        Confirm Password
                     </label>
                     <input name="passwordcheck" type="password" class="form-control" id="exampleInputPassword1">
 

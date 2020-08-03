@@ -11,7 +11,7 @@ require_once('./model/CommentManager.php');
 require_once('./require/functions.php');
 
 // uncomment for Heroku
-// require 'vendor/autoload.php'; 
+require 'vendor/autoload.php';
 
 // USER FUNCTIONS
 function cookieVerification() {
@@ -77,7 +77,7 @@ function actualInscription() {
         }
     }
     else {
-        $passwordError = 'The password are not the same';
+        $passwordError = 'The password fields are not identical';
         $passwordValidation = FALSE;
     }
 
@@ -92,12 +92,12 @@ function actualInscription() {
         }
         else {
             $emailValidation = FALSE;
-            $emailError ='This Email is already taken';
+            $emailError ='This email address is already taken';
         }
     }
     else {
         $emailValidation = FALSE;
-        $emailError='this email adress is not a valid one';
+        $emailError='This email address is not a valid one';
     }
 
     $image = md5(strtolower(trim($email)));
@@ -106,21 +106,21 @@ function actualInscription() {
         $inscription = $userManager->inscriptionPreparation();
         $inscription -> execute(array($email, $username, $password, $image));
 
-        $message='Inscription done. Welcome';
+        $message='Inscription successful. Welcome';
         $message = showInfoMessage($message, true);
 
         // uncomment for Heroku
 
-        // $from = new SendGrid\Email(null, "becodechristest@gmail.com");
-        // $subject = 'Inscription à Jepsen-brite event ';
-        // $to = new SendGrid\Email(null, $email);
-        // $content = new SendGrid\Content("text/plain", 'La Team-5 est heureuse de t\'acceuillir sur ce magnifique site');
-        // $mail = new SendGrid\Mail($from, $subject, $to, $content);
+        $from = new SendGrid\Email(null, "becodechristest@gmail.com");
+        $subject = 'Inscription à Jepsen-brite event ';
+        $to = new SendGrid\Email(null, $email);
+        $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
+        $mail = new SendGrid\Mail($from, $subject, $to, $content);
 
-        // $apiKey = getenv('SENDGRID_API_KEY');
-        // $sg = new \SendGrid($apiKey);
+        $apiKey = getenv('SENDGRID_API_KEY');
+        $sg = new \SendGrid($apiKey);
 
-        // $response = $sg->client->mail()->send()->post($mail); 
+        $response = $sg->client->mail()->send()->post($mail);
 
         require('./view/signup.php');
 
@@ -148,7 +148,7 @@ function login() {
 
         $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
         if ($isPasswordCorrect == false){
-            $message = "Cet utilisateur n'existe pas ou ce n'est pas la bonne combinaison";
+            $message = "This user doesn't exist or this is not the right password";
             $message = showInfoMessage($message, False);
             require('./view/loging.php');
         }
@@ -159,13 +159,13 @@ function login() {
                 setcookie('id', $result['id'], time() + 30*24*3600, null, null, false, true);
                 setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
             }
-            $message= "Connection réussie";
+            $message= "Connection successful";
             $message = showInfoMessage($message, true);
             require('./view/loging.php');
         }
     }
     else {
-        $message = "Cet utilisateur n'existe pas ou ce n'est pas la bonne combinaison";
+        $message = "This user doesn't exist or this is not the right password";
         require('./view/loging.php');
     }
 }
@@ -243,7 +243,7 @@ function profileModification() {
     
 
     if ($passwordValidation == TRUE && $usernameValidation == TRUE){
-        $message = 'Modifications done';
+        $message = 'Modifications successful';
         $message = showInfoMessage($message, True);
         $updatePrep = $userManager->updatePreparation();
         $updatePrep -> execute(array($username, $password, $result['id']));
@@ -318,16 +318,16 @@ function OneCategoryController()
 // EVENT AND COMMENT FUNCTIONS
 
 function getIndexPage(){
-    $eventManager = new EventManager(); // création de l'objet
-    $events = $eventManager->getUpcomingEvents(); // appel d'une fonction de cet objet
+    $eventManager = new EventManager(); // creation of the object
+    $events = $eventManager->getUpcomingEvents(); // call a function of this object
 
     require('./view/mainPage.php');
 }
 
 function listPastEvents()
 {
-    $eventManager = new EventManager(); // création de l'objet
-    $events = $eventManager->getPastEvents(); // appel d'une fonction de cet objet
+    $eventManager = new EventManager(); 
+    $events = $eventManager->getPastEvents(); 
 
     require('./view/archiveView.php');
 }

@@ -1,4 +1,4 @@
-<?php $title = ' add event'; ?>
+<?php $title = 'Add event'; ?>
 
 <?php ob_start(); ?>
 

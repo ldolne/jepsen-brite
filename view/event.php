@@ -1,4 +1,4 @@
-<?php $title = 'events'; ?>
+<?php $title = 'Events by category'; ?>
 
 <?php ob_start(); ?>
 
@@ -56,7 +56,7 @@
                 </tbody>
             </table>
         </div>
-        <!-- <a  class="btn btn-info" href="index.php?action=search">Search more...</a> -->
+
     </div><!-- /.row -->
 </main><!-- /.container -->
 

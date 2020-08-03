@@ -1,4 +1,4 @@
-<?php $title = 'Modify event'; ?>
+<?php $title = 'Modify Event'; ?>
 
 <?php ob_start(); ?>
     <main role="main" class="container">
@@ -12,7 +12,7 @@
                 } else {
                     echo $event['id'];
                 } ?>" method="POST" enctype="multipart/form-data">
-                    <h2>Modify event</h2>
+                    <h2>Modify an event</h2>
                     <div class="form-group">
                         <label for="title">Name:</label>
                         <input id="title" type="text" title="Max 80 characters" name="title" id="title" class="form-control" maxlength="80" value="<?php

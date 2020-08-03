@@ -1,4 +1,4 @@
-<?php $title = 'profil'; ?>
+<?php $title = 'Profile'; ?>
 
 <?php ob_start(); ?>
 <div class="row">
@@ -12,7 +12,7 @@
                             <img src="https://www.gravatar.com/avatar/<?= $result['avatar'] ?>" id="imgProfile" style="width: 200px; height: 200px" class="img-thumbnail" />
                         </div>
                         <div class="ml-auto">
-                            <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                            <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">User Name</label>
+                                        <label style="font-weight:bold;">Username</label>
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <?= $result['username'] ?>
@@ -35,7 +35,7 @@
                                 <hr />
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">E-mail</label>
+                                        <label style="font-weight:bold;">Email</label>
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <?= $result['email'] ?>
@@ -46,10 +46,10 @@
                                 <div class="row">
 
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <a href="./index.php?action=modifyprofile" class="btn btn-primary">modify your profile</a>
+                                        <a href="./index.php?action=modifyprofile" class="btn btn-primary">Modify your profile</a>
                                     </div>
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <a href="./index.php?action=deleteprofile" onclick="if(!confirm('Are you sure you want to delete this account?')) return false;" class="btn btn-danger">delete your profile</a>
+                                        <a href="./index.php?action=deleteprofile" onclick="if(!confirm('Are you sure you want to delete this account?')) return false;" class="btn btn-danger">Delete your profile</a>
                                     </div>
 
                                 </div>

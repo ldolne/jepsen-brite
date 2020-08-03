@@ -1,8 +1,6 @@
-<?php $title = 'login'; ?>
+<?php $title = 'Login'; ?>
 
 <?php ob_start(); ?>
-
-
   <main role="main" class="container">
     <div class="row">
 
@@ -12,7 +10,7 @@
           <div class="form-group">
 
             <label for="exampleInputEmail1">
-              User name
+              Username
             </label>
             <input type="text" name="username" class="form-control" id="exampleInputEmail1">
           </div>
@@ -30,7 +28,7 @@
               <input type="checkbox" name="stayconnected"> Stay connected
             </label>
           </div>
-          <input type="submit" value ="connection">
+          <input type="submit" value ="Connection">
         </form>
       </div>
     </div><!-- /.row -->

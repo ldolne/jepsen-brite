@@ -13,7 +13,7 @@ if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
 try {
     if (isset($_GET['action'])) {
 
-        $_GET['action'] = htmlspecialchars($_GET['action']); // On rend inoffensives les balises HTML que le visiteur a pu entrer
+        $_GET['action'] = htmlspecialchars($_GET['action']); // Deactivation of HTML tags
         // NO RESTRICTED PAGES
 
         if ($_GET['action'] == 'inscription') {
@@ -149,7 +149,7 @@ try {
                         && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])) {
-                        // tests supplémentaires sur données envoyées
+                        
 
                         $_POST['title'] = htmlspecialchars($_POST['title']);
                         $_POST['description'] = htmlspecialchars($_POST['description']);
@@ -250,9 +250,9 @@ try {
     }
 }
 
-catch(Exception $e) // Si une erreur est détectée à un endroit du code, remonte jusqu'ici...
+catch(Exception $e) // If an error is detected anywhere in the code, it come back up here. 
 {   $errorMsg = "Error(s): ";
-    $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Récupère message d'erreur de Exception qui a causé erreur et l'affiche.
+    $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Get the right thrown exception error message and display it.
     if(isset($_SERVER['HTTP_REFERER']))
     {
         $previousURL = $_SERVER['HTTP_REFERER'];
