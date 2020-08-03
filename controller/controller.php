@@ -11,7 +11,7 @@ require_once('./model/CommentManager.php');
 require_once('./require/functions.php');
 
 // uncomment for Heroku
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
 
 // USER FUNCTIONS
 function cookieVerification() {
@@ -111,7 +111,7 @@ function actualInscription() {
 
         // uncomment for Heroku
 
-        $from = new SendGrid\Email(null, "becodechristest@gmail.com");
+        /*$from = new SendGrid\Email(null, "becodechristest@gmail.com");
         $subject = 'Inscription à Jepsen-brite event ';
         $to = new SendGrid\Email(null, $email);
         $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
@@ -120,7 +120,7 @@ function actualInscription() {
         $apiKey = getenv('SENDGRID_API_KEY');
         $sg = new \SendGrid($apiKey);
 
-        $response = $sg->client->mail()->send()->post($mail);
+        $response = $sg->client->mail()->send()->post($mail);*/
 
         require('./view/signup.php');
 
@@ -296,7 +296,6 @@ function deleteAccount(){
 }
 
 // CATEGORY FUNCTIONS
-
 function AllCategoryController()
 {
     $categoryManager = new CategoryManager();
