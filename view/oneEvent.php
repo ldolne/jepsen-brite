@@ -16,7 +16,10 @@ $parsdown = new Parsedown();
                                 <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block">Create an event</button></a></em></p>
                             <?php } ?>
                         </div>
-                <?php if (!empty($_SESSION['username'])) {
+                <?php if (!empty($_SESSION['username']) AND ($event['event_date_formatted'] > date('d/m/y'))) { //CORRIGER
+
+                        //OR ($event['event_date_formatted'] == date('d/m/y')
+                          //      AND ($event['event_hour_formatted'] > (time() + 2*3600))))) {
                     $isParticipating = false;
 
                     foreach($participantsArr as $participant)
@@ -53,6 +56,12 @@ $parsdown = new Parsedown();
                     }
 
                     $participants->closeCursor();
+                }
+                else
+                {
+                    ?>
+                    <p>HELLO</p>
+                        <?php
                 }
                 ?>
                         <div class="d-flex justify-content-start">
