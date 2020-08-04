@@ -15,6 +15,13 @@
                 <a href="./index.php?action=onecategorycontroller&amp;category_id=5"><button class="btn btn-primary">Game Jam</button></a>
             </div>
             <br />
+            <div class="search">
+                <a href="#"><button class="btn btn-success">One</button></a>
+                <a href="#"><button class="btn btn-success">Two</button></a>
+                <a href="#"><button class="btn btn-success">Three</button></a>
+
+            </div>
+            <br />
             <table class="table">
                 <thead>
                     <tr>
@@ -28,8 +35,12 @@
                             Hour
                         </th>
                         <th>
+                            Place
+                        </th>
+                        <th>
                             Category
                         </th>
+                        <th>Sub-caregory</th>
                         <th>See more...</th>
                     </tr>
                 </thead>
@@ -46,9 +57,11 @@
                                 <?php echo $data['event_date_formatted']; ?>
                             </td>
                             <td>
-                            <?php echo $data['event_hour_formatted']; ?>
+                                <?php echo $data['event_hour_formatted']; ?>
                             </td>
+                            <td>PLACE</td>
                             <td> <?php echo $data['category']; ?></td>
+                            <td>Sub-caregory</td>
                             <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
                         </tr>
                     <?php }
