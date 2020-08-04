@@ -8,8 +8,11 @@
 
         <div class="card col-md-6 pr-1 pl-1">
                 
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between">
                 <h2>Events created</h2>
+                <div class="mt-1">
+                    <a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn btn-block"> Create an event</button></a>
+                </div>
             </div>
 
             <ul class="list-group list-group-flush">
