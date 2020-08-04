@@ -49,7 +49,9 @@ try {
 
 
         // SUBCATEGORY ACTIONS
-        elseif ($_GET["action"] == "allsubcategoriesController") {
+        elseif ($_GET["action"] == "subcategorycontroller") {
+            OneSubCategoryController();
+        } elseif ($_GET["action"] == "allsubcategoriesController") {
             AllSubCategoriesController();
         }
 

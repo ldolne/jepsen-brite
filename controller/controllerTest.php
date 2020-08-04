@@ -16,6 +16,17 @@ function AllSubCategoriesController()
     $subCategoriesManager = new SubCategoriesManager();
     $search = $subCategoriesManager->AllSubCategoriesModel();
     require('./view/eventsByCategory.php');
-
 }
 
+
+// a modifier pour one sub categories
+function OneSubCategoryController()
+{
+    $subCategoriesManager = new SubCategoriesManager();
+    $search = $subCategoriesManager->SubCategoryModel($_GET['subcategory_id']);
+    if ($search === null) {
+        throw new Exception('No result.');
+    } else {
+        require('./view/eventsByCategory.php');
+    }
+}
