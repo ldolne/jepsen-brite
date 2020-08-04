@@ -73,6 +73,8 @@ try {
                 }
             } elseif ($_GET['action'] == 'deleteprofile') {
                 deleteAccount();
+            } elseif ($_GET['action'] == 'userdashboard') {
+                getUserDashboard();
             }
 
             // EVENT AND COMMENT ACTIONS

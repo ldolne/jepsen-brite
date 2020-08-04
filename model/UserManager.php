@@ -46,4 +46,10 @@ class UserManager extends Manager
         $request = $bdd -> prepare("DELETE FROM users WHERE `id` = ?");
         return $request;
     }
+
+    public function getUserId() {
+        $bdd = $this-> dbConnect();
+        $request = $bdd-> prepare("SELECT * FROM `users` WHERE `id`= ?");
+        return $request;
+    }
 }

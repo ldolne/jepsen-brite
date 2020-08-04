@@ -5,6 +5,7 @@
       <a class="p-2 text-muted" href="index.php?action=listPastEvents">Past Events</a>
     <?php if (!empty($_SESSION['username'])){?>
     <a class="p-2 text-muted" href="index.php?action=profile">Profile</a>
+    <a class="p-2 text-muted" href="index.php?action=userdashboard">Dashboard</a>
     <?php } ?>
   </nav>
 </div>

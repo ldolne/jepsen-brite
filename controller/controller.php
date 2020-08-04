@@ -295,12 +295,34 @@ function deleteAccount(){
     header('Location: ./index.php');
 }
 
+function getUserDashboard(){
+
+    // get created events
+    $userManager = new UserManager();
+    $request = $userManager->getUserId();
+    $request -> execute(array($_SESSION['id']));
+    $result = $request -> fetch();
+
+    $userId = $result['id'];
+
+    $eventManager = new EventManager(); 
+    $events = $eventManager->getUserEvents($userId);
+
+    $getPast = new EventManager();
+    $pastParticip = $getPast->getPastParticip($userId);
+
+    $getUp = new EventManager();
+    $upcomingParticip = $getPast->getUpcomingParticip($userId);
+
+    require('./view/userDashboard.php');
+}
+
 // CATEGORY FUNCTIONS
 function AllCategoryController()
 {
     $categoryManager = new CategoryManager();
     $search = $categoryManager->AllCategoryModel();
-    require('./view/eventsByCategory');
+    require('./view/eventsByCategory.php');
 }
 
 function OneCategoryController()
@@ -310,7 +332,7 @@ function OneCategoryController()
     if ($search === null) {
         throw new Exception('No result.');
     } else {
-        require('./view/eventsByCategory');
+        require('./view/eventsByCategory.php');
     }
 }
 
@@ -347,7 +369,7 @@ function showEvent($message = NULL)
 
     if (!empty($event))
     {
-        require('./view/oneeventsByCategory');
+        require('./view/oneEvent.php');
     }
     else
     {
@@ -374,7 +396,7 @@ function handleEvent()
 
 function showEventCreationPage($message = null)
 {
-    require('./view/addeventsByCategory');
+    require('./view/addEvent.php');
 }
 
 function createNewEvent($imageName)
@@ -400,7 +422,7 @@ function createNewEvent($imageName)
 
 function showEventModificationPage($event, $message = null)
 {
-    require('./view/modifyeventsByCategory');
+    require('./view/modifyEvent.php');
 }
 
 function updateExistingEvent($imageName)
