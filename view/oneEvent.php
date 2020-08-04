@@ -125,10 +125,8 @@ $parsdown = new Parsedown();
         </div>
     </div>
 </div>
-</div>
 
-
-
+<br />
 
 <div class="row">
     <div class="col-12">
