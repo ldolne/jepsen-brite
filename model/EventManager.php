@@ -100,56 +100,46 @@ class EventManager extends Manager
         return $affectedLines;
     }
 
-    public function getUserEvents($userId)
+    public function getParticipantsByEvent($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.author_id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, c.category
-        FROM events AS e 
-        INNER JOIN users AS u 
-        ON e.author_id = u.id
-        INNER JOIN categories AS c 
-        ON e.category_id = c.id
-        WHERE e.author_id = ?');
-
-        $req->execute(array($userId));
+        $req = $db->prepare('SELECT u.id, u.username
+        FROM users AS u 
+        INNER JOIN assoc_events_users AS aeu
+        ON u.id = aeu.user_id
+        WHERE aeu.event_id = ?');
+        $req->execute(array($eventId));
 
         return $req;
     }
 
-    public function getPastParticip($userId)
+    public function getOneParticipantByEvent($eventId, $userId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.author_id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, c.category
-        FROM events AS e
-        INNER JOIN categories AS c
-        ON e.category_id = c.id
-        INNER JOIN assoc_events_users AS aeu
-        ON e.id = aeu.event_id
-        INNER JOIN users AS u
-        ON u.id = aeu.user_id
-        WHERE aeu.user_id = ? AND event_date < current_date OR (event_date = current_date AND event_hour < (current_time + INTERVAL 2 HOUR))
-        ORDER BY event_date DESC, event_hour DESC LIMIT 0, 21');
-
-        $req->execute(array($userId));
+        $req = $db->prepare('SELECT aeu.event_id, aeu.user_id
+        FROM assoc_events_users AS aeu 
+        WHERE aeu.event_id = ? AND aeu.user_id = ?');
+        $req->execute(array($eventId, $userId));
 
         return $req;
     }
 
-    public function getUpcomingParticip($userId)
+    public function createParticipantByEvent($eventId, $userId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.author_id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, c.category
-        FROM events AS e
-        INNER JOIN categories AS c
-        ON e.category_id = c.id
-        INNER JOIN assoc_events_users AS aeu
-        ON e.id = aeu.event_id
-        INNER JOIN users AS u
-        ON u.id = aeu.user_id
-        WHERE aeu.user_id = ? AND event_date > current_date OR (event_date = current_date AND event_hour > (current_time + INTERVAL 2 HOUR)) 
-        ORDER BY event_date, event_hour LIMIT 0, 21');
+        $req = $db->prepare('INSERT INTO assoc_events_users(event_id, user_id)
+        VALUES (?, ?)');
+        $req->execute(array($eventId, $userId));
 
-        $req->execute(array($userId));
+        return $req;
+    }
+
+    public function deleteParticipantByEvent($eventId, $userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM assoc_events_users
+        WHERE event_id = ? AND user_id = ?');
+        $req->execute(array($eventId, $userId));
 
         return $req;
     }

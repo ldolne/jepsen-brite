@@ -16,9 +16,48 @@ $parsdown = new Parsedown();
                                 <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block">Create an event</button></a></em></p>
                             <?php } ?>
                         </div>
+                <?php if (!empty($_SESSION['username'])) {
+                    $isParticipating = false;
+
+                    foreach($participantsArr as $participant)
+                    {
+                        if ($_SESSION['id'] == $participant['id'])
+                        {
+                            $isParticipating = true;
+                        }
+                    }
+
+                    if($isParticipating == true)
+                    {
+                        ?>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2 col-5">
+                                <a href="./index.php?action=unregisterFromEvent&amp;id=<?= $event['id'] ?>">
+                                    <button class="btn btn-secondary">Participating</button>
+                                </a>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    else
+                    {
+                        ?>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2 col-5">
+                                <a href="./index.php?action=registerToEvent&amp;id=<?= $event['id'] ?>">
+                                    <button class="btn btn-primary">Participate</button>
+                                </a>
+                            </div>
+                        </div>
+                        <?php
+                    }
+
+                    $participants->closeCursor();
+                }
+                ?>
                         <div class="d-flex justify-content-start">
                             <div class="image-container">
-                                <img src="./public/img/events_img/<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
+                                <img src="<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
                             </div>
                             <div class="ml-auto">
                                 <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
@@ -85,6 +124,31 @@ $parsdown = new Parsedown();
                                         </div>
                                         <div class="col-md-8 col-6">
                                             <?= htmlspecialchars($event['username']) ?>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Participants:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            <?php
+                                            if (!empty($participantsArr))
+                                            {
+                                                echo "<ul>";
+                                                foreach ($participantsArr as $participant)
+                                                {
+                                                    ?>
+                                                    <li><?= htmlspecialchars($participant['username']) ?></li>
+                                                    <?php
+                                                }
+                                                echo "</ul>";
+                                            }
+                                            else
+                                            {
+                                                echo "None. Be the first one to take part in this event!";
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                     <hr />
@@ -165,6 +229,7 @@ $parsdown = new Parsedown();
     </div>
 <?php
 $eventReq->closeCursor();
+$participants->closeCursor();
 $comments->closeCursor();
 ?>
 <?php $content = ob_get_clean(); ?>

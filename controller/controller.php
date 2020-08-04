@@ -359,7 +359,10 @@ function showEvent($message = NULL)
     $commentManager = new CommentManager();
 
     $eventReq = $eventManager->getEvent($_GET['id']);
+    $participants = $eventManager->getParticipantsByEvent($_GET['id']);
+    $participantsArr = $participants->fetchAll();
     $comments = $commentManager->getComments($_GET['id']);
+
     if(isset($_SESSION['id']))
     {
         $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
@@ -487,3 +490,52 @@ function addComment($eventId, $authorId, $comment)
         header('Location: ./index.php?action=showEvent&id=' . $eventId);
     }
 }*/
+
+function registerToEvent($eventId, $userId)
+{
+    $eventManager = new EventManager();
+
+    // Check if user's already taking part in the event
+    $existingParticipantReq = $eventManager->getOneParticipantByEvent($eventId, $userId);
+    $existingParticipant = $existingParticipantReq->fetch();
+
+    if($existingParticipant != false)
+    {
+        throw new Exception("You're already participating, so you can't register again.");
+    }
+    else
+    {
+        // User's not yet participating
+        $affectedLines = $eventManager->createParticipantByEvent($eventId, $userId);
+
+        if ($affectedLines === false) {
+            throw new Exception('Problem while registering for this event. Please try again.');
+        } else {
+            header('Location: ./index.php?action=showEvent&id=' . $eventId . '&isParticipating=true');
+        }
+    }
+}
+
+function unregisterFromEvent($eventId, $userId)
+{
+    $eventManager = new EventManager();
+
+    // Check if user's indeed taking part in the event
+    $existingParticipantReq = $eventManager->getOneParticipantByEvent($eventId, $userId);
+    $existingParticipant = $existingParticipantReq->fetch();
+
+    if($existingParticipant === false)
+    {
+        throw new Exception("You're not participating, so you can't unregister.");
+    }
+    else
+    {
+        $affectedLines = $eventManager->deleteParticipantByEvent($eventId, $userId);
+
+        if ($affectedLines === false) {
+            throw new Exception('Problem while unregistrering from this event. Please try again.');
+        } else {
+            header('Location: ./index.php?action=showEvent&id=' . $eventId);
+        }
+    }
+}
