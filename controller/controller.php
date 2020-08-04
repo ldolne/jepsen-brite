@@ -133,7 +133,7 @@ function actualInscription() {
 
 function getConnectionPage() {
     $message ='';
-    require('./view/loging.php');
+    require('./view/login.php');
 }
 
 function login() {
@@ -150,7 +150,7 @@ function login() {
         if ($isPasswordCorrect == false){
             $message = "This user doesn't exist or this is not the right password";
             $message = showInfoMessage($message, False);
-            require('./view/loging.php');
+            require('./view/login.php');
         }
         else {
             $_SESSION["id"]= $result['id'];
@@ -161,12 +161,12 @@ function login() {
             }
             $message= "Connection successful";
             $message = showInfoMessage($message, true);
-            require('./view/loging.php');
+            require('./view/login.php');
         }
     }
     else {
         $message = "This user doesn't exist or this is not the right password";
-        require('./view/loging.php');
+        require('./view/login.php');
     }
 }
 
@@ -190,7 +190,7 @@ function modifyProfilePage(){
     $message='';
     $passwordError = '';
     $usernameError ='';
-    require('./view/modifyprofileview.php');
+    require('./view/modifyProfileView.php');
     
 }
 
@@ -252,11 +252,11 @@ function profileModification() {
         if (isset($_POST['stayconnected'])){
             setcookie('username', $username, time() + 30*24*3600, null, null, false, true);
         }
-        require('./view/modifyprofileview.php');
+        require('./view/modifyProfileView.php');
     }
     else{
         $message = '';
-        require('./view/modifyprofileview.php');
+        require('./view/modifyProfileView.php');
     }    
 }
 
@@ -300,7 +300,7 @@ function AllCategoryController()
 {
     $categoryManager = new CategoryManager();
     $search = $categoryManager->AllCategoryModel();
-    require('./view/event.php');
+    require('./view/eventsByCategory');
 }
 
 function OneCategoryController()
@@ -310,7 +310,7 @@ function OneCategoryController()
     if ($search === null) {
         throw new Exception('No result.');
     } else {
-        require('./view/event.php');
+        require('./view/eventsByCategory');
     }
 }
 
@@ -347,7 +347,7 @@ function showEvent($message = NULL)
 
     if (!empty($event))
     {
-        require('./view/oneEvent.php');
+        require('./view/oneeventsByCategory');
     }
     else
     {
@@ -374,7 +374,7 @@ function handleEvent()
 
 function showEventCreationPage($message = null)
 {
-    require('./view/addEvent.php');
+    require('./view/addeventsByCategory');
 }
 
 function createNewEvent($imageName)
@@ -400,7 +400,7 @@ function createNewEvent($imageName)
 
 function showEventModificationPage($event, $message = null)
 {
-    require('./view/modifyEvent.php');
+    require('./view/modifyeventsByCategory');
 }
 
 function updateExistingEvent($imageName)
