@@ -133,7 +133,7 @@ function actualInscription() {
 
 function getConnectionPage() {
     $message ='';
-    require('./view/loging.php');
+    require('./view/login.php');
 }
 
 function login() {
@@ -150,7 +150,7 @@ function login() {
         if ($isPasswordCorrect == false){
             $message = "This user doesn't exist or this is not the right password";
             $message = showInfoMessage($message, False);
-            require('./view/loging.php');
+            require('./view/login.php');
         }
         else {
             $_SESSION["id"]= $result['id'];
@@ -161,12 +161,12 @@ function login() {
             }
             $message= "Connection successful";
             $message = showInfoMessage($message, true);
-            require('./view/loging.php');
+            require('./view/login.php');
         }
     }
     else {
         $message = "This user doesn't exist or this is not the right password";
-        require('./view/loging.php');
+        require('./view/login.php');
     }
 }
 
@@ -190,7 +190,7 @@ function modifyProfilePage(){
     $message='';
     $passwordError = '';
     $usernameError ='';
-    require('./view/modifyprofileview.php');
+    require('./view/modifyProfileView.php');
     
 }
 
@@ -252,11 +252,11 @@ function profileModification() {
         if (isset($_POST['stayconnected'])){
             setcookie('username', $username, time() + 30*24*3600, null, null, false, true);
         }
-        require('./view/modifyprofileview.php');
+        require('./view/modifyProfileView.php');
     }
     else{
         $message = '';
-        require('./view/modifyprofileview.php');
+        require('./view/modifyProfileView.php');
     }    
 }
 
@@ -300,7 +300,7 @@ function AllCategoryController()
 {
     $categoryManager = new CategoryManager();
     $search = $categoryManager->AllCategoryModel();
-    require('./view/event.php');
+    require('./view/eventsByCategory.php');
 }
 
 function OneCategoryController()
@@ -310,7 +310,7 @@ function OneCategoryController()
     if ($search === null) {
         throw new Exception('No result.');
     } else {
-        require('./view/event.php');
+        require('./view/eventsByCategory.php');
     }
 }
 
@@ -337,7 +337,10 @@ function showEvent($message = NULL)
     $commentManager = new CommentManager();
 
     $eventReq = $eventManager->getEvent($_GET['id']);
+    $participants = $eventManager->getParticipantsByEvent($_GET['id']);
+    $participantsArr = $participants->fetchAll();
     $comments = $commentManager->getComments($_GET['id']);
+
     if(isset($_SESSION['id']))
     {
         $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
@@ -465,3 +468,52 @@ function addComment($eventId, $authorId, $comment)
         header('Location: ./index.php?action=showEvent&id=' . $eventId);
     }
 }*/
+
+function registerToEvent($eventId, $userId)
+{
+    $eventManager = new EventManager();
+
+    // Check if user's already taking part in the event
+    $existingParticipantReq = $eventManager->getOneParticipantByEvent($eventId, $userId);
+    $existingParticipant = $existingParticipantReq->fetch();
+
+    if($existingParticipant != false)
+    {
+        throw new Exception("You're already participating, so you can't register again.");
+    }
+    else
+    {
+        // User's not yet participating
+        $affectedLines = $eventManager->createParticipantByEvent($eventId, $userId);
+
+        if ($affectedLines === false) {
+            throw new Exception('Problem while registering for this event. Please try again.');
+        } else {
+            header('Location: ./index.php?action=showEvent&id=' . $eventId . '&isParticipating=true');
+        }
+    }
+}
+
+function unregisterFromEvent($eventId, $userId)
+{
+    $eventManager = new EventManager();
+
+    // Check if user's indeed taking part in the event
+    $existingParticipantReq = $eventManager->getOneParticipantByEvent($eventId, $userId);
+    $existingParticipant = $existingParticipantReq->fetch();
+
+    if($existingParticipant === false)
+    {
+        throw new Exception("You're not participating, so you can't unregister.");
+    }
+    else
+    {
+        $affectedLines = $eventManager->deleteParticipantByEvent($eventId, $userId);
+
+        if ($affectedLines === false) {
+            throw new Exception('Problem while unregistrering from this event. Please try again.');
+        } else {
+            header('Location: ./index.php?action=showEvent&id=' . $eventId);
+        }
+    }
+}

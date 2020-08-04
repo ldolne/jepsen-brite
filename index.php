@@ -258,6 +258,22 @@ try {
                     throw new Exception("No permission to delete this event. You're not the author of it.");
                 }
             }*/
+            else if($_GET['action'] == 'registerToEvent')
+            {
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    registerToEvent($_GET['id'], $_SESSION['id']);
+                } else {
+                    throw new Exception('No event ID sent.');
+                }
+            }
+            else if($_GET['action'] == 'unregisterFromEvent')
+            {
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    unregisterFromEvent($_GET['id'], $_SESSION['id']);
+                } else {
+                    throw new Exception('No event ID sent.');
+                }
+            }
         }
         else
         {

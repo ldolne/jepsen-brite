@@ -99,4 +99,48 @@ class EventManager extends Manager
 
         return $affectedLines;
     }
+
+    public function getParticipantsByEvent($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT u.id, u.username
+        FROM users AS u 
+        INNER JOIN assoc_events_users AS aeu
+        ON u.id = aeu.user_id
+        WHERE aeu.event_id = ?');
+        $req->execute(array($eventId));
+
+        return $req;
+    }
+
+    public function getOneParticipantByEvent($eventId, $userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT aeu.event_id, aeu.user_id
+        FROM assoc_events_users AS aeu 
+        WHERE aeu.event_id = ? AND aeu.user_id = ?');
+        $req->execute(array($eventId, $userId));
+
+        return $req;
+    }
+
+    public function createParticipantByEvent($eventId, $userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('INSERT INTO assoc_events_users(event_id, user_id)
+        VALUES (?, ?)');
+        $req->execute(array($eventId, $userId));
+
+        return $req;
+    }
+
+    public function deleteParticipantByEvent($eventId, $userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM assoc_events_users
+        WHERE event_id = ? AND user_id = ?');
+        $req->execute(array($eventId, $userId));
+
+        return $req;
+    }
 }

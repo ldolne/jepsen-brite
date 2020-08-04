@@ -21,7 +21,7 @@
 <body>
     <div class="container">
         <?php require('./view/header.php') ?>
-        <?php require('./view/nav-bar.php') ?>
+        <?php require('./view/navBar.php') ?>
 
         <?php
         if (isset($message))
