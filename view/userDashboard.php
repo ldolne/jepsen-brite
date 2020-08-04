@@ -3,9 +3,10 @@
 <?php ob_start(); ?>
 
 <main role="main" class="container">
-    <div class="row">
 
-        <div class="card col-md-12 pr-1 pl-1 mb-3">
+    <div class="row d-flex justify-content-between">
+
+        <div class="card col-md-6 pr-1 pl-1">
                 
             <div class="card-header">
                 <h2>Events created</h2>
@@ -13,7 +14,7 @@
 
             <ul class="list-group list-group-flush">
                 <?php
-                    while ($data = $events->fetch()) {
+                    while ($data = $userEvents->fetch()) {
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-baseline">
                     <div>
@@ -30,15 +31,11 @@
                     <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
                 </li>
                 <?php }
-                    $events->closeCursor(); 
+                    $userEvents->closeCursor(); 
                 ?>
             </ul>
-        
+
         </div>
-
-    </div>
-
-    <div class="row d-flex justify-content-between">
 
         <div class="card col-md-6 pr-1 pl-1">
                 
@@ -65,13 +62,9 @@
                     <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
                 </li>
                 <?php }
-                    $events->closeCursor(); 
+                    $upcomingParticip->closeCursor(); 
                 ?>
             </ul>
-             
-        </div>
-
-        <div class="card col-md-6 pr-1 pl-1">
                 
             <div class="card-header">
                 <h2>Past events participations</h2>
@@ -96,11 +89,12 @@
                     <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
                 </li>
                 <?php }
-                    $events->closeCursor(); 
+                    $pastParticip->closeCursor(); 
                 ?>
             </ul>
              
         </div>
+
     </div><!-- /.row -->
 </main><!-- /.container -->
 

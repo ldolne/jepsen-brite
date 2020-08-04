@@ -306,7 +306,7 @@ function getUserDashboard(){
     $userId = $result['id'];
 
     $eventManager = new EventManager(); 
-    $events = $eventManager->getUserEvents($userId);
+    $userEvents = $eventManager->getUserEvents($userId);
 
     $getPast = new EventManager();
     $pastParticip = $getPast->getPastParticip($userId);
