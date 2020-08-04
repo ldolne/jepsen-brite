@@ -1,11 +1,15 @@
 <?php
 require('./controller/controller.php');
+require('./controller/controllerTest.php');
+
 
 // ROUTER
 
 session_start();
-if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
-&& isset($_COOKIE['id']) && !empty($_COOKIE['id'])){
+if (
+    isset($_COOKIE['username']) && !empty($_COOKIE['username'])
+    && isset($_COOKIE['id']) && !empty($_COOKIE['id'])
+) {
     cookieVerification();
 }
 
@@ -16,26 +20,23 @@ try {
 
         // NO RESTRICTED PAGES
         if ($_GET['action'] == 'inscription') {
-            if (!empty($_POST['username'])
+            if (
+                !empty($_POST['username'])
                 && !empty($_POST['password'])
                 && !empty($_POST['passwordcheck'])
-                && !empty($_POST['email'])) {
+                && !empty($_POST['email'])
+            ) {
                 actualInscription();
-            } 
-            else {
+            } else {
                 getInscriptionPage();
             }
-        } 
-        
-        elseif ($_GET['action'] == 'connection') {
+        } elseif ($_GET['action'] == 'connection') {
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
                 login();
-            } 
-            else {
+            } else {
                 getConnectionPage();
             }
-        } 
-        elseif ($_GET['action'] == 'deconnection') {
+        } elseif ($_GET['action'] == 'deconnection') {
             deconnection();
         }
 
@@ -45,6 +46,14 @@ try {
         } elseif ($_GET["action"] == "allcategorycontroller") {
             AllCategoryController();
         }
+
+
+        // SUBCATEGORY ACTIONS
+        elseif ($_GET["action"] == "allsubcategoriesController") {
+            AllSubCategoriesController();
+        }
+
+
 
         // EVENT AND COMMENT ACTIONS
         else if ($_GET['action'] == 'listPastEvents') {
@@ -58,15 +67,19 @@ try {
         }
 
         // RESTRICTED PAGES
-        elseif (isset($_SESSION['username']) && !empty($_SESSION['username']) &&
-            isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+        elseif (
+            isset($_SESSION['username']) && !empty($_SESSION['username']) &&
+            isset($_SESSION['id']) && !empty($_SESSION['id'])
+        ) {
 
             // USER ACTIONS
             if ($_GET['action'] == 'profile') {
                 getProfilePage();
             } elseif ($_GET['action'] == 'modifyprofile') {
-                if (!empty($_POST['username'])
-                    || (!empty($_POST['password']) && $_POST['password'] == $_POST['passwordcheck'])) {
+                if (
+                    !empty($_POST['username'])
+                    || (!empty($_POST['password']) && $_POST['password'] == $_POST['passwordcheck'])
+                ) {
                     profileModification();
                 } else {
                     modifyProfilePage();
@@ -91,12 +104,14 @@ try {
                     throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == "createNewEvent") {
-                if (isset($_POST['title']) && !empty($_POST['title'])
+                if (
+                    isset($_POST['title']) && !empty($_POST['title'])
                     && isset($_POST['event_date']) && !empty($_POST['event_date'])
                     && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
                     && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                     && isset($_POST['description']) && !empty($_POST['description'])
-                    && isset($_POST['category_id']) && !empty($_POST['category_id'])) {
+                    && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                ) {
 
                     $_POST['title'] = htmlspecialchars($_POST['title']);
                     $_POST['description'] = htmlspecialchars($_POST['description']);
@@ -129,31 +144,33 @@ try {
                         $message = 'The image cannot be larger than 2MB.';
                         showEventModificationPage($event, showInfoMessage($message, false));
                     }
-                } else if (isset($_POST['title']) && !empty($_POST['title'])
+                } else if (
+                    isset($_POST['title']) && !empty($_POST['title'])
                     && isset($_POST['event_date']) && !empty($_POST['event_date'])
                     && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
                     && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
                     && isset($_POST['description']) && !empty($_POST['description'])
-                    && isset($_POST['category_id']) && !empty($_POST['category_id']))
-                {
+                    && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                ) {
                     $defaultImage = "default.gif";
                     createNewEvent($defaultImage);
                 } else {
                     $message = 'You have to fill up all fields.';
                     showEventCreationPage(showInfoMessage($message, false));
                 }
-            }
-            else if ($_GET['action'] == "updateExistingEvent") {
+            } else if ($_GET['action'] == "updateExistingEvent") {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     $event = handleEvent();
 
-                    if (isset($_POST['title']) && !empty($_POST['title'])
+                    if (
+                        isset($_POST['title']) && !empty($_POST['title'])
                         && isset($_POST['event_date']) && !empty($_POST['event_date'])
                         && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
                         && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                         && isset($_POST['description']) && !empty($_POST['description'])
-                        && isset($_POST['category_id']) && !empty($_POST['category_id'])) {
-                        
+                        && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                    ) {
+
 
                         $_POST['title'] = htmlspecialchars($_POST['title']);
                         $_POST['description'] = htmlspecialchars($_POST['description']);
@@ -165,14 +182,12 @@ try {
                             $uploadExtension = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
 
                             if (in_array($uploadExtension, $validExtensions)) {
-                                if($event['image'] === "default.gif")
-                                {
+                                if ($event['image'] === "default.gif") {
                                     $randomNumber = 20;
                                     $randomString = bin2hex(random_bytes($randomNumber));
 
                                     $imageFileName = $_SESSION['id'] . "_" . $randomString . "." . $uploadExtension;
-                                }
-                                else {
+                                } else {
                                     $imageFromDb = explode('.', $event['image']);
                                     $imageFileName = $imageFromDb[0] . "." . $uploadExtension;
                                 }
@@ -193,21 +208,20 @@ try {
                             $message = 'The image cannot be larger than 2MB.';
                             showEventModificationPage($event, showInfoMessage($message, false));
                         }
-                    } else if (isset($_POST['title']) && !empty($_POST['title'])
-                            && isset($_POST['event_date']) && !empty($_POST['event_date'])
-                            && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
-                            && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
-                            && isset($_POST['description']) && !empty($_POST['description'])
-                            && isset($_POST['category_id']) && !empty($_POST['category_id']))
-                    {
-                            updateExistingEvent($event['image']);
+                    } else if (
+                        isset($_POST['title']) && !empty($_POST['title'])
+                        && isset($_POST['event_date']) && !empty($_POST['event_date'])
+                        && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
+                        && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
+                        && isset($_POST['description']) && !empty($_POST['description'])
+                        && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                    ) {
+                        updateExistingEvent($event['image']);
                     } else {
                         $message = 'You have to fill up all fields.';
                         showEventModificationPage($event, showInfoMessage($message, false));
                     }
-                }
-                else
-                {
+                } else {
                     throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingEvent') {
@@ -244,21 +258,17 @@ try {
                     throw new Exception("No permission to delete this event. You're not the author of it.");
                 }
             }*/
-        }
-        else
-        {
+        } else {
             throw new Exception('The URL given is wrong or you have to sign in to access this functionality.');
         }
     } else {
         getIndexPage();
     }
-}
-
-catch(Exception $e) // If an error is detected anywhere in the code, it come back up here. 
-{   $errorMsg = "Error(s): ";
+} catch (Exception $e) // If an error is detected anywhere in the code, it come back up here. 
+{
+    $errorMsg = "Error(s): ";
     $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Get the right thrown exception error message and display it.
-    if(isset($_SERVER['HTTP_REFERER']))
-    {
+    if (isset($_SERVER['HTTP_REFERER'])) {
         $previousURL = $_SERVER['HTTP_REFERER'];
     }
 

@@ -4,7 +4,7 @@ require_once('Manager.php');
 
 class SubCategoriesManager extends Manager
 {
-    public function SubCategoriesModel()
+    public function AllSubCategoriesModel()
     {
         $bdd = $this->dbConnect();
         $req = $bdd->query(
@@ -21,4 +21,5 @@ class SubCategoriesManager extends Manager
 
         return $req;
     }
+
 }

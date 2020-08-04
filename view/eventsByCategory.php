@@ -16,9 +16,29 @@
             </div>
             <br />
             <div class="search">
-                <a href="#"><button class="btn btn-success">One</button></a>
-                <a href="#"><button class="btn btn-success">Two</button></a>
-                <a href="#"><button class="btn btn-success">Three</button></a>
+                <a href="./index.php?action=allsubcategoriesController"><button class="btn btn-success">All</button></a> <br />
+
+                <a href="#"><button class="btn btn-success">Metal</button></a>
+                <a href="#"><button class="btn btn-success">Classic</button></a>
+                <a href="#"><button class="btn btn-success">EDM</button></a><br />
+
+                <a href="#"><button class="btn btn-success">Contemporary art</button></a>
+                <a href="#"><button class="btn btn-success">Photography</button></a>
+                <a href="#"><button class="btn btn-success">Historical</button></a><br />
+
+                <a href="#"><button class="btn btn-success">Political</button></a>
+                <a href="#"><button class="btn btn-success">Environmental</button></a>
+                <a href="#"><button class="btn btn-success">Educational</button></a><br />
+
+                <a href="#"><button class="btn btn-success">Musical</button></a>
+                <a href="#"><button class="btn btn-success">Environmental</button></a>
+                <a href="#"><button class="btn btn-success">Social</button></a><br />
+
+                <a href="#"><button class="btn btn-success">FPS</button></a>
+                <a href="#"><button class="btn btn-success">RPG</button></a>
+                <a href="#"><button class="btn btn-success">MOBA</button></a><br />
+
+
 
             </div>
             <br />
@@ -61,7 +81,7 @@
                             </td>
                             <td>PLACE</td>
                             <td> <?php echo $data['category']; ?></td>
-                            <td>Sub-caregory</td>
+                            <td>SubCategories</td>
                             <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
                         </tr>
                     <?php }
