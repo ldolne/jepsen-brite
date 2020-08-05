@@ -1,18 +1,7 @@
 <?php
 // ALL CONTROLLERS TO WHICH POINTS THE ROUTER
 
-// Chargement des classes
-require_once('./model/UserManager.php');
-require_once('./model/CategoryManager.php');
-require_once('./model/EventManager.php');
-require_once('./model/CommentManager.php');
-
-// Autres
-require_once('./require/functions.php');
-require_once('./require/configs.php');
-
-// uncomment for Heroku
-//require 'vendor/autoload.php';
+require_once('./autoloader.php');
 
 // USER FUNCTIONS
 function cookieVerification() {

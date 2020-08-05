@@ -1,18 +1,24 @@
 <?php
+// ROUTER
 
 // requires
-require_once('controller/controller.php');
-//require_once('require/configs.php');
+//require_once('controller/controller.php');
+//require_once('autoloader.php');
+//spl_autoload_register();
 
-// Session Start
+require_once ("./controller/EventController.php");
+
+// session start
 session_start();
 if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
 && isset($_COOKIE['id']) && !empty($_COOKIE['id'])){
     cookieVerification();
 }
 
-// ROUTER
+// Controllers declaration
+$eventController = new controller\EventController();
 
+// routing
 try {
     if (isset($_GET['action'])) {
 
@@ -52,10 +58,10 @@ try {
 
         // EVENT AND COMMENT ACTIONS
         else if ($_GET['action'] == 'listPastEvents') {
-            listPastEvents();
+            $eventController->listPastEvents();
         } else if ($_GET['action'] == 'showEvent') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
-                showEvent();
+                $eventController->showEvent();
             } else {
                 throw new Exception('No event ID sent.');
             }
@@ -83,13 +89,13 @@ try {
 
             // EVENT AND COMMENT ACTIONS
             else if ($_GET['action'] == "showEventCreationPage") {
-                showEventCreationPage();
+                $eventController->showEventCreationPage();
             } else if ($_GET['action'] == "showEventModificationPage") {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $event = handleEvent();
+                    $event = $eventController->handleEvent();
 
                     if ($_SESSION['id'] == $event['author_id']) {
-                        showEventModificationPage($event);
+                        $eventController->showEventModificationPage($event);
                     } else {
                         throw new Exception("No permission to modify this event. You're not the author of it.");
                     }
@@ -123,17 +129,17 @@ try {
                                 array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
 
                             if ($resultUpload != null) {
-                                createNewEvent($resultUpload["secure_url"]);
+                                $eventController->createNewEvent($resultUpload["secure_url"]);
                             } else {
                                 throw new Exception('There has been a problem during the upload of your image. Please try again.');
                             }
                         } else {
                             $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
-                            showEventModificationPage($event, showInfoMessage($message, false));
+                            $eventController->showEventModificationPage($event, showInfoMessage($message, false));
                         }
                     } else {
                         $message = 'The image cannot be larger than 2MB.';
-                        showEventModificationPage($event, showInfoMessage($message, false));
+                        $eventController->showEventModificationPage($event, showInfoMessage($message, false));
                     }
                 } else if (isset($_POST['title']) && !empty($_POST['title'])
                     && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -143,15 +149,15 @@ try {
                     && isset($_POST['category_id']) && !empty($_POST['category_id']))
                 {
                     $defaultImage = "https://res.cloudinary.com/dudwqzfzp/image/upload/v1596617340/jepsen-brite/events_img/default_znnszq.gif";
-                    createNewEvent($defaultImage);
+                    $eventController->createNewEvent($defaultImage);
                 } else {
                     $message = 'You have to fill up all fields.';
-                    showEventCreationPage(showInfoMessage($message, false));
+                    $eventController->showEventCreationPage(showInfoMessage($message, false));
                 }
             }
             else if ($_GET['action'] == "updateExistingEvent") {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $event = handleEvent();
+                    $event = $eventController->handleEvent();
 
                     if (isset($_POST['title']) && !empty($_POST['title'])
                         && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -190,17 +196,17 @@ try {
                                     array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
 
                                 if ($resultUpload != null) {
-                                    updateExistingEvent($resultUpload["secure_url"]);
+                                    $eventController->updateExistingEvent($resultUpload["secure_url"]);
                                 } else {
                                     throw new Exception('There has been a problem during the upload of your image. Please try again.');
                                 }
                             } else {
                                 $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
-                                showEventModificationPage($event, showInfoMessage($message, false));
+                                $eventController->showEventModificationPage($event, showInfoMessage($message, false));
                             }
                         } else {
                             $message = 'The image cannot be larger than 2MB.';
-                            showEventModificationPage($event, showInfoMessage($message, false));
+                            $eventController->showEventModificationPage($event, showInfoMessage($message, false));
                         }
                     } else if (isset($_POST['title']) && !empty($_POST['title'])
                             && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -209,10 +215,10 @@ try {
                             && isset($_POST['description']) && !empty($_POST['description'])
                             && isset($_POST['category_id']) && !empty($_POST['category_id']))
                     {
-                            updateExistingEvent($event['image']);
+                        $eventController->updateExistingEvent($event['image']);
                     } else {
                         $message = 'You have to fill up all fields.';
-                        showEventModificationPage($event, showInfoMessage($message, false));
+                        $eventController->showEventModificationPage($event, showInfoMessage($message, false));
                     }
                 }
                 else
@@ -220,10 +226,10 @@ try {
                     throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingEvent') {
-                $event = handleEvent();
+                $event = $eventController->handleEvent();
                 if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
-                        deleteExistingEvent();
+                        $eventController->deleteExistingEvent();
                     } else {
                         throw new Exception('No event ID sent.');
                     }
@@ -256,7 +262,7 @@ try {
             else if($_GET['action'] == 'registerToEvent')
             {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    registerToEvent($_GET['id'], $_SESSION['id']);
+                    $eventController->registerToEvent($_GET['id'], $_SESSION['id']);
                 } else {
                     throw new Exception('No event ID sent.');
                 }
@@ -264,7 +270,7 @@ try {
             else if($_GET['action'] == 'unregisterFromEvent')
             {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    unregisterFromEvent($_GET['id'], $_SESSION['id']);
+                    $eventController->unregisterFromEvent($_GET['id'], $_SESSION['id']);
                 } else {
                     throw new Exception('No event ID sent.');
                 }
@@ -275,7 +281,7 @@ try {
             throw new Exception('The URL given is wrong or you have to sign in to access this functionality.');
         }
     } else {
-        getIndexPage();
+        $eventController->getIndexPage();
     }
 }
 
