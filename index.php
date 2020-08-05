@@ -2,7 +2,7 @@
 
 // requires
 require_once('controller/controller.php');
-require_once('require/configs.php');
+//require_once('require/configs.php');
 
 // Session Start
 session_start();
@@ -119,9 +119,6 @@ try {
 
                             $imageFileName = $_SESSION['id'] . "_" . $randomString;
 
-                            //$path = "public/img/events_img/" . $imageFileName; // needs to generate randow image name for the event
-                            //$resultMove = move_uploaded_file($_FILES['image']['tmp_name'], $path); // Déplace image du dossier temporaire où serveur l'a loadé jusque dans dossier désiré
-
                             $resultUpload = \Cloudinary\Uploader::upload($_FILES['image']['tmp_name'],
                                 array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
 
@@ -145,8 +142,7 @@ try {
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id']))
                 {
-                    // TODO CLOUDINARY
-                    $defaultImage = "default.gif";
+                    $defaultImage = "https://res.cloudinary.com/dudwqzfzp/image/upload/v1596617340/jepsen-brite/events_img/default_znnszq.gif";
                     createNewEvent($defaultImage);
                 } else {
                     $message = 'You have to fill up all fields.';
@@ -174,10 +170,12 @@ try {
                         if ($_FILES['image']['size'] <= $imageMaxSize) {
                             $uploadExtension = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
 
-                            // TODO MAJ AVEC CLOUDINARY
-
                             if (in_array($uploadExtension, $validExtensions)) {
-                                if($event['image'] === "default")
+                                $defaultImage = "default_znnszq";
+                                $imageFromDbArr = explode('.', substr((strrchr($event['image'], '/')), 1));
+                                $imageFromDb = $imageFromDbArr[0];
+
+                                if($imageFromDb === $defaultImage)
                                 {
                                     $randomNumber = 20;
                                     $randomString = bin2hex(random_bytes($randomNumber));
@@ -185,19 +183,14 @@ try {
                                     $imageFileName = $_SESSION['id'] . "_" . $randomString;
                                 }
                                 else {
-                                    $imageFromDb = explode('.', $event['image']);
-                                    $imageFileName = $imageFromDb[0] . "." . $uploadExtension;
+                                    $imageFileName = $imageFromDb;
                                 }
-
-                                //$path = "public/img/events_img/" . $imageFileName; // needs to generate randow image name for the event
-                                //$result = move_uploaded_file($_FILES['image']['tmp_name'], $path);
 
                                 $resultUpload = \Cloudinary\Uploader::upload($_FILES['image']['tmp_name'],
                                     array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
 
                                 if ($resultUpload != null) {
                                     updateExistingEvent($resultUpload["secure_url"]);
-                                    // TODO MAJ AVEC CLOUDINARY
                                 } else {
                                     throw new Exception('There has been a problem during the upload of your image. Please try again.');
                                 }
@@ -248,18 +241,18 @@ try {
                 } else {
                     throw new Exception('No event ID sent.');
                 }
-            } /*else if ($_GET['action'] == 'deleteComment') {
-                $comment = handleEvent();
-                if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
-                    if (isset($_GET['id']) && $_GET['id'] > 0) {
-                        deleteExistingEvent();
+            } else if ($_GET['action'] == 'deleteExistingComment') {
+                $comment = handleComment();
+                if (isset($_SESSION['id']) && $_SESSION['id'] == $comment['author_id']) {
+                    if (isset($_GET['comment_id']) && $_GET['comment_id'] > 0) {
+                        deleteExistingComment();
                     } else {
-                        throw new Exception('No event ID sent.');
+                        throw new Exception('No comment ID sent.');
                     }
                 } else {
-                    throw new Exception("No permission to delete this event. You're not the author of it.");
+                    throw new Exception("No permission to delete this comment. You're not the author of it.");
                 }
-            }*/
+            }
             else if($_GET['action'] == 'registerToEvent')
             {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {

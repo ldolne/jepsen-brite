@@ -9,6 +9,7 @@ require_once('./model/CommentManager.php');
 
 // Autres
 require_once('./require/functions.php');
+require_once('./require/configs.php');
 
 // uncomment for Heroku
 //require 'vendor/autoload.php';
@@ -397,6 +398,23 @@ function handleEvent()
     }
 }
 
+function handleComment()
+{
+    $commentManager = new CommentManager();
+
+    $commentReq = $commentManager->getComment($_GET['comment_id']);
+    $comment = $commentReq->fetch();
+
+    if (empty($comment))
+    {
+        throw new Exception('Comment ID does not exist.');
+    }
+    else
+    {
+        return $comment;
+    }
+}
+
 function showEventCreationPage($message = null)
 {
     require('./view/addEvent.php');
@@ -452,6 +470,22 @@ function deleteExistingEvent()
 {
     $eventManager = new EventManager();
     $commentManager = new CommentManager();
+
+    // Deletion of Cloudinary image or video of the deleted event
+    $event = handleEvent();
+    $defaultImage = "default_znnszq";
+    $imageFromDbArr = explode('.', substr((strrchr($event['image'], '/')), 1));
+    $publicId = $imageFromDbArr[0];
+
+    if($publicId != $defaultImage)
+    {
+        $resultDestroy = \Cloudinary\Uploader::destroy('jepsen-brite/events_img/' . $publicId);
+
+        if ($resultDestroy == null) {
+            throw new Exception('There has been a problem during the deletion of the uploaded image of this event.');
+        }
+    }
+
     $EventsAffectedLines = $eventManager->deleteEvent($_GET['id']);
     $CommentsAffectedLines = $commentManager->deleteAllComments($_GET['id']);
 
@@ -478,18 +512,18 @@ function addComment($eventId, $authorId, $comment)
     }
 }
 
-/*function deleteComment($eventId, $commentId)
+function deleteExistingComment()
 {
     $commentManager = new CommentManager();
 
-    $affectedLines = $commentManager->deleteOneComment($commentId);
+    $affectedLines = $commentManager->deleteOneComment($_GET['comment_id']);
 
     if ($affectedLines === false) {
-        throw new Exception('Problem while adding a comment. Please try again.');
+        throw new Exception('Problem while deleting the comment. Please try again.');
     } else {
-        header('Location: ./index.php?action=showEvent&id=' . $eventId);
+        header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
     }
-}*/
+}
 
 function registerToEvent($eventId, $userId)
 {

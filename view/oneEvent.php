@@ -16,10 +16,10 @@ $parsdown = new Parsedown();
                                 <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block">Create an event</button></a></em></p>
                             <?php } ?>
                         </div>
-                <?php if (!empty($_SESSION['username']) AND ($event['event_date_formatted'] > date('d/m/y'))) { //CORRIGER
+                <?php if (!empty($_SESSION['username'])
+                    AND ($event['event_date'] > date('Y-m-d')
+                    OR ($event['event_date'] == date('Y-m-d') AND ($event['event_hour'] > date('h:i:s', time() + 2*3600))))) { // + 2 hours because of the server location
 
-                        //OR ($event['event_date_formatted'] == date('d/m/y')
-                          //      AND ($event['event_hour_formatted'] > (time() + 2*3600))))) {
                     $isParticipating = false;
 
                     foreach($participantsArr as $participant)
@@ -54,14 +54,6 @@ $parsdown = new Parsedown();
                         </div>
                         <?php
                     }
-
-                    $participants->closeCursor();
-                }
-                else
-                {
-                    ?>
-                    <p>HELLO</p>
-                        <?php
                 }
                 ?>
                         <div class="d-flex justify-content-start">
@@ -205,9 +197,18 @@ $parsdown = new Parsedown();
                             <div class="col-sm-3 col-md-2 col-5">
                                 <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
                             </div>
-                            <div class="col-md-8 col-6">
+                            <div class="col-sm-3 col-md-8 col-6">
                                 <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
                             </div>
+                            <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $comment['author_id']) {
+                            ?>
+                            <div class="col-sm-3 col-md-2 col-5">
+                                <a href="./index.php?action=deleteExistingComment&amp;id=<?= $event['id'] ?>&amp;comment_id=<?= $comment['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this comment?')) return false;">
+                                    <button class="btn btn-danger">Delete comment</button>
+                                </a>
+                            </div>
+                            <?php
+                            } ?>
                         </div>
                     </div>
                     <?php
