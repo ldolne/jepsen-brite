@@ -113,6 +113,7 @@ try {
                     && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                    && isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id'])
                 ) {
 
                     $_POST['title'] = htmlspecialchars($_POST['title']);
@@ -153,6 +154,9 @@ try {
                     && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                     && isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id'])
+
                 ) {
                     $defaultImage = "default.gif";
                     createNewEvent($defaultImage);
@@ -171,6 +175,8 @@ try {
                         && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                        && isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id'])
+
                     ) {
 
 
@@ -217,6 +223,8 @@ try {
                         && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                        && isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id'])
+
                     ) {
                         updateExistingEvent($event['image']);
                     } else {

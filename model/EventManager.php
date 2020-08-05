@@ -33,7 +33,9 @@ class EventManager extends Manager
     public function getEvent($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.title, e.author_id, e.event_date, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category 
+        $req = $db->prepare('SELECT e.id, e.title, e.author_id, e.event_date, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') 
+            AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\')
+            AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category
             FROM events AS e 
             INNER JOIN users AS u ON e.author_id = u.id 
             INNER JOIN categories AS c 
@@ -64,7 +66,7 @@ class EventManager extends Manager
 
     public function updateEvent($eventId, $title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId)
     {
-        $db =$this->dbConnect();
+        $db = $this->dbConnect();
         $req = $db->prepare('UPDATE events 
             SET title = :title, author_id = :author_id, event_date = :event_date, event_hour = :event_hour, image = :image, description = :description, category_id = :category_id 
             WHERE id = :id');
@@ -82,7 +84,7 @@ class EventManager extends Manager
 
     public function deleteEvent($eventId)
     {
-        $db =$this->dbConnect();
+        $db = $this->dbConnect();
         $req = $db->prepare('DELETE FROM events WHERE id = ?');
         $affectedLines = $req->execute(array($eventId));
 
@@ -91,7 +93,7 @@ class EventManager extends Manager
 
     public function updateEventAuthorWhenDeletedAccount($userId)
     {
-        $db =$this->dbConnect();
+        $db = $this->dbConnect();
         $req = $db->prepare('UPDATE events 
             SET author_id = 51
             WHERE author_id = ?');

@@ -115,10 +115,8 @@ h6 {
 }
 
 li {
-  list-style: none !important;
-  color: #fff;
+  list-style: none;
   padding: 10px;
-  font-size: 20px;
   text-decoration: none;
 }
 

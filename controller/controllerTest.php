@@ -18,8 +18,6 @@ function AllSubCategoriesController()
     require('./view/eventsByCategory.php');
 }
 
-
-// a modifier pour one sub categories
 function OneSubCategoryController()
 {
     $subCategoriesManager = new SubCategoriesManager();

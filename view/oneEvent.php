@@ -85,6 +85,15 @@ $parsdown = new Parsedown();
                             <hr />
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
+                                    <label style="font-weight:bold;">SubCategory</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    <?= htmlspecialchars($event['subcategory']) ?>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
                                     <label style="font-weight:bold;">Description</label>
                                 </div>
                                 <div class="col-md-8 col-6">

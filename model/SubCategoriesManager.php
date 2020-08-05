@@ -17,11 +17,13 @@ class SubCategoriesManager extends Manager
             INNER JOIN assoc_subcategories_events AS ase
             ON e.id = ase.event_id 
             inner join subcategories as s 
-            on s.id = ase.subcategory_id ');
+            on s.id = ase.subcategory_id '
+        );
 
         return $req;
     }
 
+    // If there are subcategories
     public function SubCategoryModel($SubCategoryId)
     {
         $bdd = $this->dbConnect();
@@ -41,4 +43,16 @@ class SubCategoriesManager extends Manager
         return $req;
     }
 
+// inner join of category ans subcategory
+    public function JoinCategoryAndSubCategoryModel($JoinCategoryAndSubCategory)
+    {
+        $bdd = $this->dbConnect();
+        $req = $bdd->prepare('SELECT c.category, s.subcategory 
+        FROM categories as c 
+        inner join subcategories as s 
+        on c.id = s.category_id');
+        $req->execute(array($JoinCategoryAndSubCategory));
+
+        return $req;
+    }
 }
