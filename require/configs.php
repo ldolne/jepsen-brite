@@ -1,7 +1,7 @@
 <?php
 
-require_once('vendor/cloudinary/cloudinary_php/src/Cloudinary.php');
-require_once('vendor/cloudinary/cloudinary_php/src/Uploader.php');
+require_once('./vendor/cloudinary/cloudinary_php/src/Cloudinary.php');
+require_once('./vendor/cloudinary/cloudinary_php/src/Uploader.php');
 
 \Cloudinary::config(array(
     "cloud_name" => "dudwqzfzp",
