@@ -47,7 +47,7 @@ class UserManager extends Manager
         return $request;
     }
 
-    public function getUserId() {
+    public function getUser() {
         $bdd = $this-> dbConnect();
         $request = $bdd-> prepare("SELECT * FROM `users` WHERE `id`= ?");
         return $request;

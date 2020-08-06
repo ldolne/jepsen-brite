@@ -154,7 +154,7 @@ $parsdown = new Parsedown();
                                     <hr />
 
                                     <div class="row">
-                                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
+                                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $isAdmin == "1") {
                                         ?>
                                         <div class="col-sm-3 col-md-2 col-5">
                                             <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
@@ -187,7 +187,7 @@ $parsdown = new Parsedown();
                     ?>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-3 col-md-2 col-5">
+                            <div class="col-sm-3 col-md-2 col-5" >
                                 <div class="image-container">
                                     <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
                                 </div>

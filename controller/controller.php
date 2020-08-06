@@ -270,7 +270,7 @@ function deleteAccount(){
     $result = $request -> fetch();
 
     // Update user's events and comments
-    $eventsAffectedLines = $eventManager->updateEventAuthorWhenDeletedAccount($result['id']);
+    $eventsAffectedLines = $eventManager->updateauthorManagerWhenDeletedAccount($result['id']);
     $commentsAffectedLines = $commentManager->updateCommentAuthorWhenDeletedAccount($result['id']);
 
     if ($eventsAffectedLines === false) {
@@ -299,7 +299,7 @@ function getUserDashboard(){
 
     // get created events
     $userManager = new UserManager();
-    $request = $userManager->getUserId();
+    $request = $userManager->getUser();
     $request -> execute(array($_SESSION['id']));
     $result = $request -> fetch();
 
@@ -367,8 +367,33 @@ function showEvent($message = NULL)
     {
         $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
         $userAvatar = $userAvatarReq->fetch();
+
+        // Get if the user of the session in an admin
+        $userManager = new UserManager();
+        $userReq = $userManager->getUser();
+        $userReq -> execute(array($_SESSION['id']));
+        $getAdmin = $userReq -> fetch(); 
+        $isAdmin = $getAdmin['isadmin'];
     }
     $event = $eventReq->fetch();
+
+    // Get if the author of the event is an admin
+   /* $authorManager = new UserManager();
+    $authorReq = $authorManager->getUser();
+    $authorReq->execute(array($event['author_id']));
+    $getAuthor = $authorReq->fetch();
+    $authorAdmin = $getAuthor['isadmin'];*/
+
+    //Get if the participant is an admin
+    /*foreach($participantsArr as $parti)
+    {
+        $particManager = new UserManager();
+        $particReq = $particManager->getUser();
+        $particReq->execute(array($parti['user_id']));
+        $getParticipant = $particReq->fetch();
+        $particAdmin = $getParticipant['isadmin'];
+
+    }*/
 
     if (!empty($event))
     {
