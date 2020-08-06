@@ -84,7 +84,10 @@
                 <tbody>
                 <?php
 
+
                 while ($data = $search->fetch()) {
+                    $subcategories = $subcategoryManager->getSubcategoriesByEvent($data['id']);
+                    $subcategoriesArr = $subcategories->fetchAll();
                     ?>
                     <tr>
                         <td>
@@ -103,12 +106,30 @@
                             <?php echo $data['category']; ?>
                         </td>
                         <td>
-                            <?php echo $data['subcategory']; ?>
+                            <?php
+                            if(!empty($subcategoriesArr))
+                            {
+                                $displaySubcategories = null;
+
+                                foreach($subcategoriesArr as $subcategory)
+                                {
+
+                                    $displaySubcategories .= $subcategory['subcategory'];
+                                }
+
+                                echo $displaySubcategories;
+                            }
+                            else
+                            {
+                                echo "None";
+                            }
+                            ?>
                         </td>
                         <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
                     </tr>
                 <?php }
-                $search->closeCursor(); ?>
+                $search->closeCursor();
+                $subcategories->closeCursor();?>
                 </tbody>
             </table>
         </div>

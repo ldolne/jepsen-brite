@@ -327,6 +327,7 @@ function getAdminDashboard()
 function AllCategoryController()
 {
     $categoryManager = new CategoryManager();
+    $subcategoryManager = new SubCategoriesManager();
     $search = $categoryManager->AllCategoryModel();
     require('./view/eventsByCategory.php');
 }
