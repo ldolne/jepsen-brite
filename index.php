@@ -96,6 +96,12 @@ try {
                 getUserDashboard();
             } elseif ($_GET['action'] == 'admindashboard') {
                 getAdminDashboard();
+            } else if ($_GET['action'] == 'makeadmin') {
+                makeAdmin();
+            } else if ($_GET['action'] == 'undoadmin') {
+                undoAdmin();
+            } else if ($_GET['action'] == 'admindelete') {
+                adminDeleteUser();
             }
 
             // EVENT AND COMMENT ACTIONS

@@ -28,7 +28,7 @@
                     <div class="mb-2 text-muted"><?= $data['category'] ?></div>
                     <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
                     <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
-                    <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go page of this event</a>
+                    <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go to page of this event</a>
                 </div>
             </div>
         </div>
