@@ -28,3 +28,4 @@ function OneSubCategoryController()
         require('./view/eventsByCategory.php');
     }
 }
+

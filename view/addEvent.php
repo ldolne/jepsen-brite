@@ -99,6 +99,11 @@
                     <INPUT type="checkbox" name="one" value="1"> one
                     <INPUT type="checkbox" name="two" value="2"> two
                     <INPUT type="checkbox" name="three" value="3"> three
+
+
+
+
+
                 </div>
                 <div class="form-group">
                     <label for="image">Image:</label>
