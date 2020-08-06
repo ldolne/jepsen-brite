@@ -289,18 +289,71 @@ class UserController
 
     public function getUserDashboard(){
         // get created events
-        $request = $this->userManager->getUserId();
+        $request = $this->userManager->getUser(); //TODO Caro
         $request -> execute(array($_SESSION['id']));
         $result = $request -> fetch();
 
         $userId = $result['id'];
 
         $userEvents = $this->eventManager->getUserEvents($userId);
-
         $pastParticip = $this->eventManager->getPastParticip($userId);
-
         $upcomingParticip = $this->eventManager->getUpcomingParticip($userId);
 
         require('./view/userDashboard.php');
+    }
+
+    public function getAdminDashboard()
+    {
+        $getUsers = $this->userManager->getUsers();
+        $usersArr = $getUsers->fetchAll();
+
+        require('./view/adminDashboard.php');
+    }
+
+    function makeAdmin()
+    {
+        $getUser = $this->userManager->getUser();
+        $getUser->execute(array($_GET['id']));
+        $user = $getUser -> fetch();
+
+        $toAdmin = $this->userManager->promoteToAdmin($user['id']);
+
+        header('Location: ./index.php?action=admindashboard');
+    }
+
+    function undoAdmin()
+    {
+        $getUser = $this->userManager->getUser();
+        $getUser->execute(array($_GET['id']));
+        $user = $getUser -> fetch();
+
+        $fromAdmin = $this->userManager->demoteFromAdmin($user['id']);
+
+        header('Location: ./index.php?action=admindashboard');
+    }
+
+    function adminDeleteUser()
+    {
+        $getUser = $this->userManager->getUser();
+        $getUser->execute(array($_GET['id']));
+        $user = $getUser -> fetch();
+
+        // Update user's events and comments
+        //$eventsAffectedLines = $this->eventManager->updateauthorManagerWhenDeletedAccount($user['id']); //TODO Caro
+        $commentsAffectedLines = $this->commentManager->updateCommentAuthorWhenDeletedAccount($user['id']);
+
+        if ($eventsAffectedLines === false) {
+            throw new Exception("Problem while deleting the user's events. Please try again.");
+        } else if ($commentsAffectedLines === false)
+        {
+            throw new Exception("Problem while deleting the user's comments. Please try again.");
+        }
+
+        // Delete user
+        $deleteByAdmin = $this->userManager->deleteUserByAdmin($user['id']);
+        $message = 'The account was deleted';
+        $message = showInfoMessage($message, True);
+
+        header('Location: ./index.php?action=admindashboard');
     }
 }

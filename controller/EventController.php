@@ -5,18 +5,24 @@
 namespace controller;
 
 require_once('./autoloader.php');
+require_once('./model/UserManager.php');
 require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
+require_once('./model/SubcategoryManager.php');
 
 class EventController
 {
+    private $userManager;
     private $eventManager;
     private $commentManager;
+    private $subcategoryManager;
 
     public function __construct()
     {
+        $this->userManager = new \model\UserManager();
         $this->eventManager = new \model\EventManager();
         $this->commentManager = new \model\CommentManager();
+        $this->subcategoryManager = new \model\SubcategoryManager();
     }
 
     public function getIndexPage(){
@@ -37,14 +43,41 @@ class EventController
         $eventReq = $this->eventManager->getEvent($_GET['id']);
         $participants = $this->eventManager->getParticipantsByEvent($_GET['id']);
         $participantsArr = $participants->fetchAll();
+        $subcategories = $this->subcategoryManager->getSubcategoriesByEvent($_GET['id']);
+        $subcategoriesArr = $subcategories->fetchAll();
         $comments = $this->commentManager->getComments($_GET['id']);
 
         if(isset($_SESSION['id']))
         {
             $userAvatarReq = $this->commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
             $userAvatar = $userAvatarReq->fetch();
+
+            // Get if the user of the session in an admin
+            $userReq = $this->userManager->getUser();
+            $userReq -> execute(array($_SESSION['id']));
+            $getAdmin = $userReq -> fetch();
+            $isAdmin = $getAdmin['isadmin'];
         }
+
         $event = $eventReq->fetch();
+
+        // Get if the author of the event is an admin
+        /* $authorManager = new UserManager();
+         $authorReq = $authorManager->getUser();
+         $authorReq->execute(array($event['author_id']));
+         $getAuthor = $authorReq->fetch();
+         $authorAdmin = $getAuthor['isadmin'];*/
+
+        //Get if the participant is an admin
+        /*foreach($participantsArr as $parti)
+        {
+            $particManager = new UserManager();
+            $particReq = $particManager->getUser();
+            $particReq->execute(array($parti['user_id']));
+            $getParticipant = $particReq->fetch();
+            $particAdmin = $getParticipant['isadmin'];
+
+        }*/
 
         if (!empty($event))
         {

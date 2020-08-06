@@ -17,8 +17,8 @@
                             </div>
                         </div>
                         <div>
-                                <?php   $userManager = new UserManager();
-                                        $request = $userManager->getUser();
+                                <?php
+                                        $request = $this->userManager->getUser();
                                         $request -> execute(array($_SESSION['id']));
                                         $result = $request -> fetch();
 

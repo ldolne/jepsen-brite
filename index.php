@@ -7,6 +7,7 @@ require_once ("./controller/UserController.php");
 require_once ("./controller/CategoryController.php");
 require_once ("./controller/EventController.php");
 require_once ("./controller/CommentController.php");
+require_once ("./controller/SubcategoryController.php");
 
 // session start
 session_start();
@@ -20,6 +21,7 @@ $userController = new \controller\UserController();
 $categoryController = new \controller\CategoryController();
 $eventController = new \controller\EventController();
 $commentController = new \controller\CommentController();
+$subcategoryController = new \controller\SubcategoryController();
 
 // routing
 try {
@@ -58,15 +60,12 @@ try {
             $categoryController->AllCategoryController();
         }
 
-
         // SUBCATEGORY ACTIONS
         elseif ($_GET["action"] == "subcategorycontroller") {
-            OneSubCategoryController();
+            $subcategoryController->OneSubCategoryController();
         } elseif ($_GET["action"] == "allsubcategoriesController") {
-            AllSubCategoriesController();
+            $subcategoryController->AllSubCategoriesController();
         }
-
-
 
         // EVENT AND COMMENT ACTIONS
         else if ($_GET['action'] == 'listPastEvents') {
@@ -98,15 +97,15 @@ try {
             } elseif ($_GET['action'] == 'deleteprofile') {
                 $userController->deleteAccount();
             } elseif ($_GET['action'] == 'userdashboard') {
-                getUserDashboard();
+                $userController->getUserDashboard();
             } elseif ($_GET['action'] == 'admindashboard') {
-                getAdminDashboard();
+                $userController->getAdminDashboard();
             } else if ($_GET['action'] == 'makeadmin') {
-                makeAdmin();
+                $userController->makeAdmin();
             } else if ($_GET['action'] == 'undoadmin') {
-                undoAdmin();
+                $userController->undoAdmin();
             } else if ($_GET['action'] == 'admindelete') {
-                adminDeleteUser();
+                $userController->adminDeleteUser();
             }
 
             // EVENT AND COMMENT ACTIONS
@@ -132,7 +131,6 @@ try {
                     && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
-                    && isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id'])
                 ) {
 
                     $_POST['title'] = htmlspecialchars($_POST['title']);
@@ -191,11 +189,7 @@ try {
                         && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
-                        && isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id'])
-
                     ) {
-
-
                         $_POST['title'] = htmlspecialchars($_POST['title']);
                         $_POST['description'] = htmlspecialchars($_POST['description']);
 

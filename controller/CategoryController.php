@@ -17,6 +17,7 @@ class CategoryController
 
     public function AllCategoryController()
     {
+        //$subcategoryManager = new SubCategoriesManager();
         $search = $this->categoryManager->AllCategoryModel();
         require('./view/eventsByCategory.php');
     }
