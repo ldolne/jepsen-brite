@@ -6,6 +6,7 @@ require_once('./model/UserManager.php');
 require_once('./model/CategoryManager.php');
 require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
+require_once('./model/SubCategoriesManager.php');
 
 // Autres
 require_once('./require/functions.php');
@@ -362,10 +363,13 @@ function showEvent($message = NULL)
 {
     $eventManager = new EventManager();
     $commentManager = new CommentManager();
+    $subcategoryManager = new SubCategoriesManager();
 
     $eventReq = $eventManager->getEvent($_GET['id']);
     $participants = $eventManager->getParticipantsByEvent($_GET['id']);
     $participantsArr = $participants->fetchAll();
+    $subcategories = $subcategoryManager->getSubcategoriesByEvent($_GET['id']);
+    $subcategoriesArr = $subcategories->fetchAll();
     $comments = $commentManager->getComments($_GET['id']);
 
     if(isset($_SESSION['id']))
