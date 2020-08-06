@@ -55,8 +55,38 @@ class UserManager extends Manager
 
     public function getUsers(){
         $bdd = $this-> dbConnect();
-        $request = $bdd-> prepare("SELECT u.id, u.username FROM users AS u ORDER BY u.username ASC");
+        $request = $bdd-> prepare("SELECT * FROM users AS u ORDER BY u.username ASC");
         $request->execute(array());
         return $request;
     }
+
+    public function promoteToAdmin($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('UPDATE users AS u
+            SET u.isadmin = "1"
+            WHERE u.id = ?');
+        $affectedLines = $req->execute(array($userId));
+
+        return $affectedLines;
+    }
+
+    public function demoteFromAdmin($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('UPDATE users AS u
+            SET u.isadmin = "0"
+            WHERE u.id = ?');
+        $affectedLines = $req->execute(array($userId));
+
+        return $affectedLines;
+    }
+
+    public function deleteUserByAdmin($userId)
+    {
+        $bdd = $this->dbConnect();
+        $request = $bdd -> prepare("DELETE FROM users WHERE `id` = ?");
+        return $request;
+    }
+ 
 }

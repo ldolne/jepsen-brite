@@ -322,6 +322,59 @@ function getAdminDashboard()
     require('./view/adminDashboard.php');
 }
 
+function makeAdmin()
+{
+    $userManager = new UserManager();
+    $getUser = $userManager->getUser();
+    $getUser->execute(array($_GET['id']));
+    $user = $getUser -> fetch();
+
+    $toAdmin = $userManager->promoteToAdmin($user['id']);
+
+    header('Location: ./index.php?action=admindashboard');
+}
+
+function undoAdmin()
+{
+    $userManager = new UserManager();
+    $getUser = $userManager->getUser();
+    $getUser->execute(array($_GET['id']));
+    $user = $getUser -> fetch();
+
+    $fromAdmin = $userManager->demoteFromAdmin($user['id']);
+
+    header('Location: ./index.php?action=admindashboard');
+}
+
+function adminDeleteUser()
+{
+    $userManager = new UserManager();
+    $eventManager = new EventManager();
+    $commentManager = new CommentManager();
+
+    $getUser = $userManager->getUser();
+    $getUser->execute(array($_GET['id']));
+    $user = $getUser -> fetch();
+
+    // Update user's events and comments
+    $eventsAffectedLines = $eventManager->updateauthorManagerWhenDeletedAccount($user['id']);
+    $commentsAffectedLines = $commentManager->updateCommentAuthorWhenDeletedAccount($user['id']);
+
+    if ($eventsAffectedLines === false) {
+        throw new Exception("Problem while deleting the user's events. Please try again.");
+    } else if ($commentsAffectedLines === false)
+    {
+        throw new Exception("Problem while deleting the user's comments. Please try again.");
+    }
+
+    // Delete user
+    $deleteByAdmin = $userManager->deleteUserByAdmin($user['id']);
+    $message = 'The account was deleted';
+    $message = showInfoMessage($message, True);
+
+    header('Location: ./index.php?action=admindashboard');
+}
+
 // CATEGORY FUNCTIONS
 function AllCategoryController()
 {
