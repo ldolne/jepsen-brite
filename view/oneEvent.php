@@ -154,13 +154,17 @@ $parsdown = new Parsedown();
                                     <hr />
 
                                     <div class="row">
-                                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $isAdmin == "1") {
+                                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
                                         ?>
                                         <div class="col-sm-3 col-md-2 col-5">
                                             <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
                                                 <button class="btn btn-primary">Modify event</button>
                                             </a>
                                         </div>
+                                        <?php
+                                        } ?>
+                                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $isAdmin == "1") {
+                                        ?>
                                         <div class="col-md-8 col-6">
                                             <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
                                                 <button class="btn btn-danger">Delete event</button>

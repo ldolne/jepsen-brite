@@ -79,6 +79,8 @@ try {
                 deleteAccount();
             } elseif ($_GET['action'] == 'userdashboard') {
                 getUserDashboard();
+            } elseif ($_GET['action'] == 'admindashboard') {
+                getAdminDashboard();
             }
 
             // EVENT AND COMMENT ACTIONS

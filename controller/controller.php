@@ -283,7 +283,7 @@ function deleteAccount(){
     // Delete user
     $deletePrep = $userManager->deletePreparation();
     $deletePrep -> execute(array($result['id']));
-    $message = 'Your account was deleted';
+    $message = 'The account was deleted';
     $message = showInfoMessage($message, True);
 
     $_SESSION = array();
@@ -295,8 +295,8 @@ function deleteAccount(){
     header('Location: ./index.php');
 }
 
-function getUserDashboard(){
-
+function getUserDashboard()
+{
     // get created events
     $userManager = new UserManager();
     $request = $userManager->getUser();
@@ -307,14 +307,19 @@ function getUserDashboard(){
 
     $eventManager = new EventManager(); 
     $userEvents = $eventManager->getUserEvents($userId);
-
-    $getPast = new EventManager();
-    $pastParticip = $getPast->getPastParticip($userId);
-
-    $getUp = new EventManager();
-    $upcomingParticip = $getPast->getUpcomingParticip($userId);
+    $pastParticip = $eventManager->getPastParticip($userId);
+    $upcomingParticip = $eventManager->getUpcomingParticip($userId);
 
     require('./view/userDashboard.php');
+}
+
+function getAdminDashboard()
+{
+    $userManager = new UserManager();
+    $getUsers = $userManager->getUsers();
+    $usersArr = $getUsers->fetchAll();
+
+    require('./view/adminDashboard.php');
 }
 
 // CATEGORY FUNCTIONS

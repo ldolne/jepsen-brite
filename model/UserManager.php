@@ -52,4 +52,11 @@ class UserManager extends Manager
         $request = $bdd-> prepare("SELECT * FROM `users` WHERE `id`= ?");
         return $request;
     }
+
+    public function getUsers(){
+        $bdd = $this-> dbConnect();
+        $request = $bdd-> prepare("SELECT u.id, u.username FROM users AS u ORDER BY u.username ASC");
+        $request->execute(array());
+        return $request;
+    }
 }
