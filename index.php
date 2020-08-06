@@ -2,10 +2,7 @@
 // ROUTER
 
 // requires
-//require_once('controller/controller.php');
-//require_once('autoloader.php');
-//spl_autoload_register();
-
+require_once('autoloader.php');
 require_once ("./controller/UserController.php");
 require_once ("./controller/CategoryController.php");
 require_once ("./controller/EventController.php");
@@ -14,7 +11,7 @@ require_once ("./controller/CommentController.php");
 // session start
 session_start();
 if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
-&& isset($_COOKIE['id']) && !empty($_COOKIE['id'])){
+&& isset($_COOKIE['id']) && !empty($_COOKIE['id'])) {
     cookieVerification();
 }
 

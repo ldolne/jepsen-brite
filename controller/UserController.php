@@ -4,7 +4,7 @@
 
 namespace controller;
 
-//require_once('autoloader.php');
+require_once('./autoloader.php');
 require_once('./model/UserManager.php');
 require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');

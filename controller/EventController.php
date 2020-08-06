@@ -4,11 +4,9 @@
 
 namespace controller;
 
-//require_once('./autoloader.php');
-
+require_once('./autoloader.php');
 require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
-//spl_autoload_register();
 
 class EventController
 {
@@ -39,11 +37,11 @@ class EventController
         $eventReq = $this->eventManager->getEvent($_GET['id']);
         $participants = $this->eventManager->getParticipantsByEvent($_GET['id']);
         $participantsArr = $participants->fetchAll();
-        $comments = $this->eventManager->getComments($_GET['id']);
+        $comments = $this->commentManager->getComments($_GET['id']);
 
         if(isset($_SESSION['id']))
         {
-            $userAvatarReq = $this->eventManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
+            $userAvatarReq = $this->commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
             $userAvatar = $userAvatarReq->fetch();
         }
         $event = $eventReq->fetch();

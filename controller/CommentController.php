@@ -3,7 +3,7 @@
 // COMMENT CONTROLLERS
 namespace controller;
 
-//require_once('autoloader.php');
+require_once('./autoloader.php');
 require_once('./model/CommentManager.php');
 
 class CommentController
