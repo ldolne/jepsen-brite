@@ -59,56 +59,69 @@
             <br />
             <table class="table EspaceTable">
                 <thead>
-                <tr>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Hour
-                    </th>
-                    <th>
-                        Place
-                    </th>
-                    <th>
-                        Category
-                    </th>
-                    <th>
-                        Subcategory
-                    </th>
-                    <th>See more...</th>
-                </tr>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Hour
+                        </th>
+                        <th>
+                            Place
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Subcategory
+                        </th>
+                        <th>See more...</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <?php
+                    <?php
 
-                while ($data = $search->fetch()) {
+                    while ($data = $search->fetch()) {
                     ?>
-                    <tr>
-                        <td>
-                            <?php echo $data['title']; ?>
-                        </td>
-                        <td>
-                            <?php echo $data['event_date_formatted']; ?>
-                        </td>
-                        <td>
-                            <?php echo $data['event_hour_formatted']; ?>
-                        </td>
-                        <td>
-                            PLACE
-                        </td>
-                        <td>
-                            <?php echo $data['category']; ?>
-                        </td>
-                        <td>
-                            <?php echo $data['subcategory']; ?>
-                        </td>
-                        <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
-                    </tr>
-                <?php }
-                $search->closeCursor(); ?>
+                        <tr>
+                            <td>
+                                <?php echo $data['title']; ?>
+                            </td>
+                            <td>
+                                <?php echo $data['event_date_formatted']; ?>
+                            </td>
+                            <td>
+                                <?php echo $data['event_hour_formatted']; ?>
+                            </td>
+                            <td>
+                                PLACE
+                            </td>
+                            <td>
+                                <?php echo $data['category']; ?>
+                            </td>
+                            <td>
+                                <?php
+                                if (!empty($subcategoriesArr)) {
+                                    echo "<ul>";
+                                    foreach ($subcategoriesArr as $subcategory) {
+                                ?>
+                                        <li><?= htmlspecialchars($subcategory['subcategory']) ?></li>
+                                <?php
+                                    }
+                                    echo "</ul>";
+                                } else {
+                                    echo "None";
+                                }
+                                ?>
+
+                            </td>
+                            <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
+                        </tr>
+                    <?php }
+                    $search->closeCursor(); ?>
                 </tbody>
             </table>
         </div>
