@@ -84,44 +84,53 @@
                 <tbody>
                     <?php
 
-                    while ($data = $search->fetch()) {
-                    ?>
-                        <tr>
-                            <td>
-                                <?php echo $data['title']; ?>
-                            </td>
-                            <td>
-                                <?php echo $data['event_date_formatted']; ?>
-                            </td>
-                            <td>
-                                <?php echo $data['event_hour_formatted']; ?>
-                            </td>
-                            <td>
-                                PLACE
-                            </td>
-                            <td>
-                                <?php echo $data['category']; ?>
-                            </td>
-                            <td>
-                                <?php
-                                if (!empty($subcategoriesArr)) {
-                                    echo "<ul>";
-                                    foreach ($subcategoriesArr as $subcategory) {
-                                ?>
-                                        <li><?= htmlspecialchars($subcategory['subcategory']) ?></li>
-                                <?php
-                                    }
-                                    echo "</ul>";
-                                } else {
-                                    echo "None";
-                                }
-                                ?>
 
-                            </td>
-                            <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
-                        </tr>
-                    <?php }
-                    $search->closeCursor(); ?>
+                while ($data = $search->fetch()) {
+                    $subcategories = $subcategoryManager->getSubcategoriesByEvent($data['id']);
+                    $subcategoriesArr = $subcategories->fetchAll();
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo $data['title']; ?>
+                        </td>
+                        <td>
+                            <?php echo $data['event_date_formatted']; ?>
+                        </td>
+                        <td>
+                            <?php echo $data['event_hour_formatted']; ?>
+                        </td>
+                        <td>
+                            PLACE
+                        </td>
+                        <td>
+                            <?php echo $data['category']; ?>
+                        </td>
+                        <td>
+                            <?php
+                            if(!empty($subcategoriesArr))
+                            {
+                                $displaySubcategories = null;
+
+                                foreach($subcategoriesArr as $subcategory)
+                                {
+
+                                    $displaySubcategories .= $subcategory['subcategory'];
+                                }
+
+                                echo $displaySubcategories;
+                            }
+                            else
+                            {
+                                echo "None";
+                            }
+                            ?>
+                        </td>
+                        <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
+                    </tr>
+                <?php }
+                $search->closeCursor();
+                $subcategories->closeCursor();?>
+
                 </tbody>
             </table>
         </div>
