@@ -3,15 +3,21 @@
 // COMMENT CONTROLLERS
 namespace controller;
 
-require_once('autoloader.php');
+//require_once('autoloader.php');
+require_once('./model/CommentManager.php');
 
 class CommentController
 {
+    private $commentManager;
+
+    public function __construct()
+    {
+        $this->commentManager = new \model\CommentManager();
+    }
+
     public function handleComment()
     {
-        $commentManager = new CommentManager();
-
-        $commentReq = $commentManager->getComment($_GET['comment_id']);
+        $commentReq = $this->commentManager->getComment($_GET['comment_id']);
         $comment = $commentReq->fetch();
 
         if (empty($comment))
@@ -26,9 +32,7 @@ class CommentController
 
     public function addComment($eventId, $authorId, $comment)
     {
-        $commentManager = new CommentManager();
-
-        $affectedLines = $commentManager->postComment($eventId, $authorId, $comment);
+        $affectedLines = $this->commentManager->postComment($eventId, $authorId, $comment);
 
         if ($affectedLines === false) {
             throw new Exception('Problem while adding a comment. Please try again.');
@@ -39,9 +43,7 @@ class CommentController
 
     public function deleteExistingComment()
     {
-        $commentManager = new CommentManager();
-
-        $affectedLines = $commentManager->deleteOneComment($_GET['comment_id']);
+        $affectedLines = $this->commentManager->deleteOneComment($_GET['comment_id']);
 
         if ($affectedLines === false) {
             throw new Exception('Problem while deleting the comment. Please try again.');

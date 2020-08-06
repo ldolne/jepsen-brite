@@ -6,7 +6,10 @@
 //require_once('autoloader.php');
 //spl_autoload_register();
 
+require_once ("./controller/UserController.php");
+require_once ("./controller/CategoryController.php");
 require_once ("./controller/EventController.php");
+require_once ("./controller/CommentController.php");
 
 // session start
 session_start();
@@ -16,7 +19,10 @@ if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
 }
 
 // Controllers declaration
-$eventController = new controller\EventController();
+$userController = new \controller\UserController();
+$categoryController = new \controller\CategoryController();
+$eventController = new \controller\EventController();
+$commentController = new \controller\CommentController();
 
 // routing
 try {
@@ -30,30 +36,30 @@ try {
                 && !empty($_POST['password'])
                 && !empty($_POST['passwordcheck'])
                 && !empty($_POST['email'])) {
-                actualInscription();
+                $userController->actualInscription();
             } 
             else {
-                getInscriptionPage();
+                $userController->getInscriptionPage();
             }
         } 
         
         elseif ($_GET['action'] == 'connection') {
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
-                login();
+                $userController->login();
             } 
             else {
-                getConnectionPage();
+                $userController->getConnectionPage();
             }
         } 
         elseif ($_GET['action'] == 'deconnection') {
-            deconnection();
+            $userController->deconnection();
         }
 
         // CATEGORY ACTIONS
         elseif ($_GET["action"] == "onecategorycontroller") {
-            OneCategoryController();
+            $categoryController->OneCategoryController();
         } elseif ($_GET["action"] == "allcategorycontroller") {
-            AllCategoryController();
+            $categoryController->AllCategoryController();
         }
 
         // EVENT AND COMMENT ACTIONS
@@ -73,18 +79,18 @@ try {
 
             // USER ACTIONS
             if ($_GET['action'] == 'profile') {
-                getProfilePage();
+                $userController->getProfilePage();
             } elseif ($_GET['action'] == 'modifyprofile') {
                 if (!empty($_POST['username'])
                     || (!empty($_POST['password']) && $_POST['password'] == $_POST['passwordcheck'])) {
-                    profileModification();
+                    $userController->profileModification();
                 } else {
-                    modifyProfilePage();
+                    $userController->modifyProfilePage();
                 }
             } elseif ($_GET['action'] == 'deleteprofile') {
-                deleteAccount();
+                $userController->deleteAccount();
             } elseif ($_GET['action'] == 'userdashboard') {
-                getUserDashboard();
+                $userController->getUserDashboard();
             }
 
             // EVENT AND COMMENT ACTIONS
@@ -239,19 +245,19 @@ try {
             } else if ($_GET['action'] == 'addComment') {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     if (!empty($_POST['comment'])) {
-                        addComment($_GET['id'], $_SESSION['id'], $_POST['comment']);
+                        $commentController->addComment($_GET['id'], $_SESSION['id'], $_POST['comment']);
                     } else {
                         $message = 'No comment specified. Please fill up all fields.';
-                        showEvent(showInfoMessage($message, false));
+                        $eventController->showEvent(showInfoMessage($message, false));
                     }
                 } else {
                     throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingComment') {
-                $comment = handleComment();
+                $comment = $commentController->handleComment();
                 if (isset($_SESSION['id']) && $_SESSION['id'] == $comment['author_id']) {
                     if (isset($_GET['comment_id']) && $_GET['comment_id'] > 0) {
-                        deleteExistingComment();
+                        $commentController->deleteExistingComment();
                     } else {
                         throw new Exception('No comment ID sent.');
                     }

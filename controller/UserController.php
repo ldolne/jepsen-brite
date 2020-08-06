@@ -4,14 +4,26 @@
 
 namespace controller;
 
-require_once('autoloader.php');
+//require_once('autoloader.php');
+require_once('./model/UserManager.php');
+require_once('./model/EventManager.php');
+require_once('./model/CommentManager.php');
 
 class UserController
 {
-    public function cookieVerification() {
-        $userManager = new UserManager();
+    private $userManager;
+    private $eventManager;
+    private $commentManager;
 
-        $request = $userManager-> DoesCookieUserExist();
+    public function __construct()
+    {
+        $this->userManager = new \model\UserManager();
+        $this->eventManager = new \model\EventManager();
+        $this->commentManager = new \model\CommentManager();
+    }
+
+    public function cookieVerification() {
+        $request = $this->userManager-> DoesCookieUserExist();
         $request -> execute(array($_COOKIE['id'], $_COOKIE['username']));
         $isTheCookieALie = $request -> fetch();
 
@@ -19,7 +31,6 @@ class UserController
             $_SESSION['username']= $_COOKIE['username'];
             $_SESSION['id']= $_COOKIE['id'];
         }
-
         else {
             $_SESSION['username']= '';
             $_SESSION['id']= '';
@@ -38,14 +49,12 @@ class UserController
     }
 
     public function actualInscription() {
-        $userManager = new UserManager();
-
         $username = htmlspecialchars($_POST['username']);
         $email = htmlspecialchars($_POST['email']);
         $passwordRaw = $_POST['password'];
         $passwordcheck = $_POST['passwordcheck'];
 
-        $request = $userManager->isNameTaken();
+        $request = $this->userManager->isNameTaken();
         $request -> execute(array($username));
         $isNameTaken = $request -> fetch();
 
@@ -75,7 +84,7 @@ class UserController
         }
 
         if (filter_var($email, FILTER_VALIDATE_EMAIL) == true){
-            $request = $userManager->isEmailTaken();
+            $request = $this->userManager->isEmailTaken();
             $request -> execute(array($email));
             $isEmailTaken = $request -> fetch();
 
@@ -96,7 +105,7 @@ class UserController
         $image = md5(strtolower(trim($email)));
 
         if($emailValidation == TRUE && $passwordValidation == TRUE && $usernameValidation == TRUE){
-            $inscription = $userManager->inscriptionPreparation();
+            $inscription = $this->userManager->inscriptionPreparation();
             $inscription -> execute(array($email, $username, $password, $image));
 
             $message='Inscription successful. Welcome';
@@ -130,9 +139,7 @@ class UserController
     }
 
     public function login() {
-        $userManager = new UserManager();
-
-        $request = $userManager->dbUserVerif();
+        $request = $this->userManager->dbUserVerif();
         $username = htmlspecialchars($_POST['username']);
         //$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $request -> execute(array($username));
@@ -172,8 +179,7 @@ class UserController
     }
 
     public function getProfilePage(){
-        $userManager = new UserManager();
-        $request = $userManager->dbUserVerif();
+        $request = $this->userManager->dbUserVerif();
         $request -> execute(array($_SESSION['username']));
         $result = $request -> fetch();
         require('./view/profil.php');
@@ -187,15 +193,14 @@ class UserController
     }
 
     public function profileModification() {
-        $userManager = new UserManager();
-        $request = $userManager->dbUserVerif();
+        $request = $this->userManager->dbUserVerif();
         $request -> execute(array($_SESSION['username']));
         $result = $request -> fetch();
 
         if (isset($_POST['username']) && !empty($_POST['username'])){
             $username= htmlspecialchars($_POST['username']);
 
-            $request2 = $userManager->isNameTaken();
+            $request2 = $this->userManager->isNameTaken();
             $request2 -> execute(array($username));
             $isNameTaken = $request2 -> fetch();
 
@@ -233,11 +238,10 @@ class UserController
             $passwordError='';
         }
 
-
         if ($passwordValidation == TRUE && $usernameValidation == TRUE){
             $message = 'Modifications successful';
             $message = showInfoMessage($message, True);
-            $updatePrep = $userManager->updatePreparation();
+            $updatePrep = $this->userManager->updatePreparation();
             $updatePrep -> execute(array($username, $password, $result['id']));
 
             $_SESSION["username"]= $username;
@@ -253,17 +257,13 @@ class UserController
     }
 
     public function deleteAccount(){
-        $userManager = new UserManager();
-        $eventManager = new EventManager();
-        $commentManager = new CommentManager();
-
-        $request = $userManager->dbUserVerif();
+        $request = $this->userManager->dbUserVerif();
         $request -> execute(array($_SESSION['username']));
         $result = $request -> fetch();
 
         // Update user's events and comments
-        $eventsAffectedLines = $eventManager->updateEventAuthorWhenDeletedAccount($result['id']);
-        $commentsAffectedLines = $commentManager->updateCommentAuthorWhenDeletedAccount($result['id']);
+        $eventsAffectedLines = $this->eventManager->updateEventAuthorWhenDeletedAccount($result['id']);
+        $commentsAffectedLines = $this->commentManager->updateCommentAuthorWhenDeletedAccount($result['id']);
 
         if ($eventsAffectedLines === false) {
             throw new Exception("Problem while deleting the user's events. Please try again.");
@@ -273,7 +273,7 @@ class UserController
         }
 
         // Delete user
-        $deletePrep = $userManager->deletePreparation();
+        $deletePrep = $this->userManager->deletePreparation();
         $deletePrep -> execute(array($result['id']));
         $message = 'Your account was deleted';
         $message = showInfoMessage($message, True);
@@ -288,23 +288,18 @@ class UserController
     }
 
     public function getUserDashboard(){
-
         // get created events
-        $userManager = new UserManager();
-        $request = $userManager->getUserId();
+        $request = $this->userManager->getUserId();
         $request -> execute(array($_SESSION['id']));
         $result = $request -> fetch();
 
         $userId = $result['id'];
 
-        $eventManager = new EventManager();
-        $userEvents = $eventManager->getUserEvents($userId);
+        $userEvents = $this->eventManager->getUserEvents($userId);
 
-        $getPast = new EventManager();
-        $pastParticip = $getPast->getPastParticip($userId);
+        $pastParticip = $this->eventManager->getPastParticip($userId);
 
-        $getUp = new EventManager();
-        $upcomingParticip = $getPast->getUpcomingParticip($userId);
+        $upcomingParticip = $this->eventManager->getUpcomingParticip($userId);
 
         require('./view/userDashboard.php');
     }
