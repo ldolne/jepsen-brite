@@ -107,6 +107,28 @@ $parsdown = new Parsedown();
                             <hr />
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
+                                    <label style="font-weight:bold;">Subcategory</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    <?php
+                                    if (!empty($subcategoriesArr)) {
+                                        echo "<ul>";
+                                        foreach ($subcategoriesArr as $subcategory)
+                                        {
+                                            ?>
+                                            <li><?= htmlspecialchars($subcategory['subcategory']) ?></li>
+                                            <?php
+                                        }
+                                        echo "</ul>";
+                                    } else {
+                                        echo "None";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
                                     <label style="font-weight:bold;">Description</label>
                                 </div>
                                 <div class="col-md-8 col-6">
@@ -253,6 +275,7 @@ $parsdown = new Parsedown();
     $eventReq->closeCursor();
     $participants->closeCursor();
     $comments->closeCursor();
+    $subcategories->closeCursor();
     ?>
     <?php $content = ob_get_clean(); ?>
     <?php require('template.php'); ?>

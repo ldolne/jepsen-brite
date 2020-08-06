@@ -55,4 +55,17 @@ class SubCategoriesManager extends Manager
 
         return $req;
     }
+
+    public function getSubcategoriesByEvent($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT s.id, s.subcategory
+        FROM subcategories as s 
+        INNER JOIN assoc_subcategories_events as ase 
+        ON s.id = ase.subcategory_id
+        WHERE ase.event_id = ?');
+        $req->execute(array($eventId));
+
+        return $req;
+    }
 }
