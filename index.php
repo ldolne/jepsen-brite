@@ -3,7 +3,7 @@
 // requires
 
 require_once('controller/controller.php');
-//require_once('require/configs.php');
+require_once('require/configs.php');
 require('./controller/controllerTest.php');
 
 // Session Start
@@ -140,10 +140,10 @@ try {
                             //$path = "public/img/events_img/" . $imageFileName; // needs to generate randow image name for the event
                             //$resultMove = move_uploaded_file($_FILES['image']['tmp_name'], $path); // Déplace image du dossier temporaire où serveur l'a loadé jusque dans dossier désiré
 
-                            //$resultUpload = \Cloudinary\Uploader::upload(
-                            //  $_FILES['image']['tmp_name'],
-                            // array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)
-                            // ); // Upload fichier du dossier où est enregistré au cloud
+                            $resultUpload = \Cloudinary\Uploader::upload(
+                              $_FILES['image']['tmp_name'],
+                             array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)
+                             ); // Upload fichier du dossier où est enregistré au cloud
 
                             if ($resultUpload != null) {
                                 createNewEvent($resultUpload["secure_url"]);

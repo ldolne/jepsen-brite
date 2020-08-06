@@ -17,11 +17,6 @@ $parsdown = new Parsedown();
                         <?php } ?>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3 col-md-2 col-5">
-                            <a href="">
-                                <button class="btn btn-primary">Participate</button>
-                            </a>
-                        </div>
                         <?php if (!empty($_SESSION['username'])) {
                             $isParticipating = false;
 
@@ -62,21 +57,6 @@ $parsdown = new Parsedown();
                             <div class="ml-auto">
                                 <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
                             </div>
-
-                            <div class="col-md-8 col-6">
-                                <a href="">
-                                    <button class="btn btn-danger">Do not participate</button>
-                                </a>
-
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-start">
-                            <div class="image-container">
-                                <img src="./public/img/events_img/<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
-                            </div>
-                            <div class="ml-auto">
-                                <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +87,7 @@ $parsdown = new Parsedown();
                                 <hr />
 
 
-                                <<<<<<< HEAD <div class="row">
+                                <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
                                         <label style="font-weight:bold;">Hour</label>
                                     </div>
@@ -188,6 +168,7 @@ $parsdown = new Parsedown();
         </div>
     </div>
 </div>
+</div>
 
 <br />
 
@@ -267,6 +248,7 @@ $parsdown = new Parsedown();
             </div>
         </div>
     </div>
+</div>
     <?php
     $eventReq->closeCursor();
     $participants->closeCursor();
