@@ -1,12 +1,13 @@
 <?php
 // ALL CONTROLLERS TO WHICH POINTS THE ROUTER
 
+require_once('./autoloader.php');
 // Chargement des classes
 require_once('./model/UserManager.php');
 require_once('./model/CategoryManager.php');
 require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
-require_once('./model/SubCategoriesManager.php');
+require_once('./model/SubcategoryManager.php');
 
 // Autres
 require_once('./require/functions.php');
@@ -314,6 +315,59 @@ function getAdminDashboard()
     require('./view/adminDashboard.php');
 }
 
+function makeAdmin()
+{
+    $userManager = new UserManager();
+    $getUser = $userManager->getUser();
+    $getUser->execute(array($_GET['id']));
+    $user = $getUser -> fetch();
+
+    $toAdmin = $userManager->promoteToAdmin($user['id']);
+
+    header('Location: ./index.php?action=admindashboard');
+}
+
+function undoAdmin()
+{
+    $userManager = new UserManager();
+    $getUser = $userManager->getUser();
+    $getUser->execute(array($_GET['id']));
+    $user = $getUser -> fetch();
+
+    $fromAdmin = $userManager->demoteFromAdmin($user['id']);
+
+    header('Location: ./index.php?action=admindashboard');
+}
+
+function adminDeleteUser()
+{
+    $userManager = new UserManager();
+    $eventManager = new EventManager();
+    $commentManager = new CommentManager();
+
+    $getUser = $userManager->getUser();
+    $getUser->execute(array($_GET['id']));
+    $user = $getUser -> fetch();
+
+    // Update user's events and comments
+    $eventsAffectedLines = $eventManager->updateauthorManagerWhenDeletedAccount($user['id']);
+    $commentsAffectedLines = $commentManager->updateCommentAuthorWhenDeletedAccount($user['id']);
+
+    if ($eventsAffectedLines === false) {
+        throw new Exception("Problem while deleting the user's events. Please try again.");
+    } else if ($commentsAffectedLines === false)
+    {
+        throw new Exception("Problem while deleting the user's comments. Please try again.");
+    }
+
+    // Delete user
+    $deleteByAdmin = $userManager->deleteUserByAdmin($user['id']);
+    $message = 'The account was deleted';
+    $message = showInfoMessage($message, True);
+
+    header('Location: ./index.php?action=admindashboard');
+}
+
 // CATEGORY FUNCTIONS
 function AllCategoryController()
 {
@@ -423,6 +477,23 @@ function handleEvent()
     }
 }
 
+function handleComment()
+{
+    $commentManager = new CommentManager();
+
+    $commentReq = $commentManager->getComment($_GET['comment_id']);
+    $comment = $commentReq->fetch();
+
+    if (empty($comment))
+    {
+        throw new Exception('Comment ID does not exist.');
+    }
+    else
+    {
+        return $comment;
+    }
+}
+
 function showEventCreationPage($message = null)
 {
     require('./view/addEvent.php');
@@ -478,6 +549,22 @@ function deleteExistingEvent()
 {
     $eventManager = new EventManager();
     $commentManager = new CommentManager();
+
+    // Deletion of Cloudinary image or video of the deleted event
+    $event = handleEvent();
+    $defaultImage = "default_znnszq";
+    $imageFromDbArr = explode('.', substr((strrchr($event['image'], '/')), 1));
+    $publicId = $imageFromDbArr[0];
+
+    if($publicId != $defaultImage)
+    {
+        $resultDestroy = \Cloudinary\Uploader::destroy('jepsen-brite/events_img/' . $publicId);
+
+        if ($resultDestroy == null) {
+            throw new Exception('There has been a problem during the deletion of the uploaded image of this event.');
+        }
+    }
+
     $EventsAffectedLines = $eventManager->deleteEvent($_GET['id']);
     $CommentsAffectedLines = $commentManager->deleteAllComments($_GET['id']);
 
@@ -503,18 +590,18 @@ function addComment($eventId, $authorId, $comment)
     }
 }
 
-/*function deleteComment($eventId, $commentId)
+function deleteExistingComment()
 {
     $commentManager = new CommentManager();
 
-    $affectedLines = $commentManager->deleteOneComment($commentId);
+    $affectedLines = $commentManager->deleteOneComment($_GET['comment_id']);
 
     if ($affectedLines === false) {
-        throw new Exception('Problem while adding a comment. Please try again.');
+        throw new Exception('Problem while deleting the comment. Please try again.');
     } else {
-        header('Location: ./index.php?action=showEvent&id=' . $eventId);
+        header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
     }
-}*/
+}
 
 function registerToEvent($eventId, $userId)
 {

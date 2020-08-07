@@ -7,14 +7,27 @@
 
             <div class="card-body">
                 <div class="card-title mb-4">
-                    <div class="d-flex justify-content-start">
-                        <div class="image-container">
-                            <img src="https://www.gravatar.com/avatar/<?= $result['avatar'] ?>" id="imgProfile" style="width: 200px; height: 200px" class="img-thumbnail" />
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-start">
+                            <div class="image-container">
+                                <img src="https://www.gravatar.com/avatar/<?= $result['avatar'] ?>" id="imgProfile" style="width: 200px; height: 200px" class="img-thumbnail" />
+                            </div>
+                            <div class="ml-auto">
+                                <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
+                            </div>
                         </div>
-                        <div class="ml-auto">
-                            <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
+                        <div>
+                                <?php
+                                        $request = $this->userManager->getUser();
+                                        $request -> execute(array($_SESSION['id']));
+                                        $result = $request -> fetch();
+
+                                        $isUserAdmin = $result['isadmin'];
+                                        if($isUserAdmin != "0"){ ?>
+                                    <a href="./index.php?action=admindashboard" class="btn btn-primary">Admin dashboard</a>
+                                <?php } ?>
                         </div>
-                    </div>
+                    </div>        
                 </div>
 
                 <div class="row">

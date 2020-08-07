@@ -1,5 +1,7 @@
 <?php
 
+namespace model;
+
 require_once('Manager.php');
 
 class EventManager extends Manager
@@ -33,9 +35,7 @@ class EventManager extends Manager
     public function getEvent($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.title, e.author_id, e.event_date, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') 
-            AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\')
-            AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category
+        $req = $db->prepare('SELECT e.id, e.title, e.author_id, e.event_date, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, e.event_hour, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category 
             FROM events AS e 
             INNER JOIN users AS u ON e.author_id = u.id 
             INNER JOIN categories AS c 

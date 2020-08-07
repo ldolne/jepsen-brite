@@ -1,8 +1,10 @@
 <?php
 
+namespace model;
+
 require_once('Manager.php');
 
-class SubCategoriesManager extends Manager
+class SubcategoryManager extends Manager
 {
     public function AllSubCategoriesModel()
     {

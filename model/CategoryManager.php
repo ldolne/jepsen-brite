@@ -1,5 +1,7 @@
 <?php
 
+namespace model;
+
 require_once('Manager.php');
 
 class CategoryManager extends Manager
