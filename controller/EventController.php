@@ -92,6 +92,7 @@ class EventController
     public function handleEvent()
     {
         $eventReq = $this->eventManager->getEvent($_GET['id']);
+        $subcategories = $this->subcategoryManager->getSubcategoriesByEvent($_GET['id']);
         $event = $eventReq->fetch();
 
         if (empty($event))
@@ -100,7 +101,7 @@ class EventController
         }
         else
         {
-            return $event;
+            return array($event, $subcategories);
         }
     }
 
@@ -114,8 +115,7 @@ class EventController
         $_POST['title'] = htmlspecialchars($_POST['title']);
         $_POST['description'] = htmlspecialchars($_POST['description']);
 
-        if (isset($_FILES['image']) && !empty($_FILES['image']['name']))
-        {
+        if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
             $imageMaxSize = 2097152;
             $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
 
@@ -144,12 +144,11 @@ class EventController
                 $message = 'The image cannot be larger than 2MB.';
                 $this->showEventModificationPage(showInfoMessage($message, false));
             }
-        }
-        else {
+        } else {
             $imageName = "https://res.cloudinary.com/dudwqzfzp/image/upload/v1596617340/jepsen-brite/events_img/default_znnszq.gif";
         }
 
-        $eventAffectedLines = $this->eventManager->createEvent(
+        $eventReturnArr = $this->eventManager->createEvent(
             $_POST['title'],
             $_SESSION['id'],
             $_POST['event_date'],
@@ -158,18 +157,21 @@ class EventController
             $_POST['description'],
             $_POST['category_id']);
 
-        // requetes pour sous cat
-
-        if ($affectedLines === false) {
-            throw new Exception('Problem while creating an event. Please try again.');
-        }
-        else
+        foreach ($_POST['subcategory_id'] as $selected)
         {
-            header('Location: ./index.php');
+            $subcategoryAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $eventReturnArr[1]);
+
+            if ($eventReturnArr[0] === false OR $subcategoryAffectedLines === false) {
+                throw new Exception('Problem while creating an event. Please try again.');
+            }
+            else
+            {
+                header('Location: ./index.php');
+            }
         }
     }
 
-    public function showEventModificationPage($event, $message = null)
+    public function showEventModificationPage($event, $subcategories, $message = null)
     {
         require('./view/modifyEvent.php');
     }
@@ -220,7 +222,7 @@ class EventController
             $imageName = $event['image'];
         }
 
-        $affectedLines = $this->eventManager->updateEvent(
+        $eventAffectedLines = $this->eventManager->updateEvent(
             $_GET['id'],
             $_POST['title'],
             $_SESSION['id'],
@@ -230,10 +232,28 @@ class EventController
             $_POST['description'],
             $_POST['category_id']);
 
-        if ($affectedLines === false) {
-            throw new Exception('Problem while modifying the event. Please try again.');
-        } else {
-            header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
+        foreach ($_POST['subcategory_id'] as $selected) {
+            $subcategoryUpdatedAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $event['id']);
+
+            if ($eventAffectedLines === false OR $subcategoryUpdatedAffectedLines === false) {
+                throw new Exception('Problem while modifying the event. Please try again.');
+            }
+            else
+            {
+                header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
+            }
+        }
+
+        foreach ($event['subcategory_id'] as $selected) {
+            $subcategoryDeletedAffectedLines = $this->subcategoryManager->deleteSubcategoryForEvent($selected, $event['id']);
+
+            if ($eventAffectedLines === false OR $subcategoryDeletedAffectedLines === false) {
+                throw new Exception('Problem while modifying the event. Please try again.');
+            }
+            else
+            {
+                header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
+            }
         }
     }
 
@@ -254,12 +274,13 @@ class EventController
             }
         }
 
-        $EventsAffectedLines = $this->eventManager->deleteEvent($_GET['id']);
-        $CommentsAffectedLines = $this->commentManager->deleteAllComments($_GET['id']);
+        $eventsAffectedLines = $this->eventManager->deleteEvent($_GET['id']);
+        $commentsAffectedLines = $this->commentManager->deleteAllComments($_GET['id']);
+        $subcategoriesAffectedLines = $this->subcategoryManager->deleteAllSubcategoriesForEvent($_GET['id']);
 
-        if ($EventsAffectedLines === false) {
+        if ($eventsAffectedLines === false) {
             throw new Exception('Problem while deleting the event. Please try again.');
-        } else if ($CommentsAffectedLines === false)
+        } else if ($commentsAffectedLines === false)
         {
             throw new Exception('Problem while deleting the comments of the event. Please try again.');
         } else {

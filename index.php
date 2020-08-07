@@ -113,10 +113,11 @@ try {
                 $eventController->showEventCreationPage();
             } else if ($_GET['action'] == "showEventModificationPage") {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $event = $eventController->handleEvent();
+                    $handleEventReturnArr = $eventController->handleEvent();
+                    $event = $handleEventReturnArr[0];
 
                     if ($_SESSION['id'] == $event['author_id']) {
-                        $eventController->showEventModificationPage($event);
+                        $eventController->showEventModificationPage($event, $subcategories);
                     } else {
                         throw new Exception("No permission to modify this event. You're not the author of it.");
                     }
@@ -138,7 +139,9 @@ try {
                 }
             } else if ($_GET['action'] == "updateExistingEvent") {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $event = $eventController->handleEvent();
+                    $handleEventReturnArr = $eventController->handleEvent();
+                    $event = $handleEventReturnArr[0];
+
                     if (
                         isset($_POST['title']) && !empty($_POST['title'])
                         && isset($_POST['event_date']) && !empty($_POST['event_date'])
@@ -155,7 +158,9 @@ try {
                     throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingEvent') {
-                $event = $eventController->handleEvent();
+                $handleEventReturnArr = $eventController->handleEvent();
+                $event = $handleEventReturnArr[0];
+
                 if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         $eventController->deleteExistingEvent();

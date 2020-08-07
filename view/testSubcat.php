@@ -74,4 +74,9 @@ if(isset($_POST['submit'])){//to run PHP script on submit
         }
     }
 }
+
+// TODO
+//  - Update event avec sous-cat : charger données db et les update
+//  - Checkbox conditionnées en fonction du select - JS
+//  - Quand création, si tout pas rempli, checkbox déjà cochées sont à nouveau cochées
 ?>
