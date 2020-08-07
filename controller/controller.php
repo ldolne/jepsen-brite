@@ -321,7 +321,7 @@ function AllCategoryController()
     $subcategories = $subcategoryManager->getSubcategoriesByEvent($_GET['id']);
     $subcategoriesArr = $subcategories->fetchAll();
     $categoryManager = new CategoryManager();
-    $subcategoryManager = new SubCategoriesManager();
+    //$subcategoryManager = new SubCategoriesManager();
     $search = $categoryManager->AllCategoryModel();
     require('./view/eventsByCategory.php');
 }
