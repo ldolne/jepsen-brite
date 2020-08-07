@@ -339,7 +339,7 @@ class UserController
         $user = $getUser -> fetch();
 
         // Update user's events and comments
-        //$eventsAffectedLines = $this->eventManager->updateauthorManagerWhenDeletedAccount($user['id']); //TODO Caro
+        $eventsAffectedLines = $this->eventManager->updateEventAuthorWhenDeletedAccount($user['id']);
         $commentsAffectedLines = $this->commentManager->updateCommentAuthorWhenDeletedAccount($user['id']);
 
         if ($eventsAffectedLines === false) {
@@ -350,7 +350,8 @@ class UserController
         }
 
         // Delete user
-        $deleteByAdmin = $this->userManager->deleteUserByAdmin($user['id']);
+        $deleteByAdmin = $this->userManager->deleteUserByAdmin();
+        $deleteByAdmin->execute(array($user['id']));
         $message = 'The account was deleted';
         $message = showInfoMessage($message, True);
 

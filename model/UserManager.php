@@ -84,7 +84,7 @@ class UserManager extends Manager
         return $affectedLines;
     }
 
-    public function deleteUserByAdmin($userId)
+    public function deleteUserByAdmin()
     {
         $bdd = $this->dbConnect();
         $request = $bdd -> prepare("DELETE FROM users WHERE `id` = ?");

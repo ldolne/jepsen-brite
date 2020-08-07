@@ -182,6 +182,10 @@ $parsdown = new Parsedown();
                                                 <button class="btn btn-primary">Modify event</button>
                                             </a>
                                         </div>
+                                        <?php
+                                    } ?>
+                                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $isAdmin != "0") {
+                                        ?>
                                         <div class="col-md-8 col-6">
                                             <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
                                                 <button class="btn btn-danger">Delete event</button>
@@ -220,7 +224,7 @@ $parsdown = new Parsedown();
                         <div class="col-sm-3 col-md-8 col-6">
                             <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
                         </div>
-                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $comment['author_id']) {
+                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $comment['author_id'] || $isAdmin != "0") {
                             ?>
                             <div class="col-sm-3 col-md-2 col-5">
                                 <a href="./index.php?action=deleteExistingComment&amp;id=<?= $event['id'] ?>&amp;comment_id=<?= $comment['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this comment?')) return false;">
