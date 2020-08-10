@@ -113,10 +113,11 @@ try {
                 $eventController->showEventCreationPage();
             } else if ($_GET['action'] == "showEventModificationPage") {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $event = $eventController->handleEvent();
+                    $handleEventReturnArr = $eventController->handleEvent();
+                    $event = $handleEventReturnArr[0];
 
                     if ($_SESSION['id'] == $event['author_id']) {
-                        $eventController->showEventModificationPage($event);
+                        $eventController->showEventModificationPage($event, $subcategories);
                     } else {
                         throw new Exception("No permission to modify this event. You're not the author of it.");
                     }
@@ -128,117 +129,27 @@ try {
                     isset($_POST['title']) && !empty($_POST['title'])
                     && isset($_POST['event_date']) && !empty($_POST['event_date'])
                     && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
-                    && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
                 ) {
-
-                    $_POST['title'] = htmlspecialchars($_POST['title']);
-                    $_POST['description'] = htmlspecialchars($_POST['description']);
-
-                    $imageMaxSize = 2097152;
-                    $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
-
-                    if ($_FILES['image']['size'] <= $imageMaxSize) {
-                        $uploadExtension = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
-
-                        if (in_array($uploadExtension, $validExtensions)) {
-                            $randomNumber = 20;
-                            $randomString = bin2hex(random_bytes($randomNumber));
-
-                            $imageFileName = $_SESSION['id'] . "_" . $randomString;
-
-                            $resultUpload = \Cloudinary\Uploader::upload($_FILES['image']['tmp_name'],
-                                array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
-
-                            if ($resultUpload != null) {
-                                $eventController->createNewEvent($resultUpload["secure_url"]);
-                            } else {
-                                throw new Exception('There has been a problem during the upload of your image. Please try again.');
-                            }
-                        } else {
-                            $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
-                            $eventController->showEventModificationPage($event, showInfoMessage($message, false));
-                        }
-                    } else {
-                        $message = 'The image cannot be larger than 2MB.';
-                        $eventController->showEventModificationPage($event, showInfoMessage($message, false));
-                    }
-                } else if (
-                    isset($_POST['title']) && !empty($_POST['title'])
-                    && isset($_POST['event_date']) && !empty($_POST['event_date'])
-                    && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
-                    && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
-                    && isset($_POST['description']) && !empty($_POST['description'])
-                    && isset($_POST['category_id']) && !empty($_POST['category_id']))
-                {
-                    $defaultImage = "https://res.cloudinary.com/dudwqzfzp/image/upload/v1596617340/jepsen-brite/events_img/default_znnszq.gif";
-                    $eventController->createNewEvent($defaultImage);
+                    $eventController->createNewEvent();
                 } else {
                     $message = 'You have to fill up all fields.';
                     $eventController->showEventCreationPage(showInfoMessage($message, false));
                 }
             } else if ($_GET['action'] == "updateExistingEvent") {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $event = $eventController->handleEvent();
+                    $handleEventReturnArr = $eventController->handleEvent();
+                    $event = $handleEventReturnArr[0];
 
                     if (
                         isset($_POST['title']) && !empty($_POST['title'])
                         && isset($_POST['event_date']) && !empty($_POST['event_date'])
                         && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
-                        && isset($_FILES['image']) && !empty($_FILES['image']['name'])
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
                     ) {
-                        $_POST['title'] = htmlspecialchars($_POST['title']);
-                        $_POST['description'] = htmlspecialchars($_POST['description']);
-
-                        $imageMaxSize = 2097152;
-                        $validExtensions = array('jpg', 'jpeg', 'gif', 'png');
-
-                        if ($_FILES['image']['size'] <= $imageMaxSize) {
-                            $uploadExtension = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
-
-                            if (in_array($uploadExtension, $validExtensions)) {
-                                $defaultImage = "default_znnszq";
-                                $imageFromDbArr = explode('.', substr((strrchr($event['image'], '/')), 1));
-                                $imageFromDb = $imageFromDbArr[0];
-
-                                if($imageFromDb === $defaultImage)
-                                {
-                                    $randomNumber = 20;
-                                    $randomString = bin2hex(random_bytes($randomNumber));
-
-                                    $imageFileName = $_SESSION['id'] . "_" . $randomString;
-                                }
-                                else {
-                                    $imageFileName = $imageFromDb;
-                                }
-
-                                $resultUpload = \Cloudinary\Uploader::upload($_FILES['image']['tmp_name'],
-                                    array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
-
-                                if ($resultUpload != null) {
-                                    $eventController->updateExistingEvent($resultUpload["secure_url"]);
-                                } else {
-                                    throw new Exception('There has been a problem during the upload of your image. Please try again.');
-                                }
-                            } else {
-                                $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
-                                $eventController->showEventModificationPage($event, showInfoMessage($message, false));
-                            }
-                        } else {
-                            $message = 'The image cannot be larger than 2MB.';
-                            $eventController->showEventModificationPage($event, showInfoMessage($message, false));
-                        }
-                    } else if (isset($_POST['title']) && !empty($_POST['title'])
-                            && isset($_POST['event_date']) && !empty($_POST['event_date'])
-                            && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
-                            && (!isset($_FILES['image']) or empty($_FILES['image']['name']))
-                            && isset($_POST['description']) && !empty($_POST['description'])
-                            && isset($_POST['category_id']) && !empty($_POST['category_id']))
-                    {
-                        $eventController->updateExistingEvent($event['image']);
+                        $eventController->updateExistingEvent($event);
                     } else {
                         $message = 'You have to fill up all fields.';
                         $eventController->showEventModificationPage($event, showInfoMessage($message, false));
@@ -247,7 +158,9 @@ try {
                     throw new Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingEvent') {
-                $event = $eventController->handleEvent();
+                $handleEventReturnArr = $eventController->handleEvent();
+                $event = $handleEventReturnArr[0];
+
                 if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         $eventController->deleteExistingEvent();
@@ -293,6 +206,8 @@ try {
                 } else {
                     throw new Exception('No event ID sent.');
                 }
+            } else if ($_GET['action'] == 'testSubcat') {
+                require('view/testSubcat.html');
             }
         } else {
             throw new Exception('The URL given is wrong or you have to sign in to access this functionality.');

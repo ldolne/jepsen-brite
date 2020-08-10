@@ -70,4 +70,38 @@ class SubcategoryManager extends Manager
 
         return $req;
     }
+
+    public function createSubcategoryForEvent($subcategoryId, $eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('INSERT INTO assoc_subcategories_events(subcategory_id, event_id) 
+            VALUES (:subcategory_id, :event_id)');
+        $affectedLines = $req->execute(array(
+            'subcategory_id' => $subcategoryId,
+            'event_id' => $eventId
+        ));
+
+        return $affectedLines;
+    }
+
+    public function deleteSubcategoryForEvent($subcategoryId, $eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM assoc_subcategories_events WHERE subcategory_id = :subcategory_id AND event_id = :event_id');
+        $affectedLines = $req->execute(array(
+            'subcategory_id' => $subcategoryId,
+            'event_id' => $eventId
+        ));
+
+        return $affectedLines;
+    }
+
+    public function deleteAllSubcategoriesForEvent($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM assoc_subcategories_events WHERE event_id = ? ');
+        $affectedLines = $req->execute(array($eventId));
+
+        return $affectedLines;
+    }
 }

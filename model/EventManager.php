@@ -61,7 +61,9 @@ class EventManager extends Manager
             'category_id' => $categoryId
         ));
 
-        return $affectedLines;
+        $latestId = $db->lastInsertId();
+
+        return array($affectedLines, $latestId);
     }
 
     public function updateEvent($eventId, $title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId)
