@@ -92,8 +92,9 @@ class EventController
     public function handleEvent()
     {
         $eventReq = $this->eventManager->getEvent($_GET['id']);
-        $subcategories = $this->subcategoryManager->getSubcategoriesByEvent($_GET['id']);
+        $subcategoriesReq = $this->subcategoryManager->getSubcategoriesByEvent($_GET['id']);
         $event = $eventReq->fetch();
+        $subcategories = $subcategoriesReq->fetchAll();
 
         if (empty($event))
         {
@@ -176,7 +177,7 @@ class EventController
         require('./view/modifyEvent.php');
     }
 
-    public function updateExistingEvent($event)
+    public function updateExistingEvent($event, $subcategories)
     {
         $_POST['title'] = htmlspecialchars($_POST['title']);
         $_POST['description'] = htmlspecialchars($_POST['description']);
@@ -222,6 +223,21 @@ class EventController
             $imageName = $event['image'];
         }
 
+        echo $_POST['subcategory_id'];
+
+
+        echo "<pre>";
+        print_r($_POST['subcategory_id']);
+        echo "</pre>";
+
+        foreach ($_POST['subcategory_id'] as $selected)
+        {
+            if ($selected == 21)
+            {
+                echo '<input type="checkbox" id="' . "musical" . '" name="subcategory_id[]" value="' . 21 . '" checked>';
+            }
+        }
+
         $eventAffectedLines = $this->eventManager->updateEvent(
             $_GET['id'],
             $_POST['title'],
@@ -232,10 +248,19 @@ class EventController
             $_POST['description'],
             $_POST['category_id']);
 
-        foreach ($_POST['subcategory_id'] as $selected) {
-            $subcategoryUpdatedAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $event['id']);
+        if ($eventAffectedLines === false) {
+            throw new Exception('Problem while modifying the event. Please try again.');
+        }
+        else
+        {
+            header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
+        }
 
-            if ($eventAffectedLines === false OR $subcategoryUpdatedAffectedLines === false) {
+        foreach ($subcategories as $selected)
+        {
+            $subcategoryDeletedAffectedLines = $this->subcategoryManager->deleteSubcategoryForEvent($selected['id'], $event['id']);
+
+            if ($subcategoryDeletedAffectedLines === false) {
                 throw new Exception('Problem while modifying the event. Please try again.');
             }
             else
@@ -244,10 +269,10 @@ class EventController
             }
         }
 
-        foreach ($event['subcategory_id'] as $selected) {
-            $subcategoryDeletedAffectedLines = $this->subcategoryManager->deleteSubcategoryForEvent($selected, $event['id']);
+        foreach ($_POST['subcategory_id'] as $selected) {
+            $subcategoryUpdatedAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $event['id']);
 
-            if ($eventAffectedLines === false OR $subcategoryDeletedAffectedLines === false) {
+            if ($subcategoryUpdatedAffectedLines === false) {
                 throw new Exception('Problem while modifying the event. Please try again.');
             }
             else
@@ -330,6 +355,84 @@ class EventController
             } else {
                 header('Location: ./index.php?action=showEvent&id=' . $eventId);
             }
+        }
+    }
+
+    // Display function
+
+    public function displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent($rawNumberValue, $textId)
+    {
+        $isInPost = false;
+
+        if (isset($_POST['subcategory_id']))
+        {
+            foreach($_POST['subcategory_id'] as $selected)
+            {
+                if ($selected == $rawNumberValue)
+                {
+                    $isInPost = true;
+                }
+            }
+
+            if($isInPost)
+            {
+                echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '" checked>';
+            }
+            else
+            {
+                echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
+            }
+        }
+        else {
+            echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
+        }
+    }
+
+    public function displayAlreadyCheckedSubcategoriesWhenModifyingOneEvent($subcategoriesVariable, $rawNumberValue, $textId)
+    {
+        $isInPost = false;
+        $isInDb = false;
+
+        if (isset($_POST['subcategory_id']))
+        {
+            foreach($_POST['subcategory_id'] as $selected)
+            {
+                if ($selected == $rawNumberValue)
+                {
+                    $isInPost = true;
+                }
+            }
+
+            if($isInPost)
+            {
+                echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '" checked>';
+            }
+            else
+            {
+                echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
+            }
+        }
+        else if (isset($subcategoriesVariable))
+        {
+            foreach($subcategoriesVariable as $selected)
+            {
+                if ($selected['id'] == $rawNumberValue)
+                {
+                    $isInDb = true;
+                }
+            }
+
+            if ($isInDb)
+            {
+                echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '" checked>';
+            }
+            else
+            {
+                echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
+            }
+        }
+        else {
+            echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
         }
     }
 }

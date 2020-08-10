@@ -76,7 +76,33 @@ if(isset($_POST['submit'])){//to run PHP script on submit
 }
 
 // TODO
-//  - Update event avec sous-cat : charger données db et les update
 //  - Checkbox conditionnées en fonction du select - JS
-//  - Quand création, si tout pas rempli, checkbox déjà cochées sont à nouveau cochées
+//  - Corriger css des buttons sous cat
+
+
+<th>
+    Subcategory
+</th>
+
+                    $subcategories = $subcategoryManager->getSubcategoriesByEvent($data['id']);
+                    $subcategoriesArr = $subcategories->fetchAll();
+
+if(!empty($subcategoriesArr))
+{
+    $displaySubcategories = null;
+
+    foreach($subcategoriesArr as $subcategory)
+    {
+
+        $displaySubcategories .= $subcategory['subcategory'];
+    }
+
+    echo $displaySubcategories;
+}
+else
+{
+    echo "None";
+}
+
+$subcategories->closeCursor();
 ?>
