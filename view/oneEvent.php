@@ -16,23 +16,22 @@ $parsdown = new Parsedown();
                             <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block">Create an event</button></a></em></p>
                         <?php } ?>
                     </div>
-                    <?php if (!empty($_SESSION['username'])
-                        AND ($event['event_date'] > date('Y-m-d')
-                            OR ($event['event_date'] == date('Y-m-d') AND ($event['event_hour'] > date('h:i:s', time() + 2*3600))))) { // + 2 hours because of the server location
+                    <?php if (
+                        !empty($_SESSION['username'])
+                        and ($event['event_date'] > date('Y-m-d')
+                            or ($event['event_date'] == date('Y-m-d') and ($event['event_hour'] > date('h:i:s', time() + 2 * 3600))))
+                    ) { // + 2 hours because of the server location
 
                         $isParticipating = false;
 
-                        foreach($participantsArr as $participant)
-                        {
-                            if ($_SESSION['id'] == $participant['id'])
-                            {
+                        foreach ($participantsArr as $participant) {
+                            if ($_SESSION['id'] == $participant['id']) {
                                 $isParticipating = true;
                             }
                         }
 
-                        if($isParticipating == true)
-                        {
-                            ?>
+                        if ($isParticipating == true) {
+                    ?>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <a href="./index.php?action=unregisterFromEvent&amp;id=<?= $event['id'] ?>">
@@ -40,11 +39,9 @@ $parsdown = new Parsedown();
                                     </a>
                                 </div>
                             </div>
-                            <?php
-                        }
-                        else
-                        {
-                            ?>
+                        <?php
+                        } else {
+                        ?>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <a href="./index.php?action=registerToEvent&amp;id=<?= $event['id'] ?>">
@@ -52,7 +49,7 @@ $parsdown = new Parsedown();
                                     </a>
                                 </div>
                             </div>
-                            <?php
+                    <?php
                         }
                     }
                     ?>
@@ -77,6 +74,19 @@ $parsdown = new Parsedown();
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <?= htmlspecialchars($event['title']) ?>
+                                    </div>
+                                </div>
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Place</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        <iframe src="https://www.google.com/maps?q=<?= $event['adress'] . ' ' . $event['cp']; ?>  &output=embed" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2530.7007725642848!2d5.583290615338902!3d50.63267527950086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0f0abbfc177c7%3A0xf2c9f9204e1bb92b!2zUMO0bGUgaW1hZ2UgZGUgTGnDqGdl!5e0!3m2!1sfr!2sbe!4v1597066215687!5m2!1sfr!2sbe" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                                     </div>
                                 </div>
                                 <hr />
@@ -116,11 +126,10 @@ $parsdown = new Parsedown();
                                         <?php
                                         if (!empty($subcategoriesArr)) {
                                             echo "<ul>";
-                                            foreach ($subcategoriesArr as $subcategory)
-                                            {
-                                                ?>
+                                            foreach ($subcategoriesArr as $subcategory) {
+                                        ?>
                                                 <li><?= htmlspecialchars($subcategory['subcategory']) ?></li>
-                                                <?php
+                                        <?php
                                             }
                                             echo "</ul>";
                                         } else {
@@ -154,19 +163,15 @@ $parsdown = new Parsedown();
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <?php
-                                        if (!empty($participantsArr))
-                                        {
+                                        if (!empty($participantsArr)) {
                                             echo "<ul>";
-                                            foreach ($participantsArr as $participant)
-                                            {
-                                                ?>
+                                            foreach ($participantsArr as $participant) {
+                                        ?>
                                                 <li><?= htmlspecialchars($participant['username']) ?></li>
-                                                <?php
+                                        <?php
                                             }
                                             echo "</ul>";
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             echo "None. Be the first one to take part in this event!";
                                         }
                                         ?>
@@ -176,22 +181,22 @@ $parsdown = new Parsedown();
 
                                 <div class="row">
                                     <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
-                                        ?>
+                                    ?>
                                         <div class="col-sm-3 col-md-2 col-5">
                                             <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
                                                 <button class="btn btn-primary">Modify event</button>
                                             </a>
                                         </div>
-                                        <?php
+                                    <?php
                                     } ?>
-                                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $isAdmin != "0") {
-                                        ?>
+                                    <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $isAdmin != "0") {
+                                    ?>
                                         <div class="col-md-8 col-6">
                                             <a href="./index.php?action=deleteExistingEvent&amp;id=<?= $event['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this event?')) return false;">
                                                 <button class="btn btn-danger">Delete event</button>
                                             </a>
                                         </div>
-                                        <?php
+                                    <?php
                                     } ?>
                                 </div>
                             </div>
@@ -207,9 +212,8 @@ $parsdown = new Parsedown();
     <div class="col-12">
         <div class="card">
             <?php
-            while ($comment = $comments->fetch())
-            {
-                ?>
+            while ($comment = $comments->fetch()) {
+            ?>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3 col-md-2 col-5">
@@ -225,22 +229,21 @@ $parsdown = new Parsedown();
                             <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
                         </div>
                         <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $comment['author_id'] || $isAdmin != "0") {
-                            ?>
+                        ?>
                             <div class="col-sm-3 col-md-2 col-5">
                                 <a href="./index.php?action=deleteExistingComment&amp;id=<?= $event['id'] ?>&amp;comment_id=<?= $comment['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this comment?')) return false;">
                                     <button class="btn btn-danger">Delete comment</button>
                                 </a>
                             </div>
-                            <?php
+                        <?php
                         } ?>
                     </div>
                 </div>
-                <?php
+            <?php
             }
             ?>
-            <?php if (!empty($_SESSION['username']))
-            {
-                ?>
+            <?php if (!empty($_SESSION['username'])) {
+            ?>
                 <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
                     <div class="card-body">
                         <div class="row">
