@@ -156,6 +156,56 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <input type="checkbox" id="metal" name="subcategory_id[]" value="<?php
+
+                        // TODO en faire une fonction à répéter pour chaque cas
+                        if(isset($_POST['subcategory_id'])){
+
+                            foreach($_POST['subcategory_id'] as $selected)
+                            {
+                                if ($selected == 1)
+                                {
+                                    echo $selected;
+                                }
+                            }
+                        } else {
+                            echo '1';
+                        } ?>">
+                        <label for="metal"> Metal</label><br>
+                        <input type="checkbox" id="classic" name="subcategory_id[]" value="11">
+                        <label for="classic"> Classic</label><br>
+                        <input type="checkbox" id="edm" name="subcategory_id[]" value="21">
+                        <label for="edm"> EDM</label><br>
+
+                        <input type="checkbox" id="contemporary_art" name="subcategory_id[]" value="31">
+                        <label for="contemporary_art"> Contemporary art</label><br>
+                        <input type="checkbox" id="photography" name="subcategory_id[]" value="41">
+                        <label for="photography"> Photography</label><br>
+                        <input type="checkbox" id="historical" name="subcategory_id[]" value="51">
+                        <label for="historical"> Historical</label><br>
+
+                        <input type="checkbox" id="political" name="subcategory_id[]" value="61">
+                        <label for="political"> Political</label><br>
+                        <input type="checkbox" id="environmental" name="subcategory_id[]" value="71">
+                        <label for="environmental"> Environmental</label><br>
+                        <input type="checkbox" id="educational" name="subcategory_id[]" value="81">
+                        <label for="educational"> Educational</label><br>
+
+                        <input type="checkbox" id="musical" name="subcategory_id[]" value="91">
+                        <label for="musical"> Musical</label><br>
+                        <input type="checkbox" id="environmental" name="subcategory_id[]" value="101">
+                        <label for="environmental"> Environmental</label><br>
+                        <input type="checkbox" id="social" name="subcategory_id[]" value="111">
+                        <label for="social"> Social</label><br>
+
+                        <input type="checkbox" id="fps" name="subcategory_id[]" value="121">
+                        <label for="fps"> FPS</label><br>
+                        <input type="checkbox" id="rpg" name="subcategory_id[]" value="131">
+                        <label for="rpg"> RPG</label><br>
+                        <input type="checkbox" id="moba" name="subcategory_id[]" value="141">
+                        <label for="moba"> MOBA</label><br>
+                    </div>
+                    <div class="form-group">
                         <label for="image">Image:</label>
                         <input type="file" name="image" id="image" class="form-control-file">
                         <div class="image-container">
