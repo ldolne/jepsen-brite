@@ -6,7 +6,6 @@ require_once('Manager.php');
 
 class SubcategoryManager extends Manager
 {
-    // TODO REPRENDRE ICI
     public function getOneSubcategory($subcategoryId)
     {
         $db= $this->dbConnect();

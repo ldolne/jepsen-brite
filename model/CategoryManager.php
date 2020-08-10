@@ -13,7 +13,7 @@ class CategoryManager extends Manager
             FROM events AS e
             INNER JOIN users AS u
             ON e.author_id = u.id 
-            INNER JOIN categories AS 
+            INNER JOIN categories AS c
             ON e.category_id = c.id
             LEFT JOIN assoc_subcategories_events AS ase
             ON e.id = ase.event_id 

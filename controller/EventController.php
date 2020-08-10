@@ -359,6 +359,169 @@ class EventController
     }
 
     // Display function
+    public function displayAlreadyCheckedCategoryWhenCreatingOneEvent()
+    {
+        if (isset($_POST['category_id'])) {
+            switch ($_POST['category_id']) {
+                case 1:
+                    ?>
+                    <option value="1" selected>Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                <?php
+                    break;
+                case 2:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2" selected>Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 3:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3" selected>Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 4:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4" selected>Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 5:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5" selected>Game Jam</option>
+                    <?php
+                    break;
+            }
+        } else {
+            ?>
+            <option value="1" selected>Concert</option>
+            <option value="2">Exhibition</option>
+            <option value="3">Conference</option>
+            <option value="4">Hackathon</option>
+            <option value="5">Game Jam</option>
+<?php
+        }
+    }
+
+    public function displayAlreadyCheckedCategoryWhenModifyingOneEvent($eventVariable)
+    {
+        if (isset($_POST['category_id'])) {
+            switch($_POST['category_id'])
+            {
+                case 1:
+                    ?>
+                    <option value="1" selected>Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 2:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2" selected>Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 3:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3" selected>Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 4:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4" selected>Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 5:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5" selected>Game Jam</option>
+                    <?php
+                    break;
+            }
+        } else {
+            switch($eventVariable['category_id'])
+            {
+                case 1:
+                    ?>
+                    <option value="1" selected>Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 2:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2" selected>Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 3:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3" selected>Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 4:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4" selected>Hackathon</option>
+                    <option value="5">Game Jam</option>
+                    <?php
+                    break;
+                case 5:
+                    ?>
+                    <option value="1">Concert</option>
+                    <option value="2">Exhibition</option>
+                    <option value="3">Conference</option>
+                    <option value="4">Hackathon</option>
+                    <option value="5" selected>Game Jam</option>
+                    <?php
+                    break;
+            }
+        }
+    }
 
     public function displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent($rawNumberValue, $textId)
     {

@@ -13,41 +13,41 @@
 
                         <li><a href="./index.php?action=showOneCategory&amp;category_id=1"><button class="btn btn-primary">Concert</button></a>
                             <ul>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=1"><button class="btn btn-success">Metal</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=11"><button class="btn btn-success">Classic</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=21"><button class="btn btn-success">EDM</button></a>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=1"><button class="btn btn-success">Metal</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=11"><button class="btn btn-success">Classic</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=21"><button class="btn btn-success">EDM</button></a></li>
                             </ul>
                         </li>
 
                         <li><a href="./index.php?action=showOneCategory&amp;category_id=2"><button class="btn btn-primary">Exhibition</button></a>
                             <ul>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=31"><button class="btn btn-success">Contemporary art</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=41"><button class="btn btn-success">Photography</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=51"><button class="btn btn-success">Historical</button></a>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=31"><button class="btn btn-success">Contemporary art</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=41"><button class="btn btn-success">Photography</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=51"><button class="btn btn-success">Historical</button></a></li>
                             </ul>
                         </li>
 
                         <li><a href="./index.php?action=showOneCategory&amp;category_id=3"><button class="btn btn-primary">Conference</button></a>
                             <ul>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=61"><button class="btn btn-success">Political</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=71"><button class="btn btn-success">Environmental</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=81"><button class="btn btn-success">Educational</button></a>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=61"><button class="btn btn-success">Political</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=71"><button class="btn btn-success">Environmental</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=81"><button class="btn btn-success">Educational</button></a></li>
                             </ul>
                         </li>
 
                         <li><a href="./index.php?action=showOneCategory&amp;category_id=4"><button class="btn btn-primary">Hackathon</button></a>
                             <ul>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=91"><button class="btn btn-success">Musical</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=101"><button class="btn btn-success">Environmental</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=111"><button class="btn btn-success">Social</button></a>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=91"><button class="btn btn-success">Musical</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=101"><button class="btn btn-success">Environmental</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=111"><button class="btn btn-success">Social</button></a></li>
                             </ul>
                         </li>
 
                         <li><a href="./index.php?action=showOneCategory&amp;category_id=5"><button class="btn btn-primary">Game Jam</button></a>
                             <ul>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=121"><button class="btn btn-success">FPS</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=131"><button class="btn btn-success">RPG</button></a>
-                                <a href="./index.php?action=showOneSubcategory&amp;subcategory_id=141"><button class="btn btn-success">MOBA</button></a>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=121"><button class="btn btn-success">FPS</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=131"><button class="btn btn-success">RPG</button></a></li>
+                                <li><a href="./index.php?action=showOneSubcategory&amp;subcategory_id=141"><button class="btn btn-success">MOBA</button></a></li>
                             </ul>
                         </li>
                     </ul>
