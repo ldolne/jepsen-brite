@@ -21,14 +21,16 @@
     <div class="row mb-1">
         <div class="col-md-10">
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-100 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <div class="card-text mb-auto">
-                        <img src="<?= $data['image'] ?>" id="imgProfile" alt="Event image" class="img-thumbnail" width="150" />
+            <div class="col p-4 d-flex position-static align-items-baseline">
+                    <div class="mb-auto">
+                        <iframe src="<?= $data['image'] ?>" id="imgEvent" alt="Event image" class="img-thumbnail img-responsive" scrolling= "no"></iframe>
                     </div>
-                    <div class="mb-2 text-muted"><?= $data['category'] ?></div>
-                    <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
-                    <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
-                    <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go to page of this event</a>
+                    <div class="col p-4 d-flex flex-column position-static">
+                      <div class="mb-2 text-muted"><?= $data['category'] ?></div>
+                      <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
+                      <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
+                      <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go to page of this event</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,15 +46,17 @@
   else
   {
 ?>
-      <div class="col-md-3">
-          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-              <div class="col p-4 d-flex flex-column position-static">
-                  <div class="card-text mb-auto">
-                      <img src="<?= $data['image'] ?>" id="imgProfile" alt="Event image" class="img-thumbnail" width="100" />
+      <div class="col-md-3 mb-4">
+          <div class="row no-gutters border rounded overflow-hidden flex-md-row shadow-sm position-relative h-100">
+              <div class="card col p-2 d-flex flex-column position-static">
+                <div class="card-img-top">
+                  <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
+                </div>
+                  <div class="card-body mb-auto d-flex flex-column">
                       <div class="mb-2 text-muted"><?= $data['category'] ?></div>
                       <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
                       <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
-                      <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link">Go page of this event</a>
+                      <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link mt-auto">Go page of this event</a>
                   </div>
               </div>
           </div>

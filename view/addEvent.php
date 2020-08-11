@@ -131,9 +131,15 @@
                     <input type="checkbox" id="moba" name="subcategory_id[]" value="141">
                     <label for="moba"> MOBA</label><br>
                 </div>
-                <div class="form-group">
-                    <label for="image">Image:</label>
+                <div class="form-group d-flex">
+                    <div>
+                    <label for="image">Import image:</label>
                     <input type="file" name="image" id="image" class="form-control-file">
+                    </div>
+                    <div>
+                    <label for="url">Or a video URL:</label>
+                    <input type="url" id="url" name="url">
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">
                     Submit

@@ -57,12 +57,14 @@ $parsdown = new Parsedown();
                     }
                     ?>
                     <div class="d-flex justify-content-start">
-                        <div class="image-container">
-                            <img src="<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
+                    <div class="col-sm-8 p-4">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe src="<?= $event['image'] ?>" id="imgProfile" alt="Event image" class="embed-responsive-item img-fluid" scrolling= 'no'></iframe>
                         </div>
                         <div class="ml-auto">
                             <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
                         </div>
+                    </div>
                     </div>
                 </div>
 

@@ -161,7 +161,7 @@ try {
                 $handleEventReturnArr = $eventController->handleEvent();
                 $event = $handleEventReturnArr[0];
 
-                if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
+                if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $_SESSION['isadmin'] != "0") {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         $eventController->deleteExistingEvent();
                     } else {
