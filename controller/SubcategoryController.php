@@ -15,15 +15,9 @@ class SubcategoryController
         $this->subcategoryManager = new \model\SubcategoryManager();
     }
 
-    public function AllSubCategoriesController()
+    public function showOneSubcategory()
     {
-        $search = $this->subcategoryManager->AllSubCategoriesModel();
-        require('./view/eventsByCategory.php');
-    }
-
-    public function OneSubCategoryController()
-    {
-        $search = $this->subcategoryManager->SubCategoryModel($_GET['subcategory_id']);
+        $search = $this->subcategoryManager->getOneSubcategory($_GET['subcategory_id']);
         if ($search === null) {
             throw new Exception('No result.');
         } else {

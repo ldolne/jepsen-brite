@@ -15,16 +15,21 @@ class CategoryController
         $this->categoryManager = new \model\CategoryManager();
     }
 
-    public function AllCategoryController()
+    public function showAllCategories()
     {
-        //$subcategoryManager = new SubCategoriesManager();
-        $search = $this->categoryManager->AllCategoryModel();
-        require('./view/eventsByCategory.php');
+        $search = $this->categoryManager->getAllCategories();
+
+        if ($search === null) {
+            throw new Exception('No result.');
+        } else {
+            require('./view/eventsByCategory.php');
+        }
     }
 
-    public function OneCategoryController()
+    public function showOneCategory()
     {
-        $search = $this->categoryManager->OneCategoryModel($_GET['category_id']);
+        $search = $this->categoryManager->getOneCategory($_GET['category_id']);
+
         if ($search === null) {
             throw new Exception('No result.');
         } else {

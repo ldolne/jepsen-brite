@@ -35,101 +35,90 @@
                     <label for="category">Category:</label>
                     <select name="category_id" class="form-control" id="category">
                         <?php
-                        if (isset($_POST['category_id'])) {
-                            switch ($_POST['category_id']) {
-                                case 1:
-                        ?>
-                                    <option value="1" selected>Concert</option>
-                                    <option value="2">Exhibition</option>
-                                    <option value="3">Conference</option>
-                                    <option value="4">Hackathon</option>
-                                    <option value="5">Game Jam</option>
-                                <?php
-                                    break;
-                                case 2:
-                                ?>
-                                    <option value="1">Concert</option>
-                                    <option value="2" selected>Exhibition</option>
-                                    <option value="3">Conference</option>
-                                    <option value="4">Hackathon</option>
-                                    <option value="5">Game Jam</option>
-                                <?php
-                                    break;
-                                case 3:
-                                ?>
-                                    <option value="1">Concert</option>
-                                    <option value="2">Exhibition</option>
-                                    <option value="3" selected>Conference</option>
-                                    <option value="4">Hackathon</option>
-                                    <option value="5">Game Jam</option>
-                                <?php
-                                    break;
-                                case 4:
-                                ?>
-                                    <option value="1">Concert</option>
-                                    <option value="2">Exhibition</option>
-                                    <option value="3">Conference</option>
-                                    <option value="4" selected>Hackathon</option>
-                                    <option value="5">Game Jam</option>
-                                <?php
-                                    break;
-                                case 5:
-                                ?>
-                                    <option value="1">Concert</option>
-                                    <option value="2">Exhibition</option>
-                                    <option value="3">Conference</option>
-                                    <option value="4">Hackathon</option>
-                                    <option value="5" selected>Game Jam</option>
-                            <?php
-                                    break;
-                            }
-                        } else {
-                            ?>
-                            <option value="1" selected>Concert</option>
-                            <option value="2">Exhibition</option>
-                            <option value="3">Conference</option>
-                            <option value="4">Hackathon</option>
-                            <option value="5">Game Jam</option>
-                        <?php
-                        }
+                        $eventController = new \controller\EventController();
+
+                        $eventController->displayAlreadyCheckedCategoryWhenCreatingOneEvent();
                         ?>
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" id="metal" name="subcategory_id[]" value="1">
-                    <label for="metal"> Metal</label><br>
-                    <input type="checkbox" id="classic" name="subcategory_id[]" value="11">
-                    <label for="classic"> Classic</label><br>
-                    <input type="checkbox" id="edm" name="subcategory_id[]" value="21">
-                    <label for="edm"> EDM</label><br>
+                    <label>Subcategory (optional):</label><br>
+                    <div id="concertSubcat" style="display: block">
+                        <?php
+                        $eventController = new \controller\EventController();
 
-                    <input type="checkbox" id="contemporary_art" name="subcategory_id[]" value="31">
-                    <label for="contemporary_art"> Contemporary art</label><br>
-                    <input type="checkbox" id="photography" name="subcategory_id[]" value="41">
-                    <label for="photography"> Photography</label><br>
-                    <input type="checkbox" id="historical" name="subcategory_id[]" value="51">
-                    <label for="historical"> Historical</label><br>
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(1, "metal");
+                        ?>
+                        <label for="metal"> Metal</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(11, "classic");
+                        ?>
+                        <label for="classic"> Classic</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(21, "edm");
+                        ?>
+                        <label for="edm"> EDM</label><br>
+                    </div>
 
-                    <input type="checkbox" id="political" name="subcategory_id[]" value="61">
-                    <label for="political"> Political</label><br>
-                    <input type="checkbox" id="environmental" name="subcategory_id[]" value="71">
-                    <label for="environmental"> Environmental</label><br>
-                    <input type="checkbox" id="educational" name="subcategory_id[]" value="81">
-                    <label for="educational"> Educational</label><br>
+                    <div id="exhibitionSubcat" style="display: none">
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(31, "contemporary_art");
+                        ?>
+                        <label for="contemporary_art"> Contemporary art</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(41, "photography");
+                        ?>
+                        <label for="photography"> Photography</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(51, "historical");
+                        ?>
+                        <label for="historical"> Historical</label><br>
+                    </div>
 
-                    <input type="checkbox" id="musical" name="subcategory_id[]" value="91">
-                    <label for="musical"> Musical</label><br>
-                    <input type="checkbox" id="environmental" name="subcategory_id[]" value="101">
-                    <label for="environmental"> Environmental</label><br>
-                    <input type="checkbox" id="social" name="subcategory_id[]" value="111">
-                    <label for="social"> Social</label><br>
+                    <div id="conferenceSubcat" style="display: none">
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(61, "political");
+                        ?>
+                        <label for="political"> Political</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(71, "environmental");
+                        ?>
+                        <label for="environmental"> Environmental</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(81, "educational");
+                        ?>
+                        <label for="educational"> Educational</label><br>
+                    </div>
 
-                    <input type="checkbox" id="fps" name="subcategory_id[]" value="121">
-                    <label for="fps"> FPS</label><br>
-                    <input type="checkbox" id="rpg" name="subcategory_id[]" value="131">
-                    <label for="rpg"> RPG</label><br>
-                    <input type="checkbox" id="moba" name="subcategory_id[]" value="141">
-                    <label for="moba"> MOBA</label><br>
+                    <div id="hackathonSubcat" style="display: none">
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(91, "musical");
+                        ?>
+                        <label for="musical"> Musical</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(101, "environmental2");
+                        ?>
+                        <label for="environmental2"> Environmental</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(111, "social");
+                        ?>
+                        <label for="social"> Social</label><br>
+                    </div>
+
+                    <div id="gamejamSubcat" style="display: none">
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(121, "fps");
+                        ?>
+                        <label for="fps"> FPS</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(131, "rpg");
+                        ?>
+                        <label for="rpg"> RPG</label><br>
+                        <?php
+                        $eventController->displayAlreadyCheckedSubcategoriesWhenCreatingOneEvent(141, "moba");
+                        ?>
+                        <label for="moba"> MOBA</label><br>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="image">Image:</label>
@@ -143,6 +132,8 @@
     </div><!-- /.row -->
 
 </main><!-- /.container -->
+
+<script src="./public/js/main.js"></script>
 
 <?php $content = ob_get_clean(); ?>
 <?php require('template.php'); ?>
