@@ -2,6 +2,7 @@
     "require": {
         "erusev/parsedown": "^1.7",
         "cloudinary/cloudinary_php": "dev-master",
-        "vlucas/phpdotenv": "^5.1"
+        "vlucas/phpdotenv": "^5.1",
+        "sendgrid/sendgrid": "~5.0.9"
     }
 }
