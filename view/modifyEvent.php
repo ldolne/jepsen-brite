@@ -40,6 +40,38 @@
                             echo $event['event_hour_formatted'];
                         } ?>">
                     </div>
+
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input id="address" type="text"  name="address" id="address" class="form-control" value="<?php
+                        if(isset($_POST['address'])){
+                            echo htmlspecialchars($_POST['address']);
+                        } else {
+                            echo htmlspecialchars($event['address']);
+                        } ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="town">Town:</label>
+                        <input id="town" type="text" name="town" id="town" class="form-control"  value="<?php
+                        if(isset($_POST['town'])){
+                            echo htmlspecialchars($_POST['town']);
+                        } else {
+                            echo htmlspecialchars($event['town']);
+                        } ?>">
+                    </div>
+                        
+                   
+                    <div class="form-group">
+                        <label for="cp">Zipcode:</label>
+                        <input id="cp" type="text" name="cp" id="cp"  pattern="[0-9]{4}" title="Four digit zip code" class="form-control"  value="<?php
+                        if(isset($_POST['cp'])){
+                            echo htmlspecialchars($_POST['cp']);
+                        } else {
+                            echo htmlspecialchars($event['cp']);
+                        } ?>">
+                    </div>
+
                     <div class="form-group">
                         <label for="description">Description:</label>
                         <textarea name="description" id="description" rows="5" cols="33" class="form-control"><?php
