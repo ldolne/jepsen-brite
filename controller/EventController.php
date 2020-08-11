@@ -280,6 +280,20 @@ class EventController
                 header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
             }
         }
+
+        // Sending to all participants of this event an email informing them of the update
+        // uncomment for Heroku
+
+        /*$from = new SendGrid\Email(null, "becodechristest@gmail.com");
+        $subject = 'Inscription à Jepsen-brite event ';
+        $to = new SendGrid\Email(null, $email);
+        $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
+        $mail = new SendGrid\Mail($from, $subject, $to, $content);
+
+        $apiKey = getenv('SENDGRID_API_KEY');
+        $sg = new \SendGrid($apiKey);
+
+        $response = $sg->client->mail()->send()->post($mail);*/
     }
 
     public function deleteExistingEvent()

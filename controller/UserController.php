@@ -111,6 +111,7 @@ class UserController
             $message='Inscription successful. Welcome';
             $message = showInfoMessage($message, true);
 
+            // Sending welcome email
             // uncomment for Heroku
 
             /*$from = new SendGrid\Email(null, "becodechristest@gmail.com");
