@@ -204,18 +204,25 @@ class EventController
             $_POST['description'],
             $_POST['category_id']);
 
-        foreach ($_POST['subcategory_id'] as $selected)
+        if (isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id']))
         {
-            $subcategoryAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $eventReturnArr[1]);
-
-            if ($eventReturnArr[0] === false OR $subcategoryAffectedLines === false) {
-                throw new \Exception('Problem while creating an event. Please try again.');
-            }
-            else
+            foreach ($_POST['subcategory_id'] as $selected)
             {
-                header('Location: ./index.php');
+                $subcategoryAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $eventReturnArr[1]);
+
+                if ($subcategoryAffectedLines === false) {
+                    throw new \Exception('Problem while creating an event. Please try again.');
+                }
             }
-        }   
+        }
+
+        if ($eventReturnArr[0] === false) {
+            throw new \Exception('Problem while creating an event. Please try again.');
+        }
+        else
+        {
+            header('Location: ./index.php');
+        }
     }
 
     public function showEventModificationPage($event, $subcategories, $message = null)
@@ -315,21 +322,6 @@ class EventController
             $imageName = $event['image'];
         }
 
-        echo $_POST['subcategory_id'];
-
-
-        echo "<pre>";
-        print_r($_POST['subcategory_id']);
-        echo "</pre>";
-
-        foreach ($_POST['subcategory_id'] as $selected)
-        {
-            if ($selected == 21)
-            {
-                echo '<input type="checkbox" id="' . "musical" . '" name="subcategory_id[]" value="' . 21 . '" checked>';
-            }
-        }
-
         $eventAffectedLines = $this->eventManager->updateEvent(
             $_GET['id'],
             $_POST['title'],
@@ -340,6 +332,28 @@ class EventController
             $_POST['description'],
             $_POST['category_id']);
 
+        if (isset($subcategories) && !empty($subcategories))
+        {
+            foreach ($subcategories as $selected) {
+                $subcategoryDeletedAffectedLines = $this->subcategoryManager->deleteSubcategoryForEvent($selected['id'], $event['id']);
+
+                if ($subcategoryDeletedAffectedLines === false) {
+                    throw new \Exception('Problem while modifying the event. Please try again.');
+                }
+            }
+        }
+
+        if (isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id']))
+        {
+            foreach ($_POST['subcategory_id'] as $selected) {
+                $subcategoryUpdatedAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $event['id']);
+
+                if ($subcategoryUpdatedAffectedLines === false) {
+                    throw new \Exception('Problem while modifying the event. Please try again.');
+                }
+            }
+        }
+
         if ($eventAffectedLines === false) {
             throw new \Exception('Problem while modifying the event. Please try again.');
         }
@@ -348,30 +362,19 @@ class EventController
             header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
         }
 
-        foreach ($subcategories as $selected)
-        {
-            $subcategoryDeletedAffectedLines = $this->subcategoryManager->deleteSubcategoryForEvent($selected['id'], $event['id']);
+        // Sending to all participants of this event an email informing them of the update
+        // uncomment for Heroku
 
-            if ($subcategoryDeletedAffectedLines === false) {
-                throw new \Exception('Problem while modifying the event. Please try again.');
-            }
-            else
-            {
-                header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
-            }
-        }
+        /*$from = new SendGrid\Email(null, "becodechristest@gmail.com");
+        $subject = 'Inscription à Jepsen-brite event ';
+        $to = new SendGrid\Email(null, $email);
+        $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
+        $mail = new SendGrid\Mail($from, $subject, $to, $content);
 
-        foreach ($_POST['subcategory_id'] as $selected) {
-            $subcategoryUpdatedAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $event['id']);
+        $apiKey = getenv('SENDGRID_API_KEY');
+        $sg = new \SendGrid($apiKey);
 
-            if ($subcategoryUpdatedAffectedLines === false) {
-                throw new \Exception('Problem while modifying the event. Please try again.');
-            }
-            else
-            {
-                header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
-            }
-        }
+        $response = $sg->client->mail()->send()->post($mail);*/
     }
 
     public function deleteExistingEvent()
