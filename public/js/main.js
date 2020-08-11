@@ -25,6 +25,8 @@ var fpsCheckbox = document.getElementById("fps");
 var rpgCheckbox = document.getElementById("rpg");
 var mobaCheckbox = document.getElementById("moba");
 
+switchDiv();
+
 categorySelect.addEventListener('change', event => {
     metalCheckbox.checked = false;
     classicCheckbox.checked = false;
@@ -46,6 +48,11 @@ categorySelect.addEventListener('change', event => {
     rpgCheckbox.checked = false;
     mobaCheckbox.checked = false;
 
+    switchDiv();
+});
+
+function switchDiv()
+{
     switch (categorySelect.value)
     {
         case "1":
@@ -84,5 +91,5 @@ categorySelect.addEventListener('change', event => {
             gamejamSubcatDiv.style.display = "block";
             break;
     }
-});
+}
 
