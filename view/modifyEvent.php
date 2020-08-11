@@ -139,11 +139,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="image">Image:</label>
-                        <input type="file" name="image" id="image" class="form-control-file">
+                        <div class="form-group d-flex">
+                            <div>
+                                <label for="image">Import image:</label>
+                                <input type="file" name="image" id="image" class="form-control-file">
+                            </div>
+                            <div>
+                                <label for="url">Or a video URL:</label>
+                                <input type="url" id="url" name="url">
+                            </div>
+                        </div>
                         <div class="image-container">
-                            <label for="imgProfile">Previous image:</label>
-                            <img src="./public/img/events_img/<?= $event['image']; ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
+                            <label for="imgEvent">Previous image:</label>
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe src="<?= $event['image']; ?>" id="imgEvent" alt="Event image" class="embed-responsive-item img-fluid" scrolling= 'no'></iframe>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">

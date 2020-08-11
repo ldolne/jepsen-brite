@@ -120,14 +120,23 @@
                         <label for="moba"> MOBA</label><br>
                     </div>
                 </div>
-                <div class="form-group d-flex">
-                    <div>
-                    <label for="image">Import image:</label>
-                    <input type="file" name="image" id="image" class="form-control-file">
+
+                <div class="form-group">
+                    <label for="image_or_video">Upload an image or a video URL:</label>
+                    <select name="image_or_video" class="form-control mb-3" id="image_or_video">
+                        <?php
+                        $eventController = new \controller\EventController();
+
+                        $eventController->checkIfVideoOrImageOnEventCreation();
+                        ?>
+                    </select>
+                    <div id="imageSubcat" style="display: block" class="ml-4">
+                        <label for="image">Input image:</label>
+                        <input type="file" name="image" id="imageInput" class="form-control-file mb-4">
                     </div>
-                    <div>
-                    <label for="url">Or a video URL:</label>
-                    <input type="url" id="url" name="url">
+                    <div id="videoSubcat" style="display: none" class="ml-4">
+                        <label for="url">Input video URL:</label>
+                        <input type="url" id="urlInput" name="url" class="form-control mb-4">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">

@@ -86,3 +86,25 @@ categorySelect.addEventListener('change', event => {
     }
 });
 
+var inputSelect = document.getElementById("image_or_video");
+var imageSubcatDiv = document.getElementById("imageSubcat");
+var videoSubcatDiv = document.getElementById("videoSubcat");
+var imageInput = document.getElementById("imageInput");
+var urlInput = document.getElementById("urlInput");
+
+inputSelect.addEventListener('change', event => {
+    imageInput.value = '';
+    urlInput.value = '';
+
+    switch (inputSelect.value)
+    {
+        case "1":
+            imageSubcatDiv.style.display = "block";
+            videoSubcatDiv.style.display = "none";
+            break;
+        case "2":
+            imageSubcatDiv.style.display = "none";
+            videoSubcatDiv.style.display = "block";
+            break;
+    }
+});

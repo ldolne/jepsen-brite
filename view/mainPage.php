@@ -50,7 +50,11 @@
           <div class="row no-gutters border rounded overflow-hidden flex-md-row shadow-sm position-relative h-100">
               <div class="card col p-2 d-flex flex-column position-static">
                 <div class="card-img-top">
+                  <?php if(strpos($data['image'], 'cloudinary.com') !== false) { ?>
+                    <image src="<?= $data['image'] ?>">
+                  <?php } else { ?>
                   <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
+                  <?php } ?>
                 </div>
                   <div class="card-body mb-auto d-flex flex-column">
                       <div class="mb-2 text-muted"><?= $data['category'] ?></div>

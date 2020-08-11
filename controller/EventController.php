@@ -191,10 +191,6 @@ class EventController
                     $imageName = $url;
                 } 
 
-        } elseif(isset($_FILES['image']) && !empty($_FILES['image']['name']) && !empty($_POST['url'])){
-            $message = 'You cannot upload both an image an a video.';
-            $this->showEventCreationPage(showInfoMessage($message, false));
-
         } else {
             $imageName = "https://res.cloudinary.com/dudwqzfzp/image/upload/v1596617340/jepsen-brite/events_img/default_znnszq.gif";
         }
@@ -269,6 +265,52 @@ class EventController
                 $message = 'The image cannot be larger than 2MB.';
                 $this->showEventModificationPage($event, showInfoMessage($message, false));
             }
+        } elseif(!empty($_POST['url'])) {
+            
+            $url = $_POST['url'];
+
+                $imageName = '';
+            
+                if (strpos($url, 'facebook.com/') !== false) {
+                    // Facebook Video
+                    $imageName ='https://www.facebook.com/plugins/video.php?href='.rawurlencode($url).'&show_text=1&width=200';
+            
+                } else if(strpos($url, 'vimeo.com/') !== false) {
+                    // Vimeo video
+                    $videoId = isset(explode("vimeo.com/",$url)[1]) ? explode("vimeo.com/",$url)[1] : null;
+                    if (strpos($videoId, '&') !== false){
+                        $videoId = explode("&",$videoId)[0];
+                    }
+                    $imageName ='https://player.vimeo.com/video/'.$videoId;
+            
+                } else if (strpos($url, 'youtube.com/') !== false) {
+                    // Youtube video
+                    $videoId = isset(explode("v=",$url)[1]) ? explode("v=",$url)[1] : null;
+                    if (strpos($videoId, '&') !== false){
+                        $videoId = explode("&",$videoId)[0];
+                    }
+                    $imageName ='https://www.youtube.com/embed/'.$videoId;
+            
+                } else if(strpos($url, 'youtu.be/') !== false) {
+                    // Youtube  video
+                    $videoId = isset(explode("youtu.be/",$url)[1]) ? explode("youtu.be/",$url)[1] : null;
+                    if (strpos($videoId, '&') !== false) {
+                        $videoId = explode("&",$videoId)[0];
+                    }
+                    $imageName ='https://www.youtube.com/embed/'.$videoId;
+            
+                } else if (strpos($url, 'dailymotion.com/') !== false) {
+                    // Dailymotion Video
+                    $videoId = isset(explode("dailymotion.com/",$url)[1]) ? explode("dailymotion.com/",$url)[1] : null;
+                    if (strpos($videoId, '&') !== false) {
+                        $videoId = explode("&",$videoId)[0];
+                    }
+                    $imageName ='https://www.dailymotion.com/embed/'.$videoId;
+            
+                } else {
+                    $imageName = $url;
+                } 
+
         } else {
             $imageName = $event['image'];
         }
@@ -648,4 +690,31 @@ class EventController
             echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
         }
     }
+
+    public function checkIfVideoOrImageOnEventCreation() {
+      
+        if (isset($_POST['image_or_video'])) {
+            switch ($_POST['image_or_video']) {
+                case 1:
+                    ?>
+                    <option value="1" selected>Image</option>
+                    <option value="2">Video</option>
+                <?php
+                    break;
+                case 2:
+                    ?>
+                    <option value="1">Image</option>
+                    <option value="2" selected>Video</option>
+                    <?php
+                    break;         
+            }
+        } else {
+            ?>
+            <option value="1" selected>Image</option>
+            <option value="2">Video</option>
+        <?php
+        }
+    }
+   
+    
 }
