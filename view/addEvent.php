@@ -127,7 +127,7 @@
                         <?php
                         $eventController = new \controller\EventController();
 
-                        $eventController->checkIfVideoOrImageOnEventCreation();
+                        $eventController->checkIfVideoOrImage();
                         ?>
                     </select>
                     <div id="imageSubcat" style="display: block" class="ml-4">

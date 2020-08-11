@@ -691,7 +691,7 @@ class EventController
         }
     }
 
-    public function checkIfVideoOrImageOnEventCreation() {
+    public function checkIfVideoOrImage() {
       
         if (isset($_POST['image_or_video'])) {
             switch ($_POST['image_or_video']) {

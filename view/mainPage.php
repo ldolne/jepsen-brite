@@ -23,7 +23,11 @@
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-100 position-relative">
             <div class="col p-4 d-flex position-static align-items-baseline">
                     <div class="mb-auto">
-                        <iframe src="<?= $data['image'] ?>" id="imgEvent" alt="Event image" class="img-thumbnail img-responsive" scrolling= "no"></iframe>
+                      <?php if(strpos($data['image'], 'cloudinary.com') !== false) { ?>
+                        <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 160px; object-fit: cover;">
+                      <?php } else { ?>
+                        <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
+                      <?php } ?>
                     </div>
                     <div class="col p-4 d-flex flex-column position-static">
                       <div class="mb-2 text-muted"><?= $data['category'] ?></div>
@@ -51,7 +55,7 @@
               <div class="card col p-2 d-flex flex-column position-static">
                 <div class="card-img-top">
                   <?php if(strpos($data['image'], 'cloudinary.com') !== false) { ?>
-                    <image src="<?= $data['image'] ?>">
+                    <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 160px; object-fit: cover;">
                   <?php } else { ?>
                   <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
                   <?php } ?>
