@@ -25,7 +25,8 @@ class EventController
         $this->subcategoryManager = new \model\SubcategoryManager();
     }
 
-    public function getIndexPage(){
+    public function getIndexPage()
+    {
         $events = $this->eventManager->getUpcomingEvents(); // call a function of this object
 
         require('./view/mainPage.php');
@@ -47,15 +48,14 @@ class EventController
         $subcategoriesArr = $subcategories->fetchAll();
         $comments = $this->commentManager->getComments($_GET['id']);
 
-        if(isset($_SESSION['id']))
-        {
+        if (isset($_SESSION['id'])) {
             $userAvatarReq = $this->commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
             $userAvatar = $userAvatarReq->fetch();
 
             // Get if the user of the session in an admin
             $userReq = $this->userManager->getUser();
-            $userReq -> execute(array($_SESSION['id']));
-            $getAdmin = $userReq -> fetch();
+            $userReq->execute(array($_SESSION['id']));
+            $getAdmin = $userReq->fetch();
             $isAdmin = $getAdmin['isadmin'];
         }
 
@@ -79,12 +79,9 @@ class EventController
 
         }*/
 
-        if (!empty($event))
-        {
+        if (!empty($event)) {
             require('./view/oneEvent.php');
-        }
-        else
-        {
+        } else {
             throw new \Exception('Event ID does not exist.');
         }
     }
@@ -96,12 +93,9 @@ class EventController
         $event = $eventReq->fetch();
         $subcategories = $subcategoriesReq->fetchAll();
 
-        if (empty($event))
-        {
+        if (empty($event)) {
             throw new \Exception('Event ID does not exist.');
-        }
-        else
-        {
+        } else {
             return array($event, $subcategories);
         }
     }
@@ -129,8 +123,10 @@ class EventController
 
                     $imageFileName = $_SESSION['id'] . "_" . $randomString;
 
-                    $resultUpload = \Cloudinary\Uploader::upload($_FILES['image']['tmp_name'],
-                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
+                    $resultUpload = \Cloudinary\Uploader::upload(
+                        $_FILES['image']['tmp_name'],
+                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)
+                    ); // Upload fichier du dossier où est enregistré au cloud
 
                     if ($resultUpload != null) {
                         $imageName = $resultUpload["secure_url"];
@@ -202,7 +198,11 @@ class EventController
             $_POST['event_hour'],
             $imageName,
             $_POST['description'],
-            $_POST['category_id']);
+            $_POST['category_id'],
+            $_POST['address'],
+            $_POST['town'],
+            $_POST['cp']
+        );
 
         if (isset($_POST['subcategory_id']) && !empty($_POST['subcategory_id']))
         {
@@ -213,6 +213,7 @@ class EventController
                 if ($subcategoryAffectedLines === false) {
                     throw new \Exception('Problem while creating an event. Please try again.');
                 }
+
             }
         }
 
@@ -256,8 +257,10 @@ class EventController
                         $imageFileName = $imageFromDb;
                     }
 
-                    $resultUpload = \Cloudinary\Uploader::upload($_FILES['image']['tmp_name'],
-                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)); // Upload fichier du dossier où est enregistré au cloud
+                    $resultUpload = \Cloudinary\Uploader::upload(
+                        $_FILES['image']['tmp_name'],
+                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)
+                    ); // Upload fichier du dossier où est enregistré au cloud
 
                     if ($resultUpload != null) {
                         $imageName = $resultUpload["secure_url"];
@@ -322,6 +325,20 @@ class EventController
             $imageName = $event['image'];
         }
 
+
+        echo $_POST['subcategory_id'];
+
+
+        echo "<pre>";
+        print_r($_POST['subcategory_id']);
+        echo "</pre>";
+
+        foreach ($_POST['subcategory_id'] as $selected) {
+            if ($selected == 21) {
+                echo '<input type="checkbox" id="' . "musical" . '" name="subcategory_id[]" value="' . 21 . '" checked>';
+            }
+        }
+
         $eventAffectedLines = $this->eventManager->updateEvent(
             $_GET['id'],
             $_POST['title'],
@@ -330,7 +347,11 @@ class EventController
             $_POST['event_hour'],
             $imageName,
             $_POST['description'],
-            $_POST['category_id']);
+            $_POST['category_id'],
+            $_POST['address'],
+            $_POST['town'],
+            $_POST['cp']
+        );
 
         if (isset($subcategories) && !empty($subcategories))
         {
@@ -356,9 +377,7 @@ class EventController
 
         if ($eventAffectedLines === false) {
             throw new \Exception('Problem while modifying the event. Please try again.');
-        }
-        else
-        {
+        } else {
             header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
         }
 
@@ -371,10 +390,12 @@ class EventController
         $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
         $mail = new SendGrid\Mail($from, $subject, $to, $content);
 
+
         $apiKey = getenv('SENDGRID_API_KEY');
         $sg = new \SendGrid($apiKey);
 
         $response = $sg->client->mail()->send()->post($mail);*/
+
     }
 
     public function deleteExistingEvent()
@@ -385,8 +406,7 @@ class EventController
         $imageFromDbArr = explode('.', substr((strrchr($event['image'], '/')), 1));
         $publicId = $imageFromDbArr[0];
 
-        if($publicId != $defaultImage)
-        {
+        if ($publicId != $defaultImage) {
             $resultDestroy = \Cloudinary\Uploader::destroy('jepsen-brite/events_img/' . $publicId);
 
             if ($resultDestroy == null) {
@@ -400,8 +420,7 @@ class EventController
 
         if ($eventsAffectedLines === false) {
             throw new \Exception('Problem while deleting the event. Please try again.');
-        } else if ($commentsAffectedLines === false)
-        {
+        } else if ($commentsAffectedLines === false) {
             throw new \Exception('Problem while deleting the comments of the event. Please try again.');
         } else {
             header('Location: ./index.php');
@@ -414,12 +433,9 @@ class EventController
         $existingParticipantReq = $this->eventManager->getOneParticipantByEvent($eventId, $userId);
         $existingParticipant = $existingParticipantReq->fetch();
 
-        if($existingParticipant != false)
-        {
+        if ($existingParticipant != false) {
             throw new \Exception("You're already participating, so you can't register again.");
-        }
-        else
-        {
+        } else {
             // User's not yet participating
             $affectedLines = $this->eventManager->createParticipantByEvent($eventId, $userId);
 
@@ -437,12 +453,9 @@ class EventController
         $existingParticipantReq = $this->eventManager->getOneParticipantByEvent($eventId, $userId);
         $existingParticipant = $existingParticipantReq->fetch();
 
-        if($existingParticipant === false)
-        {
+        if ($existingParticipant === false) {
             throw new \Exception("You're not participating, so you can't unregister.");
-        }
-        else
-        {
+        } else {
             $affectedLines = $this->eventManager->deleteParticipantByEvent($eventId, $userId);
 
             if ($affectedLines === false) {
@@ -459,7 +472,7 @@ class EventController
         if (isset($_POST['category_id'])) {
             switch ($_POST['category_id']) {
                 case 1:
-                    ?>
+?>
                     <option value="1" selected>Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
@@ -468,40 +481,40 @@ class EventController
                 <?php
                     break;
                 case 2:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2" selected>Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 3:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3" selected>Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 4:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4" selected>Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 5:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5" selected>Game Jam</option>
-                    <?php
+            <?php
                     break;
             }
         } else {
@@ -511,108 +524,106 @@ class EventController
             <option value="3">Conference</option>
             <option value="4">Hackathon</option>
             <option value="5">Game Jam</option>
-<?php
+            <?php
         }
     }
 
     public function displayAlreadyCheckedCategoryWhenModifyingOneEvent($eventVariable)
     {
         if (isset($_POST['category_id'])) {
-            switch($_POST['category_id'])
-            {
+            switch ($_POST['category_id']) {
                 case 1:
-                    ?>
+            ?>
                     <option value="1" selected>Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 2:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2" selected>Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 3:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3" selected>Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 4:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4" selected>Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 5:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5" selected>Game Jam</option>
-                    <?php
+                <?php
                     break;
             }
         } else {
-            switch($eventVariable['category_id'])
-            {
+            switch ($eventVariable['category_id']) {
                 case 1:
-                    ?>
+                ?>
                     <option value="1" selected>Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 2:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2" selected>Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 3:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3" selected>Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 4:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4" selected>Hackathon</option>
                     <option value="5">Game Jam</option>
-                    <?php
+                <?php
                     break;
                 case 5:
-                    ?>
+                ?>
                     <option value="1">Concert</option>
                     <option value="2">Exhibition</option>
                     <option value="3">Conference</option>
                     <option value="4">Hackathon</option>
                     <option value="5" selected>Game Jam</option>
-                    <?php
+<?php
                     break;
             }
         }
@@ -622,26 +633,19 @@ class EventController
     {
         $isInPost = false;
 
-        if (isset($_POST['subcategory_id']))
-        {
-            foreach($_POST['subcategory_id'] as $selected)
-            {
-                if ($selected == $rawNumberValue)
-                {
+        if (isset($_POST['subcategory_id'])) {
+            foreach ($_POST['subcategory_id'] as $selected) {
+                if ($selected == $rawNumberValue) {
                     $isInPost = true;
                 }
             }
 
-            if($isInPost)
-            {
+            if ($isInPost) {
                 echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '" checked>';
-            }
-            else
-            {
+            } else {
                 echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
             }
-        }
-        else {
+        } else {
             echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
         }
     }
@@ -651,48 +655,35 @@ class EventController
         $isInPost = false;
         $isInDb = false;
 
-        if (isset($_POST['subcategory_id']))
-        {
-            foreach($_POST['subcategory_id'] as $selected)
-            {
-                if ($selected == $rawNumberValue)
-                {
+        if (isset($_POST['subcategory_id'])) {
+            foreach ($_POST['subcategory_id'] as $selected) {
+                if ($selected == $rawNumberValue) {
                     $isInPost = true;
                 }
             }
 
-            if($isInPost)
-            {
+            if ($isInPost) {
                 echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '" checked>';
-            }
-            else
-            {
+            } else {
                 echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
             }
-        }
-        else if (isset($subcategoriesVariable))
-        {
-            foreach($subcategoriesVariable as $selected)
-            {
-                if ($selected['id'] == $rawNumberValue)
-                {
+        } else if (isset($subcategoriesVariable)) {
+            foreach ($subcategoriesVariable as $selected) {
+                if ($selected['id'] == $rawNumberValue) {
                     $isInDb = true;
                 }
             }
 
-            if ($isInDb)
-            {
+            if ($isInDb) {
                 echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '" checked>';
-            }
-            else
-            {
+            } else {
                 echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
             }
-        }
-        else {
+        } else {
             echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
         }
     }
+
 
     public function checkIfVideoOrImage() {
       
@@ -720,4 +711,5 @@ class EventController
     }
    
     
+
 }

@@ -26,10 +26,31 @@
                                                                                                 } ?>">
                 </div>
                 <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input id="address" name="address" class="form-control" value="<?php if (isset($_POST['address'])) {
+                                                                                        echo $_POST['address'];
+                                                                                    } ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="town">Town:</label>
+                    <input id="town" name="town" class="form-control" value="<?php if (isset($_POST['town'])) {
+                                                                                    echo $_POST['town'];
+                                                                                } ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="cp">Zipcode:</label>
+                    <input id="cp" name="cp" type="text" pattern="[0-9]{4}" title="Four digit zip code" class="form-control" value="<?php if (isset($_POST['cp'])) {
+                                                                                                                                        echo $_POST['cp'];
+                                                                                                                                    } ?>">
+                </div>
+
+                <div class="form-group">
                     <label for="description">Description:</label>
                     <textarea name="description" id="description" rows="5" cols="33" class="form-control"><?php if (isset($_POST['description'])) {
-                            echo $_POST['description'];
-                        } ?></textarea>
+                                                                                                                echo $_POST['description'];
+                                                                                                            } ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="category">Category:</label>

@@ -16,98 +16,94 @@ require_once('./require/functions.php');
 //require 'vendor/autoload.php';
 
 // USER FUNCTIONS
-function cookieVerification() {
+function cookieVerification()
+{
     $userManager = new UserManager();
-    
-    $request = $userManager-> DoesCookieUserExist();
-    $request -> execute(array($_COOKIE['id'], $_COOKIE['username']));
-    $isTheCookieALie = $request -> fetch();
-    
-    if (isset($isTheCookieALie) && !empty($isTheCookieALie)){
-        $_SESSION['username']= $_COOKIE['username'];
-        $_SESSION['id']= $_COOKIE['id'];
-    }
-    
-    else {
-        $_SESSION['username']= '';
-        $_SESSION['id']= '';
+
+    $request = $userManager->DoesCookieUserExist();
+    $request->execute(array($_COOKIE['id'], $_COOKIE['username']));
+    $isTheCookieALie = $request->fetch();
+
+    if (isset($isTheCookieALie) && !empty($isTheCookieALie)) {
+        $_SESSION['username'] = $_COOKIE['username'];
+        $_SESSION['id'] = $_COOKIE['id'];
+    } else {
+        $_SESSION['username'] = '';
+        $_SESSION['id'] = '';
         setcookie('id', '');
         setcookie('username', '');
     }
 }
 
-function getInscriptionPage() {
-    $message='Complete all the fields';
+function getInscriptionPage()
+{
+    $message = 'Complete all the fields';
     $message = showInfoMessage($message, False);
-    $usernameError='';
-    $passwordError='';
-    $emailError='';
+    $usernameError = '';
+    $passwordError = '';
+    $emailError = '';
     require('./view/signup.php');
 }
 
-function actualInscription() {
+function actualInscription()
+{
     $userManager = new UserManager();
 
     $username = htmlspecialchars($_POST['username']);
     $email = htmlspecialchars($_POST['email']);
     $passwordRaw = $_POST['password'];
     $passwordcheck = $_POST['passwordcheck'];
-        
-    $request = $userManager->isNameTaken();
-    $request -> execute(array($username));
-    $isNameTaken = $request -> fetch();
 
-    if ($isNameTaken == Null){
+    $request = $userManager->isNameTaken();
+    $request->execute(array($username));
+    $isNameTaken = $request->fetch();
+
+    if ($isNameTaken == Null) {
         $usernameValidation = TRUE;
         $usernameError = '';
-    }
-    else{
+    } else {
         $usernameValidation = FALSE;
         $usernameError = 'This username is already taken';
     }
 
-    if ($passwordRaw == $passwordcheck){
-        if (preg_match('#^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W]).{8,}$#', $passwordRaw)==true){
+    if ($passwordRaw == $passwordcheck) {
+        if (preg_match('#^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W]).{8,}$#', $passwordRaw) == true) {
             $passwordValidation = TRUE;
             $passwordError = '';
             $password = password_hash($passwordRaw, PASSWORD_BCRYPT);
-        }
-        else{
+        } else {
             $passwordError = 'This password is not safe enough';
             $passwordValidation = FALSE;
         }
-    }
-    else {
+    } else {
         $passwordError = 'The password fields are not identical';
         $passwordValidation = FALSE;
     }
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL) == true){
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) == true) {
         $request = $userManager->isEmailTaken();
-        $request -> execute(array($email));
-        $isEmailTaken = $request -> fetch();
-        
-        if ($isEmailTaken == Null){
+        $request->execute(array($email));
+        $isEmailTaken = $request->fetch();
+
+        if ($isEmailTaken == Null) {
             $emailValidation = TRUE;
-            $emailError ='';
-        }
-        else {
+            $emailError = '';
+        } else {
             $emailValidation = FALSE;
-            $emailError ='This email address is already taken';
+            $emailError = 'This email address is already taken';
         }
-    }
-    else {
+    } else {
         $emailValidation = FALSE;
-        $emailError='This email address is not a valid one';
+        $emailError = 'This email address is not a valid one';
     }
 
     $image = md5(strtolower(trim($email)));
 
-    if($emailValidation == TRUE && $passwordValidation == TRUE && $usernameValidation == TRUE){
+    if ($emailValidation == TRUE && $passwordValidation == TRUE && $usernameValidation == TRUE) {
         $inscription = $userManager->inscriptionPreparation();
-        $inscription -> execute(array($email, $username, $password, $image));
+        $inscription->execute(array($email, $username, $password, $image));
 
-        $message='Inscription successful. Welcome';
+        $message = 'Inscription successful. Welcome';
         $message = showInfoMessage($message, true);
 
         // uncomment for Heroku
@@ -124,54 +120,53 @@ function actualInscription() {
         $response = $sg->client->mail()->send()->post($mail);*/
 
         require('./view/signup.php');
-
-    }
-    else {
+    } else {
         $message = '';
         require('./view/signup.php');
     }
 }
 
-function getConnectionPage() {
-    $message ='';
+function getConnectionPage()
+{
+    $message = '';
     require('./view/login.php');
 }
 
-function login() {
+function login()
+{
     $userManager = new UserManager();
 
     $request = $userManager->dbUserVerif();
     $username = htmlspecialchars($_POST['username']);
     //$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    $request -> execute(array($username));
-    $result = $request -> fetch();
+    $request->execute(array($username));
+    $result = $request->fetch();
     if (isset($result['password'])) {
 
         $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
-        if ($isPasswordCorrect == false){
+        if ($isPasswordCorrect == false) {
             $message = "This user doesn't exist or this is not the right password";
             $message = showInfoMessage($message, False);
             require('./view/login.php');
-        }
-        else {
-            $_SESSION["id"]= $result['id'];
-            $_SESSION["username"]= $result['username'];
-            if (isset($_POST['stayconnected'])){
-                setcookie('id', $result['id'], time() + 30*24*3600, null, null, false, true);
-                setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
+        } else {
+            $_SESSION["id"] = $result['id'];
+            $_SESSION["username"] = $result['username'];
+            if (isset($_POST['stayconnected'])) {
+                setcookie('id', $result['id'], time() + 30 * 24 * 3600, null, null, false, true);
+                setcookie('username', $result['username'], time() + 30 * 24 * 3600, null, null, false, true);
             }
-            $message= "Connection successful";
+            $message = "Connection successful";
             $message = showInfoMessage($message, true);
             require('./view/login.php');
         }
-    }
-    else {
+    } else {
         $message = "This user doesn't exist or this is not the right password";
         require('./view/login.php');
     }
 }
 
-function deconnection(){
+function deconnection()
+{
     $_SESSION = array();
     session_destroy();
     setcookie('id', '');
@@ -179,96 +174,94 @@ function deconnection(){
     header('Location: ./index.php');
 }
 
-function getProfilePage(){
+function getProfilePage()
+{
     $userManager = new UserManager();
     $request = $userManager->dbUserVerif();
-    $request -> execute(array($_SESSION['username']));
-    $result = $request -> fetch();
-    require('./view/profil.php'); 
+    $request->execute(array($_SESSION['username']));
+    $result = $request->fetch();
+    require('./view/profil.php');
 }
 
-function modifyProfilePage(){
-    $message='';
+function modifyProfilePage()
+{
+    $message = '';
     $passwordError = '';
-    $usernameError ='';
+    $usernameError = '';
     require('./view/modifyProfileView.php');
-    
 }
 
-function profileModification() {
+function profileModification()
+{
     $userManager = new UserManager();
     $request = $userManager->dbUserVerif();
-    $request -> execute(array($_SESSION['username']));
-    $result = $request -> fetch();
-    
-    if (isset($_POST['username']) && !empty($_POST['username'])){
-        $username= htmlspecialchars($_POST['username']);
-        
-        $request2 = $userManager->isNameTaken();
-        $request2 -> execute(array($username));
-        $isNameTaken = $request2 -> fetch();
+    $request->execute(array($_SESSION['username']));
+    $result = $request->fetch();
 
-        if ($isNameTaken == Null){
+    if (isset($_POST['username']) && !empty($_POST['username'])) {
+        $username = htmlspecialchars($_POST['username']);
+
+        $request2 = $userManager->isNameTaken();
+        $request2->execute(array($username));
+        $isNameTaken = $request2->fetch();
+
+        if ($isNameTaken == Null) {
             $usernameValidation = TRUE;
             $usernameError = '';
-        }
-        else{ 
+        } else {
             $usernameValidation = FALSE;
             $usernameError = 'This username is already taken';
         }
-    }
-    else{
-        $username=$result['username'];
+    } else {
+        $username = $result['username'];
         $usernameValidation = TRUE;
         $usernameError = '';
     }
 
-    if (isset($_POST['password']) && !empty($_POST['password'])){
-        $passwordRaw= htmlspecialchars($_POST['password']);
-        
-        if (preg_match('#^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W]).{8,}$#', $passwordRaw)==true){
+    if (isset($_POST['password']) && !empty($_POST['password'])) {
+        $passwordRaw = htmlspecialchars($_POST['password']);
+
+        if (preg_match('#^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W]).{8,}$#', $passwordRaw) == true) {
             $passwordValidation = TRUE;
             $passwordError = '';
-        }
-        else{
+        } else {
             $passwordError = 'This password is not safe enough';
             $passwordValidation = FALSE;
         }
         $password = password_hash($passwordRaw, PASSWORD_BCRYPT);
-    }
-    else{
-        $password=$result['password'];
+    } else {
+        $password = $result['password'];
         $passwordValidation = TRUE;
-        $passwordError='';
+        $passwordError = '';
     }
-    
 
-    if ($passwordValidation == TRUE && $usernameValidation == TRUE){
+
+    if ($passwordValidation == TRUE && $usernameValidation == TRUE) {
         $message = 'Modifications successful';
         $message = showInfoMessage($message, True);
         $updatePrep = $userManager->updatePreparation();
-        $updatePrep -> execute(array($username, $password, $result['id']));
-        
-        $_SESSION["username"]= $username;
-        if (isset($_POST['stayconnected'])){
-            setcookie('username', $username, time() + 30*24*3600, null, null, false, true);
+        $updatePrep->execute(array($username, $password, $result['id']));
+
+        $_SESSION["username"] = $username;
+        if (isset($_POST['stayconnected'])) {
+            setcookie('username', $username, time() + 30 * 24 * 3600, null, null, false, true);
         }
         require('./view/modifyProfileView.php');
-    }
-    else{
+    } else {
         $message = '';
         require('./view/modifyProfileView.php');
-    }    
+    }
 }
 
-function deleteAccount(){
+function deleteAccount()
+{
     $userManager = new UserManager();
     $eventManager = new EventManager();
     $commentManager = new CommentManager();
 
     $request = $userManager->dbUserVerif();
-    $request -> execute(array($_SESSION['username']));
-    $result = $request -> fetch();
+    $request->execute(array($_SESSION['username']));
+    $result = $request->fetch();
 
     // Update user's events and comments
     $eventsAffectedLines = $eventManager->updateauthorManagerWhenDeletedAccount($result['id']);
@@ -276,14 +269,13 @@ function deleteAccount(){
 
     if ($eventsAffectedLines === false) {
         throw new Exception("Problem while deleting the user's events. Please try again.");
-    } else if ($commentsAffectedLines === false)
-    {
+    } else if ($commentsAffectedLines === false) {
         throw new Exception("Problem while deleting the user's comments. Please try again.");
     }
 
     // Delete user
     $deletePrep = $userManager->deletePreparation();
-    $deletePrep -> execute(array($result['id']));
+    $deletePrep->execute(array($result['id']));
     $message = 'The account was deleted';
     $message = showInfoMessage($message, True);
 
@@ -301,12 +293,12 @@ function getUserDashboard()
     // get created events
     $userManager = new UserManager();
     $request = $userManager->getUser();
-    $request -> execute(array($_SESSION['id']));
-    $result = $request -> fetch();
+    $request->execute(array($_SESSION['id']));
+    $result = $request->fetch();
 
     $userId = $result['id'];
 
-    $eventManager = new EventManager(); 
+    $eventManager = new EventManager();
     $userEvents = $eventManager->getUserEvents($userId);
     $pastParticip = $eventManager->getPastParticip($userId);
     $upcomingParticip = $eventManager->getUpcomingParticip($userId);
@@ -379,6 +371,9 @@ function adminDeleteUser()
 // CATEGORY FUNCTIONS
 function AllCategoryController()
 {
+    $subcategoryManager = new SubCategoriesManager();
+    $subcategories = $subcategoryManager->getSubcategoriesByEvent($_GET['id']);
+    $subcategoriesArr = $subcategories->fetchAll();
     $categoryManager = new CategoryManager();
     //$subcategoryManager = new SubCategoriesManager();
     $search = $categoryManager->AllCategoryModel();
@@ -387,18 +382,22 @@ function AllCategoryController()
 
 function OneCategoryController()
 {
+    $subcategoryManager = new SubCategoriesManager();
+    $subcategory = $subcategoryManager->getSubcategoriesByEvent($_GET['id']);
+    $subcategoriesArr = $subcategory->fetchAll();
     $categoryManager = new CategoryManager();
     $search = $categoryManager->OneCategoryModel($_GET['category_id']);
     if ($search === null) {
         throw new Exception('No result.');
     } else {
         require('./view/eventsByCategory.php');
-    }
+    } 
 }
 
 // EVENT AND COMMENT FUNCTIONS
 
-function getIndexPage(){
+function getIndexPage()
+{
     $eventManager = new EventManager(); // creation of the object
     $events = $eventManager->getUpcomingEvents(); // call a function of this object
 
@@ -407,8 +406,8 @@ function getIndexPage(){
 
 function listPastEvents()
 {
-    $eventManager = new EventManager(); 
-    $events = $eventManager->getPastEvents(); 
+    $eventManager = new EventManager();
+    $events = $eventManager->getPastEvents();
 
     require('./view/archiveView.php');
 }
@@ -426,22 +425,21 @@ function showEvent($message = NULL)
     $subcategoriesArr = $subcategories->fetchAll();
     $comments = $commentManager->getComments($_GET['id']);
 
-    if(isset($_SESSION['id']))
-    {
+    if (isset($_SESSION['id'])) {
         $userAvatarReq = $commentManager->getCurrentCommentAuthorAvatar($_SESSION['id']);
         $userAvatar = $userAvatarReq->fetch();
 
         // Get if the user of the session in an admin
         $userManager = new UserManager();
         $userReq = $userManager->getUser();
-        $userReq -> execute(array($_SESSION['id']));
-        $getAdmin = $userReq -> fetch(); 
+        $userReq->execute(array($_SESSION['id']));
+        $getAdmin = $userReq->fetch();
         $isAdmin = $getAdmin['isadmin'];
     }
     $event = $eventReq->fetch();
 
     // Get if the author of the event is an admin
-   /* $authorManager = new UserManager();
+    /* $authorManager = new UserManager();
     $authorReq = $authorManager->getUser();
     $authorReq->execute(array($event['author_id']));
     $getAuthor = $authorReq->fetch();
@@ -458,12 +456,9 @@ function showEvent($message = NULL)
 
     }*/
 
-    if (!empty($event))
-    {
+    if (!empty($event)) {
         require('./view/oneEvent.php');
-    }
-    else
-    {
+    } else {
         throw new Exception('Event ID does not exist.');
     }
 }
@@ -475,12 +470,9 @@ function handleEvent()
     $eventReq = $eventManager->getEvent($_GET['id']);
     $event = $eventReq->fetch();
 
-    if (empty($event))
-    {
+    if (empty($event)) {
         throw new Exception('Event ID does not exist.');
-    }
-    else
-    {
+    } else {
         return $event;
     }
 }
@@ -517,13 +509,12 @@ function createNewEvent($imageName)
         $_POST['event_hour'],
         $imageName,
         $_POST['description'],
-        $_POST['category_id']);
+        $_POST['category_id']
+    );
 
     if ($affectedLines === false) {
         throw new Exception('Problem while creating an event. Please try again.');
-    }
-    else
-    {
+    } else {
         header('Location: ./index.php');
     }
 }
@@ -544,7 +535,8 @@ function updateExistingEvent($imageName)
         $_POST['event_hour'],
         $imageName,
         $_POST['description'],
-        $_POST['category_id']);
+        $_POST['category_id']
+    );
 
     if ($affectedLines === false) {
         throw new Exception('Problem while modifying the event. Please try again.');
@@ -578,8 +570,7 @@ function deleteExistingEvent()
 
     if ($EventsAffectedLines === false) {
         throw new Exception('Problem while deleting the event. Please try again.');
-    } else if ($CommentsAffectedLines === false)
-    {
+    } else if ($CommentsAffectedLines === false) {
         throw new Exception('Problem while deleting the comments of the event. Please try again.');
     } else {
         header('Location: ./index.php');
@@ -620,12 +611,9 @@ function registerToEvent($eventId, $userId)
     $existingParticipantReq = $eventManager->getOneParticipantByEvent($eventId, $userId);
     $existingParticipant = $existingParticipantReq->fetch();
 
-    if($existingParticipant != false)
-    {
+    if ($existingParticipant != false) {
         throw new Exception("You're already participating, so you can't register again.");
-    }
-    else
-    {
+    } else {
         // User's not yet participating
         $affectedLines = $eventManager->createParticipantByEvent($eventId, $userId);
 
@@ -645,12 +633,9 @@ function unregisterFromEvent($eventId, $userId)
     $existingParticipantReq = $eventManager->getOneParticipantByEvent($eventId, $userId);
     $existingParticipant = $existingParticipantReq->fetch();
 
-    if($existingParticipant === false)
-    {
+    if ($existingParticipant === false) {
         throw new Exception("You're not participating, so you can't unregister.");
-    }
-    else
-    {
+    } else {
         $affectedLines = $eventManager->deleteParticipantByEvent($eventId, $userId);
 
         if ($affectedLines === false) {
