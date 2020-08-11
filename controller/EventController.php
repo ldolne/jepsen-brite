@@ -4,6 +4,7 @@
 
 namespace controller;
 
+require_once('./vendor/autoload.php');
 require_once('./autoloader.php');
 require_once('./model/UserManager.php');
 require_once('./model/EventManager.php');
@@ -384,11 +385,11 @@ class EventController
         // Sending to all participants of this event an email informing them of the update
         // uncomment for Heroku
 
-        /*$from = new SendGrid\Email(null, "becodechristest@gmail.com");
-        $subject = 'Inscription à Jepsen-brite event ';
-        $to = new SendGrid\Email(null, $email);
-        $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
-        $mail = new SendGrid\Mail($from, $subject, $to, $content);
+        /*$from = new \SendGrid\Email(null, "becodechristest@gmail.com");
+        $subject = 'Updated event ';
+        $to = new \SendGrid\Email(null, $email);
+        $content = new \SendGrid\Content("text/plain", 'An event in which you take part has been updated on the website. Cf. https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $_GET['id']);
+        $mail = new \SendGrid\Mail($from, $subject, $to, $content);
 
 
         $apiKey = getenv('SENDGRID_API_KEY');

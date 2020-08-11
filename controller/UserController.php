@@ -4,6 +4,7 @@
 
 namespace controller;
 
+require_once('./vendor/autoload.php');
 require_once('./autoloader.php');
 require_once('./model/UserManager.php');
 require_once('./model/EventManager.php');
@@ -114,11 +115,11 @@ class UserController
             // Sending welcome email
             // uncomment for Heroku
 
-            /*$from = new SendGrid\Email(null, "becodechristest@gmail.com");
+            /*$from = new \SendGrid\Email(null, "becodechristest@gmail.com");
             $subject = 'Inscription à Jepsen-brite event ';
-            $to = new SendGrid\Email(null, $email);
-            $content = new SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
-            $mail = new SendGrid\Mail($from, $subject, $to, $content);
+            $to = new \SendGrid\Email(null, $email);
+            $content = new \SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
+            $mail = new \SendGrid\Mail($from, $subject, $to, $content);
 
             $apiKey = getenv('SENDGRID_API_KEY');
             $sg = new \SendGrid($apiKey);
