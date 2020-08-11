@@ -54,17 +54,15 @@ try {
         }
 
         // CATEGORY ACTIONS
-        elseif ($_GET["action"] == "onecategorycontroller") {
-            $categoryController->OneCategoryController();
-        } elseif ($_GET["action"] == "allcategorycontroller") {
-            $categoryController->AllCategoryController();
+        elseif ($_GET["action"] == "showAllCategories") {
+            $categoryController->showAllCategories();
+        } elseif ($_GET["action"] == "showOneCategory") {
+            $categoryController->showOneCategory();
         }
 
         // SUBCATEGORY ACTIONS
-        elseif ($_GET["action"] == "subcategorycontroller") {
-            $subcategoryController->OneSubCategoryController();
-        } elseif ($_GET["action"] == "allsubcategoriesController") {
-            $subcategoryController->AllSubCategoriesController();
+        elseif ($_GET["action"] == "showOneSubcategory") {
+            $subcategoryController->showOneSubcategory();
         }
 
         // EVENT AND COMMENT ACTIONS
@@ -115,6 +113,7 @@ try {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     $handleEventReturnArr = $eventController->handleEvent();
                     $event = $handleEventReturnArr[0];
+                    $subcategories = $handleEventReturnArr[1];
 
                     if ($_SESSION['id'] == $event['author_id']) {
                         $eventController->showEventModificationPage($event, $subcategories);
@@ -141,6 +140,7 @@ try {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     $handleEventReturnArr = $eventController->handleEvent();
                     $event = $handleEventReturnArr[0];
+                    $subcategories = $handleEventReturnArr[1];
 
                     if (
                         isset($_POST['title']) && !empty($_POST['title'])
@@ -149,10 +149,10 @@ try {
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
                     ) {
-                        $eventController->updateExistingEvent($event);
+                        $eventController->updateExistingEvent($event, $subcategories);
                     } else {
                         $message = 'You have to fill up all fields.';
-                        $eventController->showEventModificationPage($event, showInfoMessage($message, false));
+                        $eventController->showEventModificationPage($event, $subcategories, showInfoMessage($message, false));
                     }
                 } else {
                     throw new Exception('No event ID sent.');

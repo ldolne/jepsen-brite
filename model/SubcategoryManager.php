@@ -6,54 +6,20 @@ require_once('Manager.php');
 
 class SubcategoryManager extends Manager
 {
-    public function AllSubCategoriesModel()
+    public function getOneSubcategory($subcategoryId)
     {
-        $bdd = $this->dbConnect();
-        $req = $bdd->query(
-            'SELECT e.id, e.title,c.category,s.subcategory ,e.event_date
-            AS event_date_formatted,e.event_hour
-			AS event_hour_formatted
-            FROM events AS e
-            INNER JOIN categories AS c
-            ON e.category_id = c.id
-            INNER JOIN assoc_subcategories_events AS ase
-            ON e.id = ase.event_id 
-            inner join subcategories as s 
-            on s.id = ase.subcategory_id '
-        );
-
-        return $req;
-    }
-
-    // If there are subcategories
-    public function SubCategoryModel($SubCategoryId)
-    {
-        $bdd = $this->dbConnect();
-        $req = $bdd->prepare('SELECT e.id, e.title,c.category,s.subcategory ,e.event_date
-        AS event_date_formatted,e.event_hour
-        AS event_hour_formatted
+        $db= $this->dbConnect();
+        $req = $db->prepare('SELECT e.id, e.title, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, c.category
         FROM events AS e
         INNER JOIN categories AS c
         ON e.category_id = c.id
         INNER JOIN assoc_subcategories_events AS ase
         ON e.id = ase.event_id 
-        inner join subcategories as s 
-        on s.id = ase.subcategory_id
-        where s.id = ?  ');
-        $req->execute(array($SubCategoryId));
-
-        return $req;
-    }
-
-// inner join of category ans subcategory
-    public function JoinCategoryAndSubCategoryModel($JoinCategoryAndSubCategory)
-    {
-        $bdd = $this->dbConnect();
-        $req = $bdd->prepare('SELECT c.category, s.subcategory 
-        FROM categories as c 
-        inner join subcategories as s 
-        on c.id = s.category_id');
-        $req->execute(array($JoinCategoryAndSubCategory));
+        INNER JOIN subcategories AS s 
+        ON s.id = ase.subcategory_id
+        WHERE s.id = ?  
+        ORDER BY event_date DESC, event_hour DESC');
+        $req->execute(array($subcategoryId));
 
         return $req;
     }
