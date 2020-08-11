@@ -83,11 +83,12 @@ $parsdown = new Parsedown();
                                         <label style="font-weight:bold;">Place</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        <iframe src="https://www.google.com/maps?q=<?= $event['adress'] . ' ' . $event['cp']; ?>  &output=embed" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                        <?php echo $event['address'].' '.$event['town'].' '.$event['cp']; ?>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2530.7007725642848!2d5.583290615338902!3d50.63267527950086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0f0abbfc177c7%3A0xf2c9f9204e1bb92b!2zUMO0bGUgaW1hZ2UgZGUgTGnDqGdl!5e0!3m2!1sfr!2sbe!4v1597066215687!5m2!1sfr!2sbe" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                        <iframe src="https://www.google.com/maps?q=<?= $event['address'] . ' ' . $event['cp']; ?>  &output=embed" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                                     </div>
+
                                 </div>
                                 <hr />
 
