@@ -145,7 +145,7 @@ class EventController
                 $message = 'The image cannot be larger than 2MB.';
                 $this->showEventModificationPage(showInfoMessage($message, false));
             }
-        } elseif(!empty($_POST['url']) && !isset($_FILES['image'])) {
+        } elseif(!empty($_POST['url']) && !isset($_POST['image'])) {
             
             $url = $_POST['url'];
 
@@ -215,7 +215,7 @@ class EventController
             {
                 header('Location: ./index.php');
             }
-        }     
+        }   
     }
 
     public function showEventModificationPage($event, $subcategories, $message = null)

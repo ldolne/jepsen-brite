@@ -149,11 +149,11 @@
                         </select>
                         <div id="imageSubcat" style="display: block" class="ml-4">
                             <label for="image">Input image:</label>
-                            <input type="file" name="image" id="imageInput" class="form-control-file mb-4">
+                            <input type="file" name="image" id="image" class="form-control-file mb-4">
                         </div>
                         <div id="videoSubcat" style="display: none" class="ml-4">
                             <label for="url">Input video URL:</label>
-                            <input type="url" id="urlInput" name="url" class="form-control mb-4">
+                            <input type="url" id="url" name="url" class="form-control mb-4">
                         </div>
                     </div>
                         <div class="image-container">

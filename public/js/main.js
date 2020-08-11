@@ -89,8 +89,8 @@ categorySelect.addEventListener('change', event => {
 var inputSelect = document.getElementById("image_or_video");
 var imageSubcatDiv = document.getElementById("imageSubcat");
 var videoSubcatDiv = document.getElementById("videoSubcat");
-var imageInput = document.getElementById("imageInput");
-var urlInput = document.getElementById("urlInput");
+var imageInput = document.getElementById("image");
+var urlInput = document.getElementById("url");
 
 inputSelect.addEventListener('change', event => {
     imageInput.value = '';

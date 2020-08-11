@@ -24,7 +24,7 @@
             <div class="col p-4 d-flex position-static align-items-baseline">
                     <div class="mb-auto">
                       <?php if(strpos($data['image'], 'cloudinary.com') !== false) { ?>
-                        <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 160px; object-fit: cover;">
+                        <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 180px; object-fit: cover;">
                       <?php } else { ?>
                         <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
                       <?php } ?>
