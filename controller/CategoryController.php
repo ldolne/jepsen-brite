@@ -20,7 +20,7 @@ class CategoryController
         $search = $this->categoryManager->getAllCategories();
 
         if ($search === null) {
-            throw new Exception('No result.');
+            throw new \Exception('No result.');
         } else {
             require('./view/eventsByCategory.php');
         }
@@ -31,7 +31,7 @@ class CategoryController
         $search = $this->categoryManager->getOneCategory($_GET['category_id']);
 
         if ($search === null) {
-            throw new Exception('No result.');
+            throw new \Exception('No result.');
         } else {
             require('./view/eventsByCategory.php');
         }

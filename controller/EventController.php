@@ -85,7 +85,7 @@ class EventController
         }
         else
         {
-            throw new Exception('Event ID does not exist.');
+            throw new \Exception('Event ID does not exist.');
         }
     }
 
@@ -98,7 +98,7 @@ class EventController
 
         if (empty($event))
         {
-            throw new Exception('Event ID does not exist.');
+            throw new \Exception('Event ID does not exist.');
         }
         else
         {
@@ -135,7 +135,7 @@ class EventController
                     if ($resultUpload != null) {
                         $imageName = $resultUpload["secure_url"];
                     } else {
-                        throw new Exception('There has been a problem during the upload of your image. Please try again.');
+                        throw new \Exception('There has been a problem during the upload of your image. Please try again.');
                     }
                 } else {
                     $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
@@ -163,7 +163,7 @@ class EventController
             $subcategoryAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $eventReturnArr[1]);
 
             if ($eventReturnArr[0] === false OR $subcategoryAffectedLines === false) {
-                throw new Exception('Problem while creating an event. Please try again.');
+                throw new \Exception('Problem while creating an event. Please try again.');
             }
             else
             {
@@ -209,7 +209,7 @@ class EventController
                     if ($resultUpload != null) {
                         $imageName = $resultUpload["secure_url"];
                     } else {
-                        throw new Exception('There has been a problem during the upload of your image. Please try again.');
+                        throw new \Exception('There has been a problem during the upload of your image. Please try again.');
                     }
                 } else {
                     $message = 'No valid extension file: your image must be a .jpg, .jpeg, .gif or .png file.';
@@ -249,7 +249,7 @@ class EventController
             $_POST['category_id']);
 
         if ($eventAffectedLines === false) {
-            throw new Exception('Problem while modifying the event. Please try again.');
+            throw new \Exception('Problem while modifying the event. Please try again.');
         }
         else
         {
@@ -261,7 +261,7 @@ class EventController
             $subcategoryDeletedAffectedLines = $this->subcategoryManager->deleteSubcategoryForEvent($selected['id'], $event['id']);
 
             if ($subcategoryDeletedAffectedLines === false) {
-                throw new Exception('Problem while modifying the event. Please try again.');
+                throw new \Exception('Problem while modifying the event. Please try again.');
             }
             else
             {
@@ -273,7 +273,7 @@ class EventController
             $subcategoryUpdatedAffectedLines = $this->subcategoryManager->createSubcategoryForEvent($selected, $event['id']);
 
             if ($subcategoryUpdatedAffectedLines === false) {
-                throw new Exception('Problem while modifying the event. Please try again.');
+                throw new \Exception('Problem while modifying the event. Please try again.');
             }
             else
             {
@@ -295,7 +295,7 @@ class EventController
             $resultDestroy = \Cloudinary\Uploader::destroy('jepsen-brite/events_img/' . $publicId);
 
             if ($resultDestroy == null) {
-                throw new Exception('There has been a problem during the deletion of the uploaded image of this event.');
+                throw new \Exception('There has been a problem during the deletion of the uploaded image of this event.');
             }
         }
 
@@ -304,10 +304,10 @@ class EventController
         $subcategoriesAffectedLines = $this->subcategoryManager->deleteAllSubcategoriesForEvent($_GET['id']);
 
         if ($eventsAffectedLines === false) {
-            throw new Exception('Problem while deleting the event. Please try again.');
+            throw new \Exception('Problem while deleting the event. Please try again.');
         } else if ($commentsAffectedLines === false)
         {
-            throw new Exception('Problem while deleting the comments of the event. Please try again.');
+            throw new \Exception('Problem while deleting the comments of the event. Please try again.');
         } else {
             header('Location: ./index.php');
         }
@@ -321,7 +321,7 @@ class EventController
 
         if($existingParticipant != false)
         {
-            throw new Exception("You're already participating, so you can't register again.");
+            throw new \Exception("You're already participating, so you can't register again.");
         }
         else
         {
@@ -329,7 +329,7 @@ class EventController
             $affectedLines = $this->eventManager->createParticipantByEvent($eventId, $userId);
 
             if ($affectedLines === false) {
-                throw new Exception('Problem while registering for this event. Please try again.');
+                throw new \Exception('Problem while registering for this event. Please try again.');
             } else {
                 header('Location: ./index.php?action=showEvent&id=' . $eventId . '&isParticipating=true');
             }
@@ -344,14 +344,14 @@ class EventController
 
         if($existingParticipant === false)
         {
-            throw new Exception("You're not participating, so you can't unregister.");
+            throw new \Exception("You're not participating, so you can't unregister.");
         }
         else
         {
             $affectedLines = $this->eventManager->deleteParticipantByEvent($eventId, $userId);
 
             if ($affectedLines === false) {
-                throw new Exception('Problem while unregistrering from this event. Please try again.');
+                throw new \Exception('Problem while unregistrering from this event. Please try again.');
             } else {
                 header('Location: ./index.php?action=showEvent&id=' . $eventId);
             }
