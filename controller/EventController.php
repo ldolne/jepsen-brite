@@ -326,20 +326,6 @@ class EventController
             $imageName = $event['image'];
         }
 
-
-        echo $_POST['subcategory_id'];
-
-
-        echo "<pre>";
-        print_r($_POST['subcategory_id']);
-        echo "</pre>";
-
-        foreach ($_POST['subcategory_id'] as $selected) {
-            if ($selected == 21) {
-                echo '<input type="checkbox" id="' . "musical" . '" name="subcategory_id[]" value="' . 21 . '" checked>';
-            }
-        }
-
         $eventAffectedLines = $this->eventManager->updateEvent(
             $_GET['id'],
             $_POST['title'],
@@ -396,7 +382,6 @@ class EventController
         $sg = new \SendGrid($apiKey);
 
         $response = $sg->client->mail()->send()->post($mail);*/
-
     }
 
     public function deleteExistingEvent()

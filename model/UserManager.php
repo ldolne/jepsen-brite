@@ -90,5 +90,17 @@ class UserManager extends Manager
         $request = $bdd -> prepare("DELETE FROM users WHERE `id` = ?");
         return $request;
     }
- 
+
+    public function getEmailAddresses($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT u.email
+        FROM users AS u 
+        INNER JOIN assoc_events_users AS aeu 
+        ON u.id = aeu.user_id
+        WHERE aeu.event_id = ?');
+        $req->execute(array($eventId));
+
+        return $req;
+    }
 }
