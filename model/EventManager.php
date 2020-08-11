@@ -35,7 +35,11 @@ class EventManager extends Manager
     public function getEvent($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT e.id, e.title, e.address,e.town,e.cp,e.author_id, e.event_date, DATE_FORMAT(e.event_date, \'%d/%m/%Y\') AS event_date_formatted, e.event_hour, DATE_FORMAT(e.event_hour, \'%H:%i\') AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category 
+        $req = $db->prepare('SELECT e.id, e.title,e.author_id, e.event_date, 
+        DATE_FORMAT(e.event_date, \'%d/%m/%Y\') 
+        AS event_date_formatted, e.event_hour, 
+        DATE_FORMAT(e.event_hour, \'%H:%i\') 
+        AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category,e.address,e.town,e.cp
             FROM events AS e 
             INNER JOIN users AS u ON e.author_id = u.id 
             INNER JOIN categories AS c 
@@ -46,11 +50,11 @@ class EventManager extends Manager
         return $req;
     }
 
-    public function createEvent($title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId)
+    public function createEvent($title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId,$address, $town, $cp)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('INSERT INTO events(title, author_id, event_date, event_hour, image, description, category_id) 
-            VALUES (:title, :author_id, :event_date, :event_hour, :image, :description, :category_id)');
+        $req = $db->prepare('INSERT INTO events(title, author_id, event_date, event_hour, image, description, category_id,address, town, cp) 
+            VALUES (:title, :author_id, :event_date, :event_hour, :image, :description, :category_id,:address,:town, :cp)');
         $affectedLines = $req->execute(array(
             'title' => $title,
             'author_id' => $authorId,
@@ -58,7 +62,10 @@ class EventManager extends Manager
             'event_hour' => $eventHour,
             'image' => $image,
             'description' => $description,
-            'category_id' => $categoryId
+            'category_id' => $categoryId,
+            'address' => $address,
+            'town' => $town,
+            'cp' => $cp
         ));
 
         $latestId = $db->lastInsertId();
@@ -66,11 +73,11 @@ class EventManager extends Manager
         return array($affectedLines, $latestId);
     }
 
-    public function updateEvent($eventId, $title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId)
+    public function updateEvent($eventId, $title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId, $address, $cp, $town)
     {
         $db = $this->dbConnect();
         $req = $db->prepare('UPDATE events 
-            SET title = :title, author_id = :author_id, event_date = :event_date, event_hour = :event_hour, image = :image, description = :description, category_id = :category_id 
+            SET title = :title, author_id = :author_id, event_date = :event_date, event_hour = :event_hour, image = :image, description = :description, category_id = :category_id,:address,:town, :cp
             WHERE id = :id');
         $req->execute(array(
             'title' => $title,
@@ -80,7 +87,10 @@ class EventManager extends Manager
             'image' => $image,
             'description' => $description,
             'category_id' => $categoryId,
-            'id' => $eventId
+            'id' => $eventId,
+            'address' => $address,
+            'town' => $town,
+            'cp' => $cp
         ));
     }
 

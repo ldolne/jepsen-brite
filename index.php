@@ -3,16 +3,18 @@
 
 // requires
 require_once('autoloader.php');
-require_once ("./controller/UserController.php");
-require_once ("./controller/CategoryController.php");
-require_once ("./controller/EventController.php");
-require_once ("./controller/CommentController.php");
-require_once ("./controller/SubcategoryController.php");
+require_once("./controller/UserController.php");
+require_once("./controller/CategoryController.php");
+require_once("./controller/EventController.php");
+require_once("./controller/CommentController.php");
+require_once("./controller/SubcategoryController.php");
 
 // session start
 session_start();
-if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])
-&& isset($_COOKIE['id']) && !empty($_COOKIE['id'])) {
+if (
+    isset($_COOKIE['username']) && !empty($_COOKIE['username'])
+    && isset($_COOKIE['id']) && !empty($_COOKIE['id'])
+) {
     cookieVerification();
 }
 
@@ -35,21 +37,19 @@ try {
                 !empty($_POST['username'])
                 && !empty($_POST['password'])
                 && !empty($_POST['passwordcheck'])
-                && !empty($_POST['email'])) {
+                && !empty($_POST['email'])
+            ) {
                 $userController->actualInscription();
-            } 
-            else {
+            } else {
                 $userController->getInscriptionPage();
             }
         } elseif ($_GET['action'] == 'connection') {
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
                 $userController->login();
-            } 
-            else {
+            } else {
                 $userController->getConnectionPage();
             }
-        } 
-        elseif ($_GET['action'] == 'deconnection') {
+        } elseif ($_GET['action'] == 'deconnection') {
             $userController->deconnection();
         }
 
@@ -86,8 +86,10 @@ try {
             if ($_GET['action'] == 'profile') {
                 $userController->getProfilePage();
             } elseif ($_GET['action'] == 'modifyprofile') {
-                if (!empty($_POST['username'])
-                    || (!empty($_POST['password']) && $_POST['password'] == $_POST['passwordcheck'])) {
+                if (
+                    !empty($_POST['username'])
+                    || (!empty($_POST['password']) && $_POST['password'] == $_POST['passwordcheck'])
+                ) {
                     $userController->profileModification();
                 } else {
                     $userController->modifyProfilePage();
@@ -130,6 +132,9 @@ try {
                     && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                    && isset($_POST['address']) && !empty($_POST['address'])
+                    && isset($_POST['town']) && !empty($_POST['town'])
+                    && isset($_POST['cp']) && !empty($_POST['cp'])
                 ) {
                     $eventController->createNewEvent();
                 } else {
@@ -148,6 +153,9 @@ try {
                         && isset($_POST['event_hour']) && !empty($_POST['event_hour'])
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
+                        && isset($_POST['address']) && !empty($_POST['address'])
+                        && isset($_POST['town']) && !empty($_POST['town'])
+                        && isset($_POST['cp']) && !empty($_POST['cp'])
                     ) {
                         $eventController->updateExistingEvent($event, $subcategories);
                     } else {
@@ -192,9 +200,7 @@ try {
                 } else {
                     throw new \Exception("No permission to delete this comment. You're not the author of it.");
                 }
-            }
-            else if($_GET['action'] == 'registerToEvent')
-            {
+            } else if ($_GET['action'] == 'registerToEvent') {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     $eventController->registerToEvent($_GET['id'], $_SESSION['id']);
                 } else {
