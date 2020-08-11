@@ -266,10 +266,10 @@ class UserController
         $commentsAffectedLines = $this->commentManager->updateCommentAuthorWhenDeletedAccount($result['id']);
 
         if ($eventsAffectedLines === false) {
-            throw new Exception("Problem while deleting the user's events. Please try again.");
+            throw new \Exception("Problem while deleting the user's events. Please try again.");
         } else if ($commentsAffectedLines === false)
         {
-            throw new Exception("Problem while deleting the user's comments. Please try again.");
+            throw new \Exception("Problem while deleting the user's comments. Please try again.");
         }
 
         // Delete user
@@ -343,10 +343,10 @@ class UserController
         $commentsAffectedLines = $this->commentManager->updateCommentAuthorWhenDeletedAccount($user['id']);
 
         if ($eventsAffectedLines === false) {
-            throw new Exception("Problem while deleting the user's events. Please try again.");
+            throw new \Exception("Problem while deleting the user's events. Please try again.");
         } else if ($commentsAffectedLines === false)
         {
-            throw new Exception("Problem while deleting the user's comments. Please try again.");
+            throw new \Exception("Problem while deleting the user's comments. Please try again.");
         }
 
         // Delete user

@@ -22,7 +22,7 @@ class CommentController
 
         if (empty($comment))
         {
-            throw new Exception('Comment ID does not exist.');
+            throw new \Exception('Comment ID does not exist.');
         }
         else
         {
@@ -35,7 +35,7 @@ class CommentController
         $affectedLines = $this->commentManager->postComment($eventId, $authorId, $comment);
 
         if ($affectedLines === false) {
-            throw new Exception('Problem while adding a comment. Please try again.');
+            throw new \Exception('Problem while adding a comment. Please try again.');
         } else {
             header('Location: ./index.php?action=showEvent&id=' . $eventId);
         }
@@ -46,7 +46,7 @@ class CommentController
         $affectedLines = $this->commentManager->deleteOneComment($_GET['comment_id']);
 
         if ($affectedLines === false) {
-            throw new Exception('Problem while deleting the comment. Please try again.');
+            throw new \Exception('Problem while deleting the comment. Please try again.');
         } else {
             header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
         }

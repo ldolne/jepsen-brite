@@ -19,7 +19,7 @@ class SubcategoryController
     {
         $search = $this->subcategoryManager->getOneSubcategory($_GET['subcategory_id']);
         if ($search === null) {
-            throw new Exception('No result.');
+            throw new \Exception('No result.');
         } else {
             require('./view/eventsByCategory.php');
         }

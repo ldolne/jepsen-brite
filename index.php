@@ -72,7 +72,7 @@ try {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $eventController->showEvent();
             } else {
-                throw new Exception('No event ID sent.');
+                throw new \Exception('No event ID sent.');
             }
         }
 
@@ -118,10 +118,10 @@ try {
                     if ($_SESSION['id'] == $event['author_id']) {
                         $eventController->showEventModificationPage($event, $subcategories);
                     } else {
-                        throw new Exception("No permission to modify this event. You're not the author of it.");
+                        throw new \Exception("No permission to modify this event. You're not the author of it.");
                     }
                 } else {
-                    throw new Exception('No event ID sent.');
+                    throw new \Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == "createNewEvent") {
                 if (
@@ -155,7 +155,7 @@ try {
                         $eventController->showEventModificationPage($event, $subcategories, showInfoMessage($message, false));
                     }
                 } else {
-                    throw new Exception('No event ID sent.');
+                    throw new \Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingEvent') {
                 $handleEventReturnArr = $eventController->handleEvent();
@@ -165,10 +165,10 @@ try {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         $eventController->deleteExistingEvent();
                     } else {
-                        throw new Exception('No event ID sent.');
+                        throw new \Exception('No event ID sent.');
                     }
                 } else {
-                    throw new Exception("No permission to delete this event. You're not the author of it.");
+                    throw new \Exception("No permission to delete this event. You're not the author of it.");
                 }
             } else if ($_GET['action'] == 'addComment') {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
@@ -179,7 +179,7 @@ try {
                         $eventController->showEvent(showInfoMessage($message, false));
                     }
                 } else {
-                    throw new Exception('No event ID sent.');
+                    throw new \Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'deleteExistingComment') {
                 $comment = $commentController->handleComment();
@@ -187,10 +187,10 @@ try {
                     if (isset($_GET['comment_id']) && $_GET['comment_id'] > 0) {
                         $commentController->deleteExistingComment();
                     } else {
-                        throw new Exception('No comment ID sent.');
+                        throw new \Exception('No comment ID sent.');
                     }
                 } else {
-                    throw new Exception("No permission to delete this comment. You're not the author of it.");
+                    throw new \Exception("No permission to delete this comment. You're not the author of it.");
                 }
             }
             else if($_GET['action'] == 'registerToEvent')
@@ -198,27 +198,27 @@ try {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     $eventController->registerToEvent($_GET['id'], $_SESSION['id']);
                 } else {
-                    throw new Exception('No event ID sent.');
+                    throw new \Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'unregisterFromEvent') {
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
                     $eventController->unregisterFromEvent($_GET['id'], $_SESSION['id']);
                 } else {
-                    throw new Exception('No event ID sent.');
+                    throw new \Exception('No event ID sent.');
                 }
             } else if ($_GET['action'] == 'testSubcat') {
                 require('view/testSubcat.html');
             }
         } else {
-            throw new Exception('The URL given is wrong or you have to sign in to access this functionality.');
+            throw new \Exception('The URL given is wrong or you have to sign in to access this functionality.');
         }
     } else {
         $eventController->getIndexPage();
     }
-} catch (Exception $e) // If an error is detected anywhere in the code, it come back up here. 
+} catch (\Exception $e) // If an error is detected anywhere in the code, it come back up here.
 {
     $errorMsg = "Error(s): ";
-    $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Get the right thrown exception error message and display it.
+    $errorMsg .= '<p>' . $e->getMessage() . '</p>'; // Get the right thrown Exception error message and display it.
     if (isset($_SERVER['HTTP_REFERER'])) {
         $previousURL = $_SERVER['HTTP_REFERER'];
     }
