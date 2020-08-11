@@ -57,12 +57,20 @@ $parsdown = new Parsedown();
                     }
                     ?>
                     <div class="d-flex justify-content-start">
-                        <div class="image-container">
-                            <img src="<?= $event['image'] ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
-                        </div>
+                    <div class="col-sm-8 p-4">
+                        <?php if(strpos($event['image'], 'cloudinary.com') !== false) { ?>
+                            <div class="image-container">
+                                <image src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: auto; object-fit: cover;">
+                            </div>
+                        <?php } else { ?>
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
+                            </div>
+                        <?php } ?>
                         <div class="ml-auto">
                             <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
                         </div>
+                    </div>
                     </div>
                 </div>
 

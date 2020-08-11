@@ -139,11 +139,39 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="image">Image:</label>
-                        <input type="file" name="image" id="image" class="form-control-file">
+                        <label for="image_or_video">Upload an image or a video URL:</label>
+                        <select name="image_or_video" class="form-control mb-3" id="image_or_video">
+                            <?php
+                            $eventController = new \controller\EventController();
+
+                            $eventController->checkIfVideoOrImage();
+                            ?>
+                        </select>
+                        <div id="imageSubcat" style="display: block" class="ml-4">
+                            <label for="image">Input image:</label>
+                            <input type="file" name="image" id="image" class="form-control-file mb-4">
+                        </div>
+                        <div id="videoSubcat" style="display: none" class="ml-4">
+                            <label for="url">Input video URL:</label>
+                            <input type="url" id="url" name="url" class="form-control mb-4">
+                        </div>
+                    </div>
                         <div class="image-container">
-                            <label for="imgProfile">Previous image:</label>
-                            <img src="./public/img/events_img/<?= $event['image']; ?>" id="imgProfile" alt="Event image" style="width: 200px; height: 200px" class="img-thumbnail" width="150" />
+                            <label for="imgEvent">Previous image:</label>
+                            <div class="col-sm-8 p-4">
+                                <?php if(strpos($event['image'], 'cloudinary.com') !== false) { ?>
+                                    <div class="image-container">
+                                        <image src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: auto; object-fit: cover;">
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
+                                    </div>
+                                <?php } ?>
+                                <div class="ml-auto">
+                                    <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">
