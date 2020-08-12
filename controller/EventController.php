@@ -4,6 +4,10 @@
 
 namespace controller;
 
+use SendGrid\Content;
+use SendGrid\Email;
+use SendGrid\Mail;
+
 require_once('./vendor/autoload.php');
 require_once('./autoloader.php');
 require_once('./model/UserManager.php');
@@ -336,8 +340,8 @@ class EventController
             $_POST['description'],
             $_POST['category_id'],
             $_POST['address'],
-            $_POST['town'],
-            $_POST['cp']
+            $_POST['cp'],
+            $_POST['town']
         );
 
         if (isset($subcategories) && !empty($subcategories))
@@ -365,23 +369,12 @@ class EventController
         if ($eventAffectedLines === false) {
             throw new \Exception('Problem while modifying the event. Please try again.');
         } else {
+            // Sending to all participants of this event an email informing them of the update
+            // uncomment for Heroku
+            $this->sendMailToParticipants($_GET['id'], 'updated');
+
             header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
         }
-
-        // Sending to all participants of this event an email informing them of the update
-        // uncomment for Heroku
-
-        /*$from = new \SendGrid\Email(null, "becodechristest@gmail.com");
-        $subject = 'Updated event ';
-        $to = new \SendGrid\Email(null, $email);
-        $content = new \SendGrid\Content("text/plain", 'An event in which you take part has been updated on the website. Cf. https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $_GET['id']);
-        $mail = new \SendGrid\Mail($from, $subject, $to, $content);
-
-
-        $apiKey = getenv('SENDGRID_API_KEY');
-        $sg = new \SendGrid($apiKey);
-
-        $response = $sg->client->mail()->send()->post($mail);*/
     }
 
     public function deleteExistingEvent()
@@ -449,6 +442,80 @@ class EventController
             } else {
                 header('Location: ./index.php?action=showEvent&id=' . $eventId);
             }
+        }
+    }
+
+    public function sendMailForTomorrowEvents()
+    {
+        $tomorrowUpcomingEvents = $this->eventManager->getTomorrowEvents();
+
+        while($event = $tomorrowUpcomingEvents->fetch())
+        {
+            $this->sendMailToParticipants($event['id'], 'upcoming');
+        }
+    }
+
+    public function checkIfVideoOrImage() {
+
+        if (isset($_POST['image_or_video'])) {
+            switch ($_POST['image_or_video']) {
+                case 1:
+                    ?>
+                    <option value="1" selected>Image</option>
+                    <option value="2">Video</option>
+                    <?php
+                    break;
+                case 2:
+                    ?>
+                    <option value="1">Image</option>
+                    <option value="2" selected>Video</option>
+                    <?php
+                    break;
+            }
+        } else {
+            ?>
+            <option value="1" selected>Image</option>
+            <option value="2">Video</option>
+            <?php
+        }
+    }
+
+    public function sendMailToParticipants($eventId, $mailType)
+    {
+        $participantsMailReq = $this->userManager->getEmailAddressesOfParticipantsByEvent($eventId);
+
+        $from = new Email(null, "becodechristest@gmail.com");
+
+        $apiKey = getenv('SENDGRID_API_KEY');
+        $sg = new \SendGrid($apiKey);
+
+
+        switch($mailType)
+        {
+            case "updated":
+                $subject = 'Updated event ';
+                while($participant = $participantsMailReq->fetch())
+                {
+                    $content = new Content("text/plain",
+                        'Hello, ' . $participant['username'] . '! We inform you that an event in which you take part has been updated on the website. For more info, cf. https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $eventId);
+                    $to = new Email($participant['username'], $participant['email']);
+                    $mail = new Mail($from, $subject, $to, $content);
+
+                    $response = $sg->client->mail()->send()->post($mail);
+                }
+                break;
+            case "upcoming":
+                $subject = 'Upcoming event ';
+                while($participant = $participantsMailReq->fetch())
+                {
+                    $content = new Content("text/plain",
+                        'Hello, ' . $participant['username'] . '! We inform you that an event in which you take part is programmed for tomorrow. Have fun! For more info, cf. https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $eventId);
+                    $to = new Email($participant['username'], $participant['email']);
+                    $mail = new Mail($from, $subject, $to, $content);
+
+                    $response = $sg->client->mail()->send()->post($mail);
+                }
+                break;
         }
     }
 
@@ -669,33 +736,4 @@ class EventController
             echo '<input type="checkbox" id="' . $textId . '" name="subcategory_id[]" value="' . $rawNumberValue . '">';
         }
     }
-
-
-    public function checkIfVideoOrImage() {
-      
-        if (isset($_POST['image_or_video'])) {
-            switch ($_POST['image_or_video']) {
-                case 1:
-                    ?>
-                    <option value="1" selected>Image</option>
-                    <option value="2">Video</option>
-                <?php
-                    break;
-                case 2:
-                    ?>
-                    <option value="1">Image</option>
-                    <option value="2" selected>Video</option>
-                    <?php
-                    break;         
-            }
-        } else {
-            ?>
-            <option value="1" selected>Image</option>
-            <option value="2">Video</option>
-        <?php
-        }
-    }
-   
-    
-
 }

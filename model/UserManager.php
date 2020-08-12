@@ -49,7 +49,7 @@ class UserManager extends Manager
         return $request;
     }
 
-    public function getUser() {
+    public function getUser(){
         $bdd = $this-> dbConnect();
         $request = $bdd-> prepare("SELECT * FROM `users` WHERE `id`= ?");
         return $request;
@@ -91,10 +91,10 @@ class UserManager extends Manager
         return $request;
     }
 
-    public function getEmailAddresses($eventId)
+    public function getEmailAddressesOfParticipantsByEvent($eventId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT u.email
+        $req = $db->prepare('SELECT u.username, u.email
         FROM users AS u 
         INNER JOIN assoc_events_users AS aeu 
         ON u.id = aeu.user_id

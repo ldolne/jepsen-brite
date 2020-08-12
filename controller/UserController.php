@@ -4,6 +4,10 @@
 
 namespace controller;
 
+use SendGrid\Content;
+use SendGrid\Email;
+use SendGrid\Mail;
+
 require_once('./vendor/autoload.php');
 require_once('./autoloader.php');
 require_once('./model/UserManager.php');
@@ -115,11 +119,11 @@ class UserController
             // Sending welcome email
             // uncomment for Heroku
 
-            /*$from = new \SendGrid\Email(null, "becodechristest@gmail.com");
+            /*$from = new Email(null, "becodechristest@gmail.com");
             $subject = 'Inscription à Jepsen-brite event ';
-            $to = new \SendGrid\Email(null, $email);
-            $content = new \SendGrid\Content("text/plain", 'Team-5 is happy to welcome your on their website!');
-            $mail = new \SendGrid\Mail($from, $subject, $to, $content);
+            $to = new Email(null, $email);
+            $content = new Content("text/plain", 'Team-5 is happy to welcome your on their website!');
+            $mail = new Mail($from, $subject, $to, $content);
 
             $apiKey = getenv('SENDGRID_API_KEY');
             $sg = new \SendGrid($apiKey);

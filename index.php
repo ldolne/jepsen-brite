@@ -133,8 +133,8 @@ try {
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
                     && isset($_POST['address']) && !empty($_POST['address'])
-                    && isset($_POST['town']) && !empty($_POST['town'])
                     && isset($_POST['cp']) && !empty($_POST['cp'])
+                    && isset($_POST['town']) && !empty($_POST['town'])
                 ) {
                     $eventController->createNewEvent();
                 } else {
@@ -154,8 +154,8 @@ try {
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
                         && isset($_POST['address']) && !empty($_POST['address'])
-                        && isset($_POST['town']) && !empty($_POST['town'])
                         && isset($_POST['cp']) && !empty($_POST['cp'])
+                        && isset($_POST['town']) && !empty($_POST['town'])
                     ) {
                         $eventController->updateExistingEvent($event, $subcategories);
                     } else {

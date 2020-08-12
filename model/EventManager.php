@@ -19,6 +19,16 @@ class EventManager extends Manager
         return $req;
     }
 
+    public function getTomorrowEvents()
+    {
+        $db = $this->dbConnect();
+        $req = $db->query('SELECT e.id
+            FROM events AS e 
+            WHERE (event_date = (current_date + INTERVAL 1 DAY))');
+
+        return $req;
+    }
+
     public function getPastEvents()
     {
         $db = $this->dbConnect();
@@ -50,11 +60,11 @@ class EventManager extends Manager
         return $req;
     }
 
-    public function createEvent($title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId,$address, $town, $cp)
+    public function createEvent($title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId, $address, $cp, $town)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('INSERT INTO events(title, author_id, event_date, event_hour, image, description, category_id,address, town, cp) 
-            VALUES (:title, :author_id, :event_date, :event_hour, :image, :description, :category_id,:address,:town, :cp)');
+        $req = $db->prepare('INSERT INTO events(title, author_id, event_date, event_hour, image, description, category_id, address, cp, town) 
+            VALUES (:title, :author_id, :event_date, :event_hour, :image, :description, :category_id, :address, :cp, :town)');
         $affectedLines = $req->execute(array(
             'title' => $title,
             'author_id' => $authorId,
@@ -63,9 +73,9 @@ class EventManager extends Manager
             'image' => $image,
             'description' => $description,
             'category_id' => $categoryId,
-            'address' => $address,
             'town' => $town,
-            'cp' => $cp
+            'cp' => $cp,
+            'address' => $address
         ));
 
         $latestId = $db->lastInsertId();
@@ -77,7 +87,7 @@ class EventManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->prepare('UPDATE events 
-            SET title = :title, author_id = :author_id, event_date = :event_date, event_hour = :event_hour, image = :image, description = :description, category_id = :category_id,:address,:town, :cp
+            SET title = :title, author_id = :author_id, event_date = :event_date, event_hour = :event_hour, image = :image, description = :description, category_id = :category_id, address = :address, cp = :cp, town = :town
             WHERE id = :id');
         $req->execute(array(
             'title' => $title,
@@ -87,10 +97,10 @@ class EventManager extends Manager
             'image' => $image,
             'description' => $description,
             'category_id' => $categoryId,
-            'id' => $eventId,
             'address' => $address,
+            'cp' => $cp,
             'town' => $town,
-            'cp' => $cp
+            'id' => $eventId
         ));
     }
 
