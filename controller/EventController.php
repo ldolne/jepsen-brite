@@ -48,8 +48,6 @@ class EventController
 
     public function showEvent($message = NULL)
     {
-        hello();
-
         $eventReq = $this->eventManager->getEvent($_GET['id']);
         $participants = $this->eventManager->getParticipantsByEvent($_GET['id']);
         $participantsArr = $participants->fetchAll();
@@ -511,9 +509,6 @@ class EventController
                 $subject = 'Upcoming event ';
                 while($participant = $participantsMailReq->fetch())
                 {
-                    echo $participant['email'];
-                    echo $participant['username'];
-
                     $contentValue = '<p>Hello!<br><br> We inform you that an event in which you take part is programmed for tomorrow. Have fun!<br><br> For more info, cf. <a href="https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $eventId . '">the event</a></p>';
                     $content = new Content("text/html", $contentValue);
                     $to = new Email(null, $participant['email']);
