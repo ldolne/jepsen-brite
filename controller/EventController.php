@@ -371,7 +371,7 @@ class EventController
         } else {
             // Sending to all participants of this event an email informing them of the update
             // uncomment for Heroku
-            $this->sendMailToParticipants($_GET['id'], 'updated');
+            //$this->sendMailToParticipants($_GET['id'], 'updated');
 
             header('Location: ./index.php?action=showEvent&id=' . $_GET['id']);
         }
