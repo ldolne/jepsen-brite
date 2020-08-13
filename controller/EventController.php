@@ -15,8 +15,6 @@ require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
 require_once('./model/SubcategoryManager.php');
 
-require_once('./cron/cron.php');
-
 class EventController
 {
     private $userManager;
