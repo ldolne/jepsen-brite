@@ -449,7 +449,6 @@ class EventController
         }
     }
 
-    // TODO Passer sur Heroku pour test le mail.
     public function sendMailForTomorrowEvents()
     {
         $tomorrowUpcomingEvents = $this->eventManager->getTomorrowEvents();
