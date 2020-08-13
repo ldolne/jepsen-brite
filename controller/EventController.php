@@ -15,6 +15,8 @@ require_once('./model/EventManager.php');
 require_once('./model/CommentManager.php');
 require_once('./model/SubcategoryManager.php');
 
+require_once('./cron/cron.php');
+
 class EventController
 {
     private $userManager;
@@ -46,6 +48,8 @@ class EventController
 
     public function showEvent($message = NULL)
     {
+        hello();
+
         $eventReq = $this->eventManager->getEvent($_GET['id']);
         $participants = $this->eventManager->getParticipantsByEvent($_GET['id']);
         $participantsArr = $participants->fetchAll();
@@ -445,6 +449,7 @@ class EventController
         }
     }
 
+    // TODO Passer sur Heroku pour test le mail.
     public function sendMailForTomorrowEvents()
     {
         $tomorrowUpcomingEvents = $this->eventManager->getTomorrowEvents();
