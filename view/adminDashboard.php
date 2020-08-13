@@ -18,15 +18,15 @@
                         {?>
 
                     <li class="list-group-item d-flex justify-content-between">
-                        <div class="d-inline-block mb-2 text-primary"><strong><?= $user['username'] ?></strong></div>
+                        <div class="d-inline-block mb-2 text-primary ml-2"><strong><?= $user['username'] ?></strong></div>
                         <div>
                             <?php if($user['isadmin'] == "0"){?>
-                            <a href="./index.php?action=makeadmin&amp;id=<?= $user['id'] ?>" onclick="if(!confirm('Are you sure you want to promote this user to administrator?')) return false;" class="btn-sm btn-primary" >Promote to admin</a>
+                            <a href="./index.php?action=makeadmin&amp;id=<?= $user['id'] ?>" onclick="if(!confirm('Are you sure you want to promote this user to administrator?')) return false;" class="btn-sm btn-primary mr-2" >Promote to admin</a>
                             <?php } ?>
                             <?php if($user['isadmin'] == "1"){?>
-                            <a href="./index.php?action=undoadmin&amp;id=<?= $user['id'] ?>" onclick="if(!confirm('Are you sure you want demote this user from administrator?')) return false;" class="btn-sm btn-secondary" >Demote from admin</a>
+                            <a href="./index.php?action=undoadmin&amp;id=<?= $user['id'] ?>" onclick="if(!confirm('Are you sure you want demote this user from administrator?')) return false;" class="btn-sm btn-secondary mr-2" >Demote from admin</a>
                             <?php } ?>
-                            <a href="./index.php?action=admindelete&amp;id=<?= $user['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this account?')) return false; " class="btn-sm btn-danger" >Delete this user</a>
+                            <a href="./index.php?action=admindelete&amp;id=<?= $user['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this account?')) return false; " class="btn-sm btn-danger mr-2" >Delete this user</a>
                         </div>
                     </li>
                 <?php

@@ -2,7 +2,7 @@
 
 <?php ob_start(); ?>
 
-<div class=" d-flex justify-content-between align-items-baseline">
+<div class=" d-flex justify-content-between align-items-baseline mb-3 ml-4">
   <h2>Next upcoming event</h2>
   <div class="clo-md-2 ">
         <?php if (!empty($_SESSION['username'])) { ?>
@@ -25,20 +25,17 @@
 
 
           <div class="card">
-
             <div class="card-block">
-
-
               <div class="row">
 
-                <div class="col-md-4">
+                <div class="col-6">
                   <?php if (strpos($data['image'], 'cloudinary.com') !== false) { ?>
-                    <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 18rem; object-fit: cover;">
+                    <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 14em; width: 100%; object-fit: cover;">
                     <?php } else { ?>
-                      <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling="no"></iframe>
+                      <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="width:100%; height:100%" scrolling="no"></iframe>
                     <?php } ?>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-6">
                   <p>
                     <h3><strong class="d-inline-block mb-3 text-primary"><?= htmlspecialchars($data['title']) ?></strong></h3>
                   </p>
@@ -59,7 +56,7 @@
 
           </div>
 
-          <h2>Other next events</h2>
+          <h2 class="pb-3">Other next events</h2>
 
 
           <div class="card">

@@ -1,7 +1,7 @@
 <?php $title = 'Modify Event'; ?>
 
 <?php ob_start(); ?>
-    <main role="main" class="container">
+    <main role="main" class="container" style="color: white;">
         <div class="row">
 
             <div class="col-md-12">
@@ -188,8 +188,10 @@
                             <input type="url" id="url" name="url" class="form-control mb-4">
                         </div>
                     </div>
-                        <div class="image-container">
-                            <label for="imgEvent">Previous image:</label>
+
+                    <label for="imgEvent" class="mt-4">Previous image:</label>
+                        <div class="container">
+                            
                             <div class="col-sm-8 p-4">
                                 <?php if(strpos($event['image'], 'cloudinary.com') !== false) { ?>
                                     <div class="image-container">
@@ -206,7 +208,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary mt-4">
                         Submit
                     </button>
                 </form>

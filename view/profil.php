@@ -5,7 +5,7 @@
     <div class="col-12">
         <div class="card">
 
-            <div class="card-body">
+            <div class="card-body m-4">
                 <div class="card-title mb-4">
                     <div class="d-flex justify-content-between">
                         <div class="d-flex justify-content-start">

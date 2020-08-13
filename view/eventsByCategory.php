@@ -69,9 +69,6 @@
                             Hour
                         </th>
                         <th>
-                            Place
-                        </th>
-                        <th>
                             Category
                         </th>
                         <th>See more...</th>
@@ -83,7 +80,7 @@
                     while ($data = $search->fetch()) {
                     ?>
                         <tr>
-                            <td>
+                            <td style="color: white;">
                                 <?php echo $data['title']; ?>
                             </td>
                             <td>
@@ -93,12 +90,9 @@
                                 <?php echo $data['event_hour_formatted']; ?>
                             </td>
                             <td>
-                                PLACE
-                            </td>
-                            <td>
                                 <?php echo $data['category']; ?>
                             </td>
-                            <td><button class="btn btn-light"><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></button></td>
+                            <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>"><button class="btn btn-light"><div style="color: #ff0060;">See this event</div></button></a></td>
                         </tr>
                     <?php }
                     $search->closeCursor();

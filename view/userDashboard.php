@@ -11,7 +11,7 @@
             <div class="card-header d-flex justify-content-between">
                 <h2>Events created</h2>
                 <div class="mt-1">
-                    <a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn btn-block"> Create an event</button></a>
+                    <a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary">Create an event</button></a>
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-baseline">
                     <div>
-                        <div class="d-inline-block mb-2 text-primary"><strong><?= $data['title'] ?></strong></div>
+                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= $data['title'] ?></strong></div>
                             
                         <div class="mb-2 text-muted">
                             <?= $data['event_date_formatted'] ?>
@@ -31,7 +31,7 @@
                         <div class="mb-2 text-muted"><?= $data['category'] ?></div>
                     </div>
 
-                    <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
+                    <a class="pl-1 mb-auto" href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
                 </li>
                 <?php }
                     $userEvents->closeCursor(); 
@@ -52,7 +52,7 @@
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-baseline">
                     <div>
-                        <div class="d-inline-block mb-2 text-primary"><strong><?= $data['title'] ?></strong></div>
+                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= $data['title'] ?></strong></div>
                             
                         <div class="mb-2 text-muted">
                             <?= $data['event_date_formatted'] ?>
@@ -62,7 +62,7 @@
                         <div class="mb-2 text-muted"><?= $data['category'] ?></div>
                     </div>
 
-                    <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
+                    <a class="pl-1 mb-auto" href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
                 </li>
                 <?php }
                     $upcomingParticip->closeCursor(); 
@@ -79,7 +79,7 @@
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-baseline">
                     <div>
-                        <div class="d-inline-block mb-2 text-primary"><strong><?= $data['title'] ?></strong></div>
+                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= $data['title'] ?></strong></div>
                             
                         <div class="mb-2 text-muted">
                             <?= $data['event_date_formatted'] ?>
@@ -89,7 +89,7 @@
                         <div class="mb-2 text-muted"><?= $data['category'] ?></div>
                     </div>
 
-                    <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
+                    <a class="pl-1 mb-auto" href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a>
                 </li>
                 <?php }
                     $pastParticip->closeCursor(); 

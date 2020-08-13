@@ -6,7 +6,7 @@ require('./vendor/erusev/parsedown/Parsedown.php');
 $parsdown = new Parsedown();
 ?>
 <div class=" d-flex justify-content-between align-items-baseline">
-  <h1>  <?= htmlspecialchars($event['title']) ?></h1>
+  <h1 style="width: 80rem;">  <?= htmlspecialchars($event['title']) ?></h1>
   <div class="clo-md-2 ">
         <?php if (!empty($_SESSION['username'])) { ?>
             <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block float-right">Create an event</button></a></em></p>
@@ -17,9 +17,8 @@ $parsdown = new Parsedown();
 
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-                <div class="card-title mb-4">
-
+            <div class="card-body ml-5">
+                <div class="card-title mb-4 mt-5">
                     <?php if (
                         !empty($_SESSION['username'])
                         and ($event['event_date'] > date('Y-m-d')
@@ -36,8 +35,8 @@ $parsdown = new Parsedown();
 
                         if ($isParticipating == true) {
                     ?>
-                            <div class="row">
-                                <div class="col-sm-3 col-md-2 col-5">
+                            <div class="row mb-3">
+                                <div class="col-sm-3 col-md-2 col">
                                     <a href="./index.php?action=unregisterFromEvent&amp;id=<?= $event['id'] ?>">
                                         <button class="btn btn-secondary">Participating</button>
                                     </a>
@@ -46,7 +45,7 @@ $parsdown = new Parsedown();
                         <?php
                         } else {
                         ?>
-                            <div class="row">
+                            <div class="row mb-3">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <a href="./index.php?action=registerToEvent&amp;id=<?= $event['id'] ?>">
                                         <button class="btn btn-primary">Participate</button>
@@ -79,31 +78,6 @@ $parsdown = new Parsedown();
                     <div class="col-12">
                         <div class="tab-content ml-1" id="myTabContent">
                             <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
-
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Name</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        <?= htmlspecialchars($event['title']) ?>
-                                    </div>
-                                </div>
-                                <hr />
-
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Place</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        <?php echo $event['address'] . ' ' . $event['town'] . ' ' . $event['cp']; ?>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        <iframe src="https://www.google.com/maps?q=<?= $event['address'] . ' ' . $event['cp']; ?>  &output=embed" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                                    </div>
-
-                                </div>
-                                <hr />
-
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
                                         <label style="font-weight:bold;">Date</label>
@@ -119,6 +93,30 @@ $parsdown = new Parsedown();
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <?= htmlspecialchars($event['event_hour_formatted']) ?>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5 pb-3">
+                                        <label style="font-weight:bold;">Place</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        <?php echo $event['address'] . ' ' . $event['town'] . ' ' . $event['cp']; ?>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        <iframe src="https://www.google.com/maps?q=<?= $event['address'] . ' ' . $event['cp']; ?>  &output=embed" width="500" height="450" frameborder="0" style="border:0; margin-left:11em;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                    </div>
+
+                                </div>
+                                <hr />
+
+                                
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Description</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        <?= $parsdown->text(nl2br(htmlspecialchars($event['description']))) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -141,7 +139,7 @@ $parsdown = new Parsedown();
                                             echo "<ul>";
                                             foreach ($subcategoriesArr as $subcategory) {
                                         ?>
-                                                <li><?= htmlspecialchars($subcategory['subcategory']) ?></li>
+                                                <li style="List-style-type: disc;"><?= htmlspecialchars($subcategory['subcategory']) ?></li>
                                         <?php
                                             }
                                             echo "</ul>";
@@ -149,15 +147,6 @@ $parsdown = new Parsedown();
                                             echo "None";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Description</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        <?= $parsdown->text(nl2br(htmlspecialchars($event['description']))) ?>
                                     </div>
                                 </div>
                                 <hr />
@@ -192,7 +181,7 @@ $parsdown = new Parsedown();
                                 </div>
                                 <hr />
 
-                                <div class="row">
+                                <div class="row mb-3">
                                     <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $event['author_id']) {
                                     ?>
                                         <div class="col-sm-3 col-md-2 col-5">
@@ -223,57 +212,60 @@ $parsdown = new Parsedown();
 
 <div class="row">
     <div class="col-12">
-        <div class="card">
-            <?php
-            while ($comment = $comments->fetch()) {
-            ?>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-3 col-md-2 col-5">
-                            <div class="image-container">
-                                <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
-                            </div>
-                            <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
-                        </div>
-                        <div class="col-sm-3 col-md-2 col-5">
-                            <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
-                        </div>
-                        <div class="col-sm-3 col-md-8 col-6">
-                            <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
-                        </div>
-                        <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $comment['author_id'] || $isAdmin != "0") {
-                        ?>
-                            <div class="col-sm-3 col-md-2 col-5">
-                                <a href="./index.php?action=deleteExistingComment&amp;id=<?= $event['id'] ?>&amp;comment_id=<?= $comment['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this comment?')) return false;">
-                                    <button class="btn btn-danger">Delete comment</button>
-                                </a>
-                            </div>
-                        <?php
-                        } ?>
-                    </div>
-                </div>
-            <?php
-            }
-            ?>
-            <?php if (!empty($_SESSION['username'])) {
-            ?>
-                <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
-                    <div class="card-body">
+        <div class="card mt-5">
+            <div class="mt-5">
+                <?php
+                while ($comment = $comments->fetch()) {
+                ?>
+                    <div class="card-body ml-5">
                         <div class="row">
-                            <div class="col-sm-3 col-md-2 col-5 ">
+                            <div class="col-sm-3 col-md-2 col-5">
                                 <div class="image-container">
-                                    <img src="https://www.gravatar.com/avatar/<?= $userAvatar['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                                    <img src="https://www.gravatar.com/avatar/<?= $comment['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
                                 </div>
-                                <label for="comment" style="font-weight:bold;">Add comment</label>
+                                <label style="font-weight:bold;"><?= htmlspecialchars($comment['username']) ?></label>
                             </div>
-                            <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>
+                            <div class="col-sm-3 col-md-2 col-5">
+                                <label style="font-weight:bold;"><?= $comment['comment_date_formatted'] ?></label>
+                            </div>
+                            <div class="d-flex justify content-between col-8">
+                                <div class="col-sm-3 col-md-8 col-6">
+                                <?= $parsdown->text(nl2br(htmlspecialchars($comment['comment']))) ?>
+                            </div>
+                            <?php if (!empty($_SESSION['id']) && $_SESSION['id'] == $comment['author_id'] || !empty($_SESSION['id']) && $isAdmin != "0") {
+                            ?>
+                                    <a href="./index.php?action=deleteExistingComment&amp;id=<?= $event['id'] ?>&amp;comment_id=<?= $comment['id'] ?>" onclick="if(!confirm('Are you sure you want to delete this comment?')) return false;">
+                                        <button class="btn btn-danger">Delete comment</button>
+                                    </a>
+                            <?php
+                            } ?>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
                     </div>
-                </form>
-            <?php } ?>
+                    <hr />
+                <?php
+                }
+                ?>
+                <?php if (!empty($_SESSION['username'])) {
+                ?>
+                    <form role="form" action="./index.php?action=addComment&amp;id=<?= $event['id'] ?>" method="post">
+                        <div class="card-body ml-5">
+                            <div class="row mb-4">
+                                <div class="col-sm-3 col-md-2 col-5 ">
+                                    <div class="image-container">
+                                        <img src="https://www.gravatar.com/avatar/<?= $userAvatar['avatar'] ?>" id="imgProfile" alt="User image" class="img-thumbnail" width="50" />
+                                    </div>
+                                    <label for="comment" style="font-weight:bold;">Add comment</label>
+                                </div>
+                                <textarea id="comment" name="comment" class="col-md-8 col-6"></textarea>
+                                <div class="m-4">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                <?php } ?>
+            </div>
         </div>
     </div>
 </div>

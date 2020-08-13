@@ -2,7 +2,7 @@
 
 <?php ob_start(); ?>
 
-<main role="main" class="container">
+<main role="main" class="container"  style="color: white;">
   <div class="row">
 
     <div class="col-md-12">

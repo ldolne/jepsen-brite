@@ -1,7 +1,7 @@
 <?php $title = 'Login'; ?>
 
 <?php ob_start(); ?>
-  <main role="main" class="container">
+  <main role="main" class="container" style="color: white;">
     <div class="row">
 
       <div class="col-md-12">
@@ -28,7 +28,7 @@
               <input type="checkbox" name="stayconnected"> Stay connected
             </label>
           </div>
-          <input type="submit" value ="Connection">
+          <input type="submit" value ="Connection" class="btn btn-primary">
         </form>
       </div>
     </div><!-- /.row -->
