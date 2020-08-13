@@ -1,30 +1,43 @@
-<header class="blog-header py-4">
-  <div class="row flex-nowrap justify-content-between align-items-center">
-    <div class="col-4 pt-1">
-      <?php 
-        if (empty($_SESSION['username'])){
-          ?>
-      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=connection">Log in</a>
-      <?php
-        }
-        ?>
-      <?php if (!empty($_SESSION['username'])){?>
-      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=deconnection">Log out</a>
+<header class="white-text-container section-container">
+  <div class="text-right">
+    <?php if (!empty($_SESSION['username'])) {
+      echo ("Bonjour " . $_SESSION['username']);
+    } ?>
+  <?php
+  if (empty($_SESSION['username'])) {
+  ?>
+    <a class="btn btn-sm btn-outline-secondary" href="index.php?action=connection">Log in</a>
+  <?php
+  }
+  ?>
+  <?php if (!empty($_SESSION['username'])) { ?>
+    <a class="btn btn-sm btn-outline-secondary" href="index.php?action=deconnection">Log out</a>
+  <?php } ?>
+  <?php
+  if (empty($_SESSION['username'])) {
+  ?>
+    <a class="btn btn-sm btn-outline-secondary" href="index.php?action=inscription">Sign up</a>
+  <?php
+  }
+  ?></div>
+
+  <div class="text-center">
+
+    <h1>Welcome to the Jepsen-Brite</h1>
+    <p>
+      <a class="btn btn-sm btn-outline-secondary" href="index.php">
+        Homepage </a>
+      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=showAllCategories">
+        Events by category
+      </a>
+      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=listPastEvents">
+        Past Events
+      </a>
+      <?php if (!empty($_SESSION['username'])) { ?>
+        <a class="btn btn-sm btn-outline-secondary" href="index.php?action=profile">Profile</a>
+        <a class="btn btn-sm btn-outline-secondary" href="index.php?action=userdashboard">Dashboard</a>
       <?php } ?>
-    </div>
-    <div class="col-4 text-center">
-      <a class="blog-header-logo text-dark" href="index.php">Jepsen Brite Team 5</a>
-    </div>
-    <div class="col-4 d-flex justify-content-end align-items-center">
-      <?php 
-        if (empty($_SESSION['username'])){
-          ?>
-      <a class="btn btn-sm btn-outline-secondary" href="index.php?action=inscription">Sign up</a>
-      <?php
-        }
-        ?>
-      <?php if (!empty($_SESSION['username'])){
-          echo ("Bonjour " . $_SESSION['username']);} ?>
-    </div>
+
+    </p>
   </div>
 </header>
