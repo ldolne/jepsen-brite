@@ -24,7 +24,7 @@ class EventManager extends Manager
         $db = $this->dbConnect();
         $req = $db->query('SELECT e.id
             FROM events AS e 
-            WHERE (event_date = (current_date + INTERVAL 1 DAY))');
+            WHERE (event_date = (current_date + INTERVAL 1 DAY) AND event_hour > current_time)');
 
         return $req;
     }
