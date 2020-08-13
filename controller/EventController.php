@@ -493,16 +493,15 @@ class EventController
         $apiKey = getenv('SENDGRID_API_KEY');
         $sg = new \SendGrid($apiKey);
 
-
         switch($mailType)
         {
             case "updated":
                 $subject = 'Updated event ';
                 while($participant = $participantsMailReq->fetch())
                 {
-                    $content = new Content("text/plain",
-                        'Hello, ' . $participant['username'] . '! We inform you that an event in which you take part has been updated on the website. For more info, cf. https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $eventId);
-                    $to = new Email($participant['username'], $participant['email']);
+                    $contentValue = '<p>Hello!<br><br> We inform you that an event in which you take part has been updated on the website.<br><br> For more info, cf. <a href="https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $eventId . '">the event</a></p>';
+                    $content = new Content("text/html", $contentValue);
+                    $to = new Email(null, $participant['email']);
                     $mail = new Mail($from, $subject, $to, $content);
 
                     $response = $sg->client->mail()->send()->post($mail);
@@ -512,9 +511,12 @@ class EventController
                 $subject = 'Upcoming event ';
                 while($participant = $participantsMailReq->fetch())
                 {
-                    $content = new Content("text/plain",
-                        'Hello, ' . $participant['username'] . '! We inform you that an event in which you take part is programmed for tomorrow. Have fun! For more info, cf. https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $eventId);
-                    $to = new Email($participant['username'], $participant['email']);
+                    echo $participant['email'];
+                    echo $participant['username'];
+
+                    $contentValue = '<p>Hello!<br><br> We inform you that an event in which you take part is programmed for tomorrow. Have fun!<br><br> For more info, cf. <a href="https://team5-jepsen-brite.herokuapp.com/index.php?action=showEvent&id=' . $eventId . '">the event</a></p>';
+                    $content = new Content("text/html", $contentValue);
+                    $to = new Email(null, $participant['email']);
                     $mail = new Mail($from, $subject, $to, $content);
 
                     $response = $sg->client->mail()->send()->post($mail);
