@@ -38,29 +38,31 @@
                 </div>
             </div>
         </div>
-        <div class="clo-md-2">
+        <div class="col-md-2">
             <?php if (!empty($_SESSION['username'])) { ?>
                 <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block"> Create an event</button></a></em></p>
             <?php } ?>
         </div>
     </div>
+    <div class="card">
+    <div class="bloc-card m-2">
   <div class="row mb-4">
 <?php
   }
   else
   {
 ?>
-      <div class="col-md-3 mb-4">
-          <div class="row no-gutters border rounded overflow-hidden flex-md-row shadow-sm position-relative h-100">
-              <div class="card col p-2 d-flex flex-column position-static">
+      <div class="col-md-4 mb-4">
+          <div class="row no-gutters rounded h-100">
+              <div class="card col p-2">
                 <div class="card-img-top">
                   <?php if(strpos($data['image'], 'cloudinary.com') !== false) { ?>
-                    <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 160px; object-fit: cover;">
+                    <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" style="height: 10rem; object-fit: cover;">
                   <?php } else { ?>
                   <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
                   <?php } ?>
                 </div>
-                  <div class="card-body mb-auto d-flex flex-column">
+                  <div class="card-body d-flex flex-column">
                       <div class="mb-2 text-muted"><?= $data['category'] ?></div>
                       <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
                       <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>

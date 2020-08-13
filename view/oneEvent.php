@@ -176,7 +176,7 @@ $parsdown = new Parsedown();
                                             echo "<ul>";
                                             foreach ($participantsArr as $participant) {
                                         ?>
-                                                <li><?= htmlspecialchars($participant['username']) ?></li>
+                                                <li style='list-style-type: disc;'><?= htmlspecialchars($participant['username']) ?></li>
                                         <?php
                                             }
                                             echo "</ul>";
