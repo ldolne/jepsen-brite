@@ -40,7 +40,7 @@
                             <?= $data['event_hour_formatted'] ?>
                         </td>
                         <td> <?= $data['category'] ?></td>
-                        <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
+                        <td><button class="btn btn-light"><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></button></td>
                     </tr>
                 <?php }
                 $events->closeCursor(); ?>

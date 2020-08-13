@@ -5,17 +5,21 @@
 require('./vendor/erusev/parsedown/Parsedown.php');
 $parsdown = new Parsedown();
 ?>
-
+<div class=" d-flex justify-content-between align-items-baseline">
+  <h1>  <?= htmlspecialchars($event['title']) ?></h1>
+  <div class="clo-md-2 ">
+        <?php if (!empty($_SESSION['username'])) { ?>
+            <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block float-right">Create an event</button></a></em></p>
+        <?php } ?>
+    </div>
+</div>
 <div class="row">
+
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <div class="card-title mb-4">
-                    <div class="clo-md-2">
-                        <?php if (!empty($_SESSION['username'])) { ?>
-                            <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block">Create an event</button></a></em></p>
-                        <?php } ?>
-                    </div>
+
                     <?php if (
                         !empty($_SESSION['username'])
                         and ($event['event_date'] > date('Y-m-d')
@@ -54,27 +58,27 @@ $parsdown = new Parsedown();
                     }
                     ?>
                     <div class="d-flex justify-content-start">
-                    <div class="col-sm-8 p-4">
-                        <?php if(strpos($event['image'], 'cloudinary.com') !== false) { ?>
-                            <div class="image-container">
-                                <image src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: auto; object-fit: cover;">
+                        <div class="col-sm-8 p-4">
+                            <?php if (strpos($event['image'], 'cloudinary.com') !== false) { ?>
+                                <div class="image-container">
+                                    <image src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: auto; object-fit: cover;">
+                                </div>
+                            <?php } else { ?>
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling="no"></iframe>
+                                </div>
+                            <?php } ?>
+                            <div class="ml-auto">
+                                <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
                             </div>
-                        <?php } else { ?>
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <iframe src="<?= $event['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling= "no"></iframe>
-                            </div>
-                        <?php } ?>
-                        <div class="ml-auto">
-                            <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard changes" />
                         </div>
-                    </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-12">
                         <div class="tab-content ml-1" id="myTabContent">
-                            <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+                            <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
@@ -91,7 +95,7 @@ $parsdown = new Parsedown();
                                         <label style="font-weight:bold;">Place</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        <?php echo $event['address'].' '.$event['town'].' '.$event['cp']; ?>
+                                        <?php echo $event['address'] . ' ' . $event['town'] . ' ' . $event['cp']; ?>
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <iframe src="https://www.google.com/maps?q=<?= $event['address'] . ' ' . $event['cp']; ?>  &output=embed" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
@@ -176,7 +180,7 @@ $parsdown = new Parsedown();
                                             echo "<ul>";
                                             foreach ($participantsArr as $participant) {
                                         ?>
-                                                <li><?= htmlspecialchars($participant['username']) ?></li>
+                                                <li style="List-style-type: disc;"><?= htmlspecialchars($participant['username']) ?></li>
                                         <?php
                                             }
                                             echo "</ul>";
@@ -193,7 +197,7 @@ $parsdown = new Parsedown();
                                     ?>
                                         <div class="col-sm-3 col-md-2 col-5">
                                             <a href="./index.php?action=showEventModificationPage&amp;id=<?= $event['id'] ?>">
-                                                <button class="btn btn-primary">Modify event</button>
+                                                <button class="btn btn-warning">Modify event</button>
                                             </a>
                                         </div>
                                     <?php

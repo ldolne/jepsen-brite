@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
     <link href="./public/css/blog.css" rel="stylesheet">
     <link rel="stylesheet" href="./public/css/base.css">
+    <link href="./public/css/main.d8e0d294.css" rel="stylesheet">
 
     <title><?= $title ?></title>
 </head>
@@ -21,11 +22,10 @@
 <body>
     <div class="container">
         <?php require('./view/header.php') ?>
-        <?php require('./view/navBar.php') ?>
+        <!-- <?php require('./view/navBar.php') ?> -->
 
         <?php
-        if (isset($message))
-        {
+        if (isset($message)) {
             echo $message;
         }
         ?>
