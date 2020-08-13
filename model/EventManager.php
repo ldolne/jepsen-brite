@@ -196,7 +196,7 @@ class EventManager extends Manager
         ON e.id = aeu.event_id
         INNER JOIN users AS u
         ON u.id = aeu.user_id
-        WHERE aeu.user_id = ? AND event_date < current_date OR (event_date = current_date AND event_hour < (current_time + INTERVAL 2 HOUR))
+        WHERE aeu.user_id = ? AND event_date < current_date
         ORDER BY event_date DESC, event_hour DESC LIMIT 0, 21');
 
         $req->execute(array($userId));
@@ -215,7 +215,7 @@ class EventManager extends Manager
         ON e.id = aeu.event_id
         INNER JOIN users AS u
         ON u.id = aeu.user_id
-        WHERE aeu.user_id = ? AND event_date > current_date OR (event_date = current_date AND event_hour > (current_time + INTERVAL 2 HOUR)) 
+        WHERE aeu.user_id = ? AND event_date > current_date 
             ORDER BY event_date, event_hour LIMIT 0, 21');
 
         $req->execute(array($userId));

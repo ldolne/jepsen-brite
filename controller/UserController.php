@@ -79,7 +79,7 @@ class UserController
                 $password = password_hash($passwordRaw, PASSWORD_BCRYPT);
             }
             else{
-                $passwordError = 'This password is not safe enough';
+                $passwordError = 'This password is not safe enough. You must use 8 characters with at least one uppercase, one number and one special character';
                 $passwordValidation = FALSE;
             }
         }
@@ -130,7 +130,7 @@ class UserController
 
             $response = $sg->client->mail()->send()->post($mail);*/
 
-            require('./view/signup.php');
+            header('Location: ./index.php');
 
         }
         else {
@@ -167,12 +167,12 @@ class UserController
                 }
                 $message= "Connection successful";
                 $message = showInfoMessage($message, true);
-                require('./view/login.php');
+                header('Location: ./index.php');
             }
         }
         else {
             $message = "This user doesn't exist or this is not the right password";
-            require('./view/login.php');
+            header('Location: ./index.php');
         }
     }
 

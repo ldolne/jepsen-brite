@@ -30,7 +30,7 @@
                 while ($data = $events->fetch()) {
                     ?>
                     <tr>
-                        <td>
+                        <td style="color: white;">
                             <?= $data['title'] ?>
                         </td>
                         <td>
@@ -40,7 +40,7 @@
                             <?= $data['event_hour_formatted'] ?>
                         </td>
                         <td> <?= $data['category'] ?></td>
-                        <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>">See this event</a></td>
+                        <td><a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>"><button class="btn btn-light"><div style="color: #ff0060;">See this event<div></button></a></td>
                     </tr>
                 <?php }
                 $events->closeCursor(); ?>
