@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-md-6">
                   <p>
-                    <h3><strong class="d-inline-block mb-3 text-primary"><?= htmlspecialchars($data['title']) ?></strong></h3>
+                    <h3><strong class="d-inline-block mb-3 text-primary"><?= htmlspecialchars_decode(html_entity_decode($data['title'])) ?></strong></h3>
                   </p>
                   <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?>
                   </div>
@@ -77,7 +77,7 @@
                       </div>
                       <div class="card-body d-flex flex-column">
                         <div class="mb-2 text-muted"><?= $data['category'] ?></div>
-                        <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars($data['title']) ?></strong>
+                        <strong class="d-inline-block mb-2 text-primary"><?= htmlspecialchars_decode(html_entity_decode($data['title'])) ?></strong>
                         <div class="mb-2 text-muted"><?= $data['event_date_formatted'] ?> <?= $data['event_hour_formatted'] ?></div>
                         <a href="./index.php?action=showEvent&amp;id=<?= $data['id'] ?>" class="stretched-link mt-auto">Go page of this event</a>
                       </div>

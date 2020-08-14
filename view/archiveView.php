@@ -31,7 +31,7 @@
                     ?>
                     <tr>
                         <td style="color: white;">
-                            <?= $data['title'] ?>
+                            <?= htmlspecialchars_decode(html_entity_decode($data['title'])); ?>
                         </td>
                         <td>
                             <?= $data['event_date_formatted'] ?>

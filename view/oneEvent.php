@@ -6,7 +6,7 @@ require('./vendor/erusev/parsedown/Parsedown.php');
 $parsdown = new Parsedown();
 ?>
 <div class=" d-flex justify-content-between align-items-baseline">
-  <h1 class="text-wrap" style="max-width:90rem; word-break: break-word;">  <?= htmlspecialchars($event['title']) ?></h1>
+  <h1 class="text-wrap" style="max-width:90rem; word-break: break-word;">  <?= htmlspecialchars_decode(html_entity_decode($event['title'])) ?></h1>
   <div class="clo-md-2 ">
         <?php if (!empty($_SESSION['username'])) { ?>
             <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block float-right">Create an event</button></a></em></p>
@@ -116,7 +116,7 @@ $parsdown = new Parsedown();
                                         <label style="font-weight:bold;">Description</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        <?= $parsdown->text(nl2br(htmlspecialchars($event['description']))) ?>
+                                        <?= $parsdown->text(nl2br(htmlspecialchars(htmlspecialchars_decode(html_entity_decode($event['description']))))) ?>
                                     </div>
                                 </div>
                                 <hr />
