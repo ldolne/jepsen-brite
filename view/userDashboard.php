@@ -21,7 +21,7 @@
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-baseline">
                     <div>
-                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= $data['title'] ?></strong></div>
+                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= htmlspecialchars_decode(html_entity_decode($data['title'])) ?></strong></div>
                             
                         <div class="mb-2 text-muted">
                             <?= $data['event_date_formatted'] ?>
@@ -52,7 +52,7 @@
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-baseline">
                     <div>
-                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= $data['title'] ?></strong></div>
+                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= htmlspecialchars_decode(html_entity_decode($data['title'])) ?></strong></div>
                             
                         <div class="mb-2 text-muted">
                             <?= $data['event_date_formatted'] ?>
@@ -79,7 +79,7 @@
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-baseline">
                     <div>
-                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= $data['title'] ?></strong></div>
+                        <div class="d-inline-block mb-2 text-primary text-wrap" style="width: 30rem;"><strong><?= htmlspecialchars_decode(html_entity_decode($data['title'])) ?></strong></div>
                             
                         <div class="mb-2 text-muted">
                             <?= $data['event_date_formatted'] ?>
