@@ -130,7 +130,8 @@ class EventController
 
                     $resultUpload = \Cloudinary\Uploader::upload(
                         $_FILES['image']['tmp_name'],
-                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)
+                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE,
+                            "width" => 400, "crop" => "limit")
                     ); // Upload fichier du dossier où est enregistré au cloud
 
                     if ($resultUpload != null) {
@@ -192,7 +193,7 @@ class EventController
             }
 
         } else {
-            $imageName = "https://res.cloudinary.com/dudwqzfzp/image/upload/v1596617340/jepsen-brite/events_img/default_znnszq.jpg";
+            $imageName = "https://res.cloudinary.com/dudwqzfzp/image/upload/c_limit,w_400/v1597389431/jepsen-brite/events_img/default_znnszq.jpg";
         }
 
         $eventReturnArr = $this->eventManager->createEvent(
@@ -266,7 +267,8 @@ class EventController
 
                     $resultUpload = \Cloudinary\Uploader::upload(
                         $_FILES['image']['tmp_name'],
-                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE)
+                        array("public_id" => $imageFileName, "folder" => "jepsen-brite/events_img/", "resource_type" => "auto", "overwrite" => TRUE,
+                            "width" => 400, "crop" => "limit")
                     ); // Upload fichier du dossier où est enregistré au cloud
 
                     if ($resultUpload != null) {
