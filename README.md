@@ -1,28 +1,27 @@
 # Jepsen-Brite
 
-## membres de la Team-5
+## Members of Team-5
 
 * Laëtitia Dolne - [Github page](https://github.com/ldolne)
 * Mehdi Semlali - [Github page](https://github.com/mehdoche1988)
 * Christophe Pecceu - [Github page](https://github.com/ChrisPecc)
+* Caroline Verpoorten - [Github page](https://github.com/CarolineVerpoorten)
 
 ## Description
 
-Le projet Jepsen-Brite ici présent est un projet de développement de site en php fait dans le cadre de la formation de Web Developer Becode se déroulant à Liège de Mai à Novembre 2020. 
+The Jepsen-Brite project is a website development project made during our Becode training in Web Development (May 2020 to November 2020).
 
-Cet exercice comprendra 2 parties.
-Le but de la première partie est de créer un site en php et sql et puis de le déployer sur un hébergeur (Heroku conseillé). 
+This exercise was divided in two parts.
+The goal of the first part was to create a website in PHP and SQL and then to deploy it on Heroku.
+The goal of the second part was to add so more functionalities: user dashboard, admin rights and dashboard, subcategories, automatic mail notifications, and many more.
 
-[Consignes de l'exercice.](https://github.com/becodeorg/LIE-Jepsen-3.20/tree/master/02-the-hill/04-jepsen-brite)
+## Deadlines
 
-## Délai
+The project was started on July 20, 2020 and ended on August 14, 2020, so four weeks in total.
 
-Le projet a été entamé le Lundi 20 juillet et la date butoir est le Vendredi 31 juillet. 
+## Link to repository
+cf. https://github.com/ldolne/jepsen-brite
 
-## Lien vers le repository
-https://github.com/ldolne/jepsen-brite
-
-
-## URL du site
-https://team5-jepsen-brite.herokuapp.com/
+## Link to website
+cf. https://team5-jepsen-brite.herokuapp.com/
 

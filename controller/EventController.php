@@ -252,12 +252,15 @@ class EventController
                     $imageFromDbArr = explode('.', substr((strrchr($event['image'], '/')), 1));
                     $imageFromDb = $imageFromDbArr[0];
 
-                    if ($imageFromDb === $defaultImage) {
+                    $isImageSessionNumberSet = explode('_', $imageFromDb);
+
+                    if ($imageFromDb === $defaultImage OR $isImageSessionNumberSet[0] != $_SESSION['id']) {
                         $randomNumber = 20;
                         $randomString = bin2hex(random_bytes($randomNumber));
 
                         $imageFileName = $_SESSION['id'] . "_" . $randomString;
-                    } else {
+                    } else
+                    {
                         $imageFileName = $imageFromDb;
                     }
 
@@ -280,7 +283,22 @@ class EventController
                 $this->showEventModificationPage($event, showInfoMessage($message, false));
             }
         } elseif(isset($_POST['url']) && !empty($_POST['url'])) {
-            
+
+            // If an image was previously set, remove from Cloudinary
+            $imageFromDbArr = explode('.', substr((strrchr($event['image'], '/')), 1));
+            $publicId = $imageFromDbArr[0];
+
+            $isImageSessionNumberSet = explode('_', $publicId);
+
+            if ($isImageSessionNumberSet[0] == $_SESSION['id']) {
+                $resultDestroy = \Cloudinary\Uploader::destroy('jepsen-brite/events_img/' . $publicId);
+
+                if ($resultDestroy == null) {
+                    throw new \Exception('There has been a problem during the deletion of the uploaded image of this event.');
+                }
+            }
+
+            // Video
             $url = $_POST['url'];
 
                 $imageName = '';
