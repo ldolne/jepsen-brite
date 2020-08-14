@@ -45,8 +45,6 @@ class UserController
     }
 
     public function getInscriptionPage() {
-        $message='Complete all the fields';
-        $message = showInfoMessage($message, False);
         $usernameError='';
         $passwordError='';
         $emailError='';
@@ -69,7 +67,7 @@ class UserController
         }
         else{
             $usernameValidation = FALSE;
-            $usernameError = 'This username is already taken';
+            $usernameError = '<strong style="color: #FEA190;">This username is already taken</strong>';
         }
 
         if ($passwordRaw == $passwordcheck){
@@ -79,12 +77,12 @@ class UserController
                 $password = password_hash($passwordRaw, PASSWORD_BCRYPT);
             }
             else{
-                $passwordError = 'This password is not safe enough. You must use 8 characters with at least one uppercase, one number and one special character';
+                $passwordError = '<strong style="color: #FEA190;">This password is not safe enough. You must use 8 characters with at least one uppercase, one number and one special character</strong>';
                 $passwordValidation = FALSE;
             }
         }
         else {
-            $passwordError = 'The password fields are not identical';
+            $passwordError = '<strong style="color: #FEA190;">The password fields are not identical</strong>';
             $passwordValidation = FALSE;
         }
 
@@ -99,12 +97,12 @@ class UserController
             }
             else {
                 $emailValidation = FALSE;
-                $emailError ='This email address is already taken';
+                $emailError ='<strong style="color: #FEA190;">This email address is already taken</strong>';
             }
         }
         else {
             $emailValidation = FALSE;
-            $emailError='This email address is not a valid one';
+            $emailError='<strong style="color: #FEA190;">This email address is not a valid one</strong>';
         }
 
         $image = md5(strtolower(trim($email)));
@@ -113,8 +111,8 @@ class UserController
             $inscription = $this->userManager->inscriptionPreparation();
             $inscription -> execute(array($email, $username, $password, $image));
 
-            $message='Inscription successful. Welcome';
-            $message = showInfoMessage($message, true);
+            $message='<p style="color: #D7FFB2;"><strong>Inscription successful. Welcome</strong></p>';
+            showInfoMessage($message, true);
 
             // Sending welcome email
             // uncomment for Heroku
@@ -134,7 +132,8 @@ class UserController
 
         }
         else {
-            $message = '';
+            $message ='<p style="color: #FEA190;"><strong>Complete all the fields</strong></p>';
+            showInfoMessage($message, False);
             require('./view/signup.php');
         }
     }
@@ -154,7 +153,7 @@ class UserController
 
             $isPasswordCorrect = password_verify($_POST['password'], $result['password']);
             if ($isPasswordCorrect == false){
-                $message = "This user doesn't exist or this is not the right password";
+                $message = "<p style='color: #FEA190;'><strong>This user doesn't exist or this is not the right password</strong></p>";
                 $message = showInfoMessage($message, False);
                 require('./view/login.php');
             }
@@ -165,14 +164,12 @@ class UserController
                     setcookie('id', $result['id'], time() + 30*24*3600, null, null, false, true);
                     setcookie('username', $result['username'], time() + 30*24*3600, null, null, false, true);
                 }
-                $message= "Connection successful";
-                $message = showInfoMessage($message, true);
                 header('Location: ./index.php');
             }
         }
         else {
-            $message = "This user doesn't exist or this is not the right password";
-            header('Location: ./index.php');
+            $message = "<p style='color: #FEA190;'><strong>This user doesn't exist or this is not the right password</strong></p>";
+            require('./view/login.php');
         }
     }
 
