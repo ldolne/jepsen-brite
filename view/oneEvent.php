@@ -6,7 +6,7 @@ require('./vendor/erusev/parsedown/Parsedown.php');
 $parsdown = new Parsedown();
 ?>
 <div class=" d-flex justify-content-between align-items-baseline">
-  <h1 style="width: 80rem;">  <?= htmlspecialchars($event['title']) ?></h1>
+  <h1 class="text-wrap" style="max-width:90rem; word-break: break-word;">  <?= htmlspecialchars($event['title']) ?></h1>
   <div class="clo-md-2 ">
         <?php if (!empty($_SESSION['username'])) { ?>
             <p><em><a href="./index.php?action=showEventCreationPage"><button class="btn btn-primary btn-lg btn-block float-right">Create an event</button></a></em></p>
