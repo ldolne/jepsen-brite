@@ -133,8 +133,8 @@ try {
                     && isset($_POST['description']) && !empty($_POST['description'])
                     && isset($_POST['category_id']) && !empty($_POST['category_id'])
                     && isset($_POST['address']) && !empty($_POST['address'])
-                    && isset($_POST['cp']) && !empty($_POST['cp'])
                     && isset($_POST['town']) && !empty($_POST['town'])
+                    && isset($_POST['cp']) && !empty($_POST['cp'])
                 ) {
                     $eventController->createNewEvent();
                 } else {
@@ -154,8 +154,8 @@ try {
                         && isset($_POST['description']) && !empty($_POST['description'])
                         && isset($_POST['category_id']) && !empty($_POST['category_id'])
                         && isset($_POST['address']) && !empty($_POST['address'])
-                        && isset($_POST['cp']) && !empty($_POST['cp'])
                         && isset($_POST['town']) && !empty($_POST['town'])
+                        && isset($_POST['cp']) && !empty($_POST['cp'])
                     ) {
                         $eventController->updateExistingEvent($event, $subcategories);
                     } else {
@@ -171,7 +171,7 @@ try {
 
                 if (isset($_SESSION['id']) && $_SESSION['id'] == $event['author_id'] || $_SESSION['isadmin'] != "0") {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
-                        $eventController->deleteExistingEvent();
+                        $eventController->deleteExistingEvent($event);
                     } else {
                         throw new \Exception('No event ID sent.');
                     }
