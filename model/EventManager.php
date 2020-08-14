@@ -49,7 +49,7 @@ class EventManager extends Manager
         DATE_FORMAT(e.event_date, \'%d/%m/%Y\') 
         AS event_date_formatted, e.event_hour, 
         DATE_FORMAT(e.event_hour, \'%H:%i\') 
-        AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category,e.address,e.town,e.cp
+        AS event_hour_formatted, e.image, e.description, u.username, c.id AS category_id, c.category, e.address, e.town, e.cp
             FROM events AS e 
             INNER JOIN users AS u ON e.author_id = u.id 
             INNER JOIN categories AS c 
@@ -60,11 +60,11 @@ class EventManager extends Manager
         return $req;
     }
 
-    public function createEvent($title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId, $address, $cp, $town)
+    public function createEvent($title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId, $address, $town, $cp)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('INSERT INTO events(title, author_id, event_date, event_hour, image, description, category_id, address, cp, town) 
-            VALUES (:title, :author_id, :event_date, :event_hour, :image, :description, :category_id, :address, :cp, :town)');
+        $req = $db->prepare('INSERT INTO events(title, author_id, event_date, event_hour, image, description, category_id, address, town, cp) 
+            VALUES (:title, :author_id, :event_date, :event_hour, :image, :description, :category_id, :address, :town, :cp)');
         $affectedLines = $req->execute(array(
             'title' => $title,
             'author_id' => $authorId,
@@ -73,9 +73,9 @@ class EventManager extends Manager
             'image' => $image,
             'description' => $description,
             'category_id' => $categoryId,
+            'address' => $address,
             'town' => $town,
-            'cp' => $cp,
-            'address' => $address
+            'cp' => $cp
         ));
 
         $latestId = $db->lastInsertId();
@@ -83,11 +83,11 @@ class EventManager extends Manager
         return array($affectedLines, $latestId);
     }
 
-    public function updateEvent($eventId, $title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId, $address, $cp, $town)
+    public function updateEvent($eventId, $title, $authorId, $eventDate, $eventHour, $image, $description, $categoryId, $address, $town, $cp)
     {
         $db = $this->dbConnect();
         $req = $db->prepare('UPDATE events 
-            SET title = :title, author_id = :author_id, event_date = :event_date, event_hour = :event_hour, image = :image, description = :description, category_id = :category_id, address = :address, cp = :cp, town = :town
+            SET title = :title, author_id = :author_id, event_date = :event_date, event_hour = :event_hour, image = :image, description = :description, category_id = :category_id, address = :address, town = :town, cp = :cp
             WHERE id = :id');
         $req->execute(array(
             'title' => $title,
@@ -98,8 +98,8 @@ class EventManager extends Manager
             'description' => $description,
             'category_id' => $categoryId,
             'address' => $address,
-            'cp' => $cp,
             'town' => $town,
+            'cp' => $cp,
             'id' => $eventId
         ));
     }
@@ -165,6 +165,26 @@ class EventManager extends Manager
         $req = $db->prepare('DELETE FROM assoc_events_users
         WHERE event_id = ? AND user_id = ?');
         $req->execute(array($eventId, $userId));
+
+        return $req;
+    }
+
+    public function deleteAllParticipantsByEvent($eventId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM assoc_events_users
+        WHERE event_id = ?');
+        $req->execute(array($eventId));
+
+        return $req;
+    }
+
+    public function deleteAllParticipationsToEventsWhenDeletedAccount($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM assoc_events_users
+        WHERE user_id = ?');
+        $req->execute(array($userId));
 
         return $req;
     }

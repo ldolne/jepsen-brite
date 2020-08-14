@@ -30,7 +30,7 @@
           <label for="exampleInputPassword1">
             Password
           </label>
-          <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+          <input name="password" type="password" class="form-control" id="exampleInputPassword1" title="8 characters long minimum with at least 1 uppercase letter, 1 number, 1 special character">
 
         </div>
         <?= $passwordError ?>

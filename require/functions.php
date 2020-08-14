@@ -13,3 +13,4 @@ function showInfoMessage($infoMessage = NULL, $isPositive = true)
 
     return $formattedInfoMessage;
 }
+

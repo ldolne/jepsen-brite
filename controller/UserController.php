@@ -4,6 +4,7 @@
 
 namespace controller;
 
+use model\UserManager;
 use SendGrid\Content;
 use SendGrid\Email;
 use SendGrid\Mail;
@@ -69,7 +70,7 @@ class UserController
         }
         else{
             $usernameValidation = FALSE;
-            $usernameError = 'This username is already taken';
+            $usernameError = 'This username is already taken.';
         }
 
         if ($passwordRaw == $passwordcheck){
@@ -79,12 +80,12 @@ class UserController
                 $password = password_hash($passwordRaw, PASSWORD_BCRYPT);
             }
             else{
-                $passwordError = 'This password is not safe enough. You must use 8 characters with at least one uppercase, one number and one special character';
+                $passwordError = 'This password is not safe enough. You must use 8 characters minimum with at least one uppercase, one number and one special character.';
                 $passwordValidation = FALSE;
             }
         }
         else {
-            $passwordError = 'The password fields are not identical';
+            $passwordError = 'The password fields are not identical.';
             $passwordValidation = FALSE;
         }
 
@@ -99,12 +100,12 @@ class UserController
             }
             else {
                 $emailValidation = FALSE;
-                $emailError ='This email address is already taken';
+                $emailError ='This email address is already taken.';
             }
         }
         else {
             $emailValidation = FALSE;
-            $emailError='This email address is not a valid one';
+            $emailError='This email address is not a valid one.';
         }
 
         $image = md5(strtolower(trim($email)));
@@ -113,16 +114,18 @@ class UserController
             $inscription = $this->userManager->inscriptionPreparation();
             $inscription -> execute(array($email, $username, $password, $image));
 
-            $message='Inscription successful. Welcome';
+            $message='Inscription successful. Welcome!';
             $message = showInfoMessage($message, true);
 
             // Sending welcome email
             // uncomment for Heroku
-
             /*$from = new Email(null, "becodechristest@gmail.com");
-            $subject = 'Inscription à Jepsen-brite event ';
+            $subject = 'Inscription to Jepsen-brite';
             $to = new Email(null, $email);
-            $content = new Content("text/plain", 'Team-5 is happy to welcome your on their website!');
+            $contentValue = '<p>Welcome to Jepsen-Brite, ' . $username . '!<br><br>
+                Team-5 is happy to welcome your on their website!<br><br>
+                See you soon on <a href="https://team5-jepsen-brite.herokuapp.com/index.php">Jepsen-Brite</a></p>';
+            $content = new Content("text/html", $contentValue);
             $mail = new Mail($from, $subject, $to, $content);
 
             $apiKey = getenv('SENDGRID_API_KEY');
@@ -130,8 +133,9 @@ class UserController
 
             $response = $sg->client->mail()->send()->post($mail);*/
 
-            header('Location: ./index.php');
+            sleep(2);
 
+            header('Location: ./index.php?action=connection');
         }
         else {
             $message = '';
@@ -267,35 +271,40 @@ class UserController
         $request -> execute(array($_SESSION['username']));
         $result = $request -> fetch();
 
-        // Update user's events and comments
+        // Update user's events and comments, and delete participations
         $eventsAffectedLines = $this->eventManager->updateEventAuthorWhenDeletedAccount($result['id']);
         $commentsAffectedLines = $this->commentManager->updateCommentAuthorWhenDeletedAccount($result['id']);
+        $participationsAffectedLines = $this->eventManager->deleteAllParticipationsToEventsWhenDeletedAccount($result['id']);
 
         if ($eventsAffectedLines === false) {
             throw new \Exception("Problem while deleting the user's events. Please try again.");
         } else if ($commentsAffectedLines === false)
         {
             throw new \Exception("Problem while deleting the user's comments. Please try again.");
+        } else if ($participationsAffectedLines === false)
+        {
+            throw new \Exception("Problem while deleting the user's participations. Please try again.");
         }
+        else {
+            // Delete user
+            $deletePrep = $this->userManager->deletePreparation();
+            $deletePrep -> execute(array($result['id']));
+            $message = 'Your account was deleted';
+            $message = showInfoMessage($message, True);
 
-        // Delete user
-        $deletePrep = $this->userManager->deletePreparation();
-        $deletePrep -> execute(array($result['id']));
-        $message = 'Your account was deleted';
-        $message = showInfoMessage($message, True);
+            $_SESSION = array();
+            session_destroy();
+            setcookie('id', '');
+            setcookie('username', '');
 
-        $_SESSION = array();
-        session_destroy();
-        setcookie('id', '');
-        setcookie('username', '');
-
-        // Renvoi à l'homepage
-        header('Location: ./index.php');
+            // Renvoi à l'homepage
+            header('Location: ./index.php');
+        }
     }
 
     public function getUserDashboard(){
         // get created events
-        $request = $this->userManager->getUser(); //TODO Caro
+        $request = $this->userManager->getUser();
         $request -> execute(array($_SESSION['id']));
         $result = $request -> fetch();
 
@@ -344,23 +353,28 @@ class UserController
         $getUser->execute(array($_GET['id']));
         $user = $getUser -> fetch();
 
-        // Update user's events and comments
+        // Update user's events and comments, and delete participations
         $eventsAffectedLines = $this->eventManager->updateEventAuthorWhenDeletedAccount($user['id']);
         $commentsAffectedLines = $this->commentManager->updateCommentAuthorWhenDeletedAccount($user['id']);
+        $participationsAffectedLines = $this->eventManager->deleteAllParticipationsToEventsWhenDeletedAccount($user['id']);
 
         if ($eventsAffectedLines === false) {
             throw new \Exception("Problem while deleting the user's events. Please try again.");
         } else if ($commentsAffectedLines === false)
         {
             throw new \Exception("Problem while deleting the user's comments. Please try again.");
+        } else if ($participationsAffectedLines === false)
+        {
+            throw new \Exception("Problem while deleting the user's participations. Please try again.");
         }
+        else {
+            // Delete user
+            $deleteByAdmin = $this->userManager->deleteUserByAdmin();
+            $deleteByAdmin->execute(array($user['id']));
+            $message = 'The account was deleted';
+            $message = showInfoMessage($message, True);
 
-        // Delete user
-        $deleteByAdmin = $this->userManager->deleteUserByAdmin();
-        $deleteByAdmin->execute(array($user['id']));
-        $message = 'The account was deleted';
-        $message = showInfoMessage($message, True);
-
-        header('Location: ./index.php?action=admindashboard');
+            header('Location: ./index.php?action=admindashboard');
+        }
     }
 }
