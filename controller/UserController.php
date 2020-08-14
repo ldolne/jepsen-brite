@@ -122,7 +122,7 @@ class UserController
             $to = new Email(null, $email);
             $contentValue = '<p>Welcome to Jepsen-Brite, ' . $username . '!<br><br>
                 Team-5 is happy to welcome your on their website!<br><br>
-                See you soon on <a href="https://team5-jepsen-brite.herokuapp.com/index.php">Jepsen-Brite</a></p>';
+                See you soon on <a href="https://team5-jepsen-brite.herokuapp.com/index.php">Jepsen-Brite</a>.</p>';
             $content = new Content("text/html", $contentValue);
             $mail = new Mail($from, $subject, $to, $content);
 
