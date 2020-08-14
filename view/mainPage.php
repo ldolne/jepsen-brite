@@ -32,7 +32,7 @@
                   <?php if (strpos($data['image'], 'cloudinary.com') !== false) { ?>
                     <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 14em; width: 100%; object-fit: cover;">
                     <?php } else { ?>
-                      <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="width:100%; height:100%" scrolling="no"></iframe>
+                      <image src="https://www.publicdomainpictures.net/pictures/260000/nahled/play-button-15282372642Gh.jpg" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" style="height: 14em; width: 100%; object-fit: cover;">
                     <?php } ?>
                 </div>
                 <div class="col-md-6">
@@ -71,8 +71,8 @@
                       <div class="card-img-top">
                         <?php if (strpos($data['image'], 'cloudinary.com') !== false) { ?>
                           <image src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" style="height: 16rem; object-fit: cover;">
-                          <?php } else { ?>
-                            <iframe src="<?= $data['image'] ?>" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" scrolling="no"></iframe>
+                          <?php } else {?>
+                            <image src="https://www.publicdomainpictures.net/pictures/260000/nahled/play-button-15282372642Gh.jpg" id="eventImageCards" alt="Event image" class="img-thumbnail img-responsive" width="100%" style="height: 16rem; object-fit: cover;">
                           <?php } ?>
                       </div>
                       <div class="card-body d-flex flex-column">
