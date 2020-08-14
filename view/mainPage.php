@@ -56,7 +56,7 @@
 
           </div>
 
-          <h2 class="pb-3">Other next events</h2>
+          <h2 class="pb-3">Other upcoming events</h2>
 
 
           <div class="card">

@@ -9,21 +9,21 @@ require_once("./controller/EventController.php");
 require_once("./controller/CommentController.php");
 require_once("./controller/SubcategoryController.php");
 
-// session start
-session_start();
-if (
-    isset($_COOKIE['username']) && !empty($_COOKIE['username'])
-    && isset($_COOKIE['id']) && !empty($_COOKIE['id'])
-) {
-    cookieVerification();
-}
-
 // Controllers declaration
 $userController = new \controller\UserController();
 $categoryController = new \controller\CategoryController();
 $eventController = new \controller\EventController();
 $commentController = new \controller\CommentController();
 $subcategoryController = new \controller\SubcategoryController();
+
+// session start
+session_start();
+if (
+    isset($_COOKIE['username']) && !empty($_COOKIE['username'])
+    && isset($_COOKIE['id']) && !empty($_COOKIE['id'])
+) {
+    $userController->cookieVerification();
+}
 
 // routing
 try {
